@@ -5,6 +5,8 @@ using System;
 
 namespace AdminTools.Commands.Cleanup
 {
+    using Exiled.API.Features;
+
     class Ragdolls : ICommand
     {
         public string Command { get; } = "ragdolls";
@@ -27,8 +29,8 @@ namespace AdminTools.Commands.Cleanup
                 return false;
             }
 
-            foreach (Ragdoll doll in UnityEngine.Object.FindObjectsOfType<Ragdoll>())
-                NetworkServer.Destroy(doll.gameObject);
+            foreach (Ragdoll doll in Ragdoll.List)
+                doll.Destroy();
 
             response = "Ragdolls have been cleaned up now";
             return true;

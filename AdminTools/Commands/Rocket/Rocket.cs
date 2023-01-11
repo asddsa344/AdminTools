@@ -6,6 +6,8 @@ using System;
 
 namespace AdminTools.Commands.Rocket
 {
+    using PlayerRoles;
+
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     public class Rocket : ParentCommand
@@ -56,7 +58,7 @@ namespace AdminTools.Commands.Rocket
                         response = $"Player not found: {arguments.At(0)}";
                         return false;
                     }
-                    else if (pl.Role == RoleType.Spectator || pl.Role == RoleType.None)
+                    else if (pl.Role == RoleTypeId.Spectator || pl.Role == RoleTypeId.None)
                     {
                         response = $"Player {pl.Nickname} is not a valid class to rocket";
                         return false;

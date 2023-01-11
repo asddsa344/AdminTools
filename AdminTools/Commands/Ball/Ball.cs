@@ -7,6 +7,7 @@ namespace AdminTools.Commands.Ball
 {
     using System.Collections.Generic;
     using Exiled.API.Features.Items;
+    using PlayerRoles;
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
@@ -43,7 +44,7 @@ namespace AdminTools.Commands.Ball
                 case "all":
                     foreach (Player pl in Player.List)
                     {
-                        if (pl.Role == RoleType.Spectator || pl.Role == RoleType.None)
+                        if (pl.Role == RoleTypeId.Spectator || pl.Role == RoleTypeId.None)
                             continue;
 
                         players.Add(pl);
@@ -58,7 +59,7 @@ namespace AdminTools.Commands.Ball
                         return false;
                     }
 
-                    if (ply.Role == RoleType.Spectator || ply.Role == RoleType.None)
+                    if (ply.Role == RoleTypeId.Spectator || ply.Role == RoleTypeId.None)
                     {
                         response = $"You cannot spawn a ball on that player right now";
                         return false;

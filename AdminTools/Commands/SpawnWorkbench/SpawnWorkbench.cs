@@ -9,6 +9,8 @@ using UnityEngine;
 
 namespace AdminTools.Commands.SpawnWorkbench
 {
+    using PlayerRoles;
+
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class SpawnWorkbench : ParentCommand
     {
@@ -179,7 +181,7 @@ namespace AdminTools.Commands.SpawnWorkbench
                     int index = 0;
                     foreach (Player p in Player.List)
                     {
-                        if (p.Role == RoleType.Spectator || p.Role == RoleType.None)
+                        if (p.Role == RoleTypeId.Spectator || p.Role == RoleTypeId.None)
                             continue;
 
                         EventHandlers.SpawnWorkbench(player, p.Position + p.ReferenceHub.PlayerCameraReference.forward * 2, p.GameObject.transform.rotation.eulerAngles, new Vector3(xval, yval, zval), out int benchIndex);
@@ -201,7 +203,7 @@ namespace AdminTools.Commands.SpawnWorkbench
                         response = $"Player not found: {arguments.At(0)}";
                         return false;
                     }
-                    else if (pl.Role == RoleType.Spectator || pl.Role == RoleType.None)
+                    else if (pl.Role == RoleTypeId.Spectator || pl.Role == RoleTypeId.None)
                     {
                         response = $"This player is not a valid class to spawn a workbench on";
                         return false;

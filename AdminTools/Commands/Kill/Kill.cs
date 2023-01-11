@@ -5,6 +5,8 @@ using System;
 
 namespace AdminTools.Commands.Kill
 {
+    using PlayerRoles;
+
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     public class Kill : ParentCommand
@@ -39,7 +41,7 @@ namespace AdminTools.Commands.Kill
                 case "all":
                     foreach (Player ply in Player.List)
                     {
-                        if (ply.Role == RoleType.Spectator || ply.Role == RoleType.None)
+                        if (ply.Role == RoleTypeId.Spectator || ply.Role == RoleTypeId.None)
                             continue;
 
                         ply.Kill("Killed by admin.");
@@ -54,7 +56,7 @@ namespace AdminTools.Commands.Kill
                         response = $"Player not found: {arguments.At(0)}";
                         return false;
                     }
-                    else if (pl.Role == RoleType.Spectator || pl.Role == RoleType.None)
+                    else if (pl.Role == RoleTypeId.Spectator || pl.Role == RoleTypeId.None)
                     {
                         response = $"Player {pl.Nickname} is not a valid class to kill";
                         return false;

@@ -5,6 +5,8 @@ using System;
 
 namespace AdminTools.Commands.Size
 {
+    using PlayerRoles;
+
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     class Size : ParentCommand
@@ -39,10 +41,10 @@ namespace AdminTools.Commands.Size
                 case "reset":
                     foreach (Player ply in Player.List)
                     {
-                        if (ply.Role == RoleType.Spectator || ply.Role == RoleType.None)
+                        if (ply.Role == RoleTypeId.Spectator || ply.Role == RoleTypeId.None)
                             continue;
 
-                        EventHandlers.SetPlayerScale(ply.GameObject, 1, 1, 1);
+                        EventHandlers.SetPlayerScale(ply, 1, 1, 1);
                     }
 
                     response = $"Everyone's size has been reset";
@@ -75,10 +77,10 @@ namespace AdminTools.Commands.Size
 
                     foreach (Player ply in Player.List)
                     {
-                        if (ply.Role == RoleType.Spectator || ply.Role == RoleType.None)
+                        if (ply.Role == RoleTypeId.Spectator || ply.Role == RoleTypeId.None)
                             continue;
 
-                        EventHandlers.SetPlayerScale(ply.GameObject, xval, yval, zval);
+                        EventHandlers.SetPlayerScale(ply, xval, yval, zval);
                     }
 
                     response = $"Everyone's scale has been set to {xval} {yval} {zval}";
@@ -115,7 +117,7 @@ namespace AdminTools.Commands.Size
                         return false;
                     }
 
-                    EventHandlers.SetPlayerScale(pl.GameObject, x, y, z);
+                    EventHandlers.SetPlayerScale(pl, x, y, z);
                     response = $"Player {pl.Nickname}'s scale has been set to {x} {y} {z}";
                     return true;
             }

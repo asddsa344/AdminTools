@@ -20,10 +20,13 @@ namespace AdminTools
 {
 	using Exiled.API.Extensions;
 	using Exiled.API.Features.Items;
+	using Exiled.Events.EventArgs.Player;
+	using Exiled.Events.EventArgs.Server;
 	using Footprinting;
 	using InventorySystem.Items.Firearms.Attachments;
 	using InventorySystem.Items.Pickups;
 	using InventorySystem.Items.ThrowableProjectiles;
+	using PlayerRoles;
 	using PlayerStatsSystem;
 	using Ragdoll = Exiled.API.Features.Ragdoll;
 
@@ -41,52 +44,21 @@ namespace AdminTools
 
 		public static string FormatArguments(ArraySegment<string> sentence, int index)
 		{
-			StringBuilder sb = StringBuilderPool.Shared.Rent();
+			StringBuilder sb = new();
 			foreach (string word in sentence.Segment(index))
 			{
 				sb.Append(word);
 				sb.Append(" ");
 			}
 			string msg = sb.ToString();
-			StringBuilderPool.Shared.Return(sb);
 			return msg;
 		}
 
-		public static void SpawnDummyModel(Player ply, Vector3 position, Quaternion rotation, RoleType role, float x, float y, float z, out int dummyIndex)
-		{
-			dummyIndex = 0;
-			GameObject obj = Object.Instantiate(NetworkManager.singleton.playerPrefab);
-			CharacterClassManager ccm = obj.GetComponent<CharacterClassManager>();
-			if (ccm == null)
-				Log.Error("CCM is null, this can cause problems!");
-			ccm.CurClass = role;
-			ccm.GodMode = true;
-			obj.GetComponent<NicknameSync>().Network_myNickSync = "Dummy";
-			obj.GetComponent<QueryProcessor>().PlayerId = 9999;
-			obj.GetComponent<QueryProcessor>().NetworkPlayerId = 9999;
-			obj.transform.localScale = new Vector3(x, y, z);
-			obj.transform.position = position;
-			obj.transform.rotation = rotation;
-			NetworkServer.Spawn(obj);
-			if (Plugin.DumHubs.TryGetValue(ply, out List<GameObject> objs))
-			{
-				objs.Add(obj);
-			}
-			else
-			{
-				Plugin.DumHubs.Add(ply, new List<GameObject>());
-				Plugin.DumHubs[ply].Add(obj);
-				dummyIndex = Plugin.DumHubs[ply].Count();
-			}
-			if (dummyIndex != 1)
-				dummyIndex = objs.Count();
-		}
-
-		public static IEnumerator<float> SpawnBodies(Player player, RoleType role, int count)
+		public static IEnumerator<float> SpawnBodies(Player player, RoleTypeId role, int count)
 		{
 			for (int i = 0; i < count; i++)
 			{
-				Ragdoll.Spawn(new RagdollInfo(Server.Host.ReferenceHub, new UniversalDamageHandler(0.0f, DeathTranslations.Unknown, DamageHandlerBase.CassieAnnouncement.Default), role, player.Position, default, "SCP-343", 0));
+				Ragdoll.CreateAndSpawn(role, "SCP-343", "End of the Universe", player.Position, default, null);
 				yield return Timing.WaitForSeconds(0.15f);
 			}
 		}
@@ -141,25 +113,11 @@ namespace AdminTools
 			}
 		}
 
-        public static void SetPlayerScale(GameObject target, float x, float y, float z)
+        public static void SetPlayerScale(Player target, float x, float y, float z)
 		{
 			try
 			{
-				NetworkIdentity identity = target.GetComponent<NetworkIdentity>();
-				target.transform.localScale = new Vector3(1 * x, 1 * y, 1 * z);
-
-				ObjectDestroyMessage destroyMessage = new();
-				destroyMessage.netId = identity.netId;
-
-				foreach (GameObject player in PlayerManager.players)
-				{
-					NetworkConnection playerCon = player.GetComponent<NetworkIdentity>().connectionToClient;
-					if (player != target)
-						playerCon.Send(destroyMessage, 0);
-
-					object[] parameters = new object[] { identity, playerCon };
-					Extensions.InvokeStaticMethod(typeof(NetworkServer), "SendSpawnMessage", parameters);
-				}
+				target.Scale = new Vector3(x, y, z);
 			}
 			catch (Exception e)
 			{
@@ -167,27 +125,11 @@ namespace AdminTools
 			}
 		}
 
-		public static void SetPlayerScale(GameObject target, float scale)
+		public static void SetPlayerScale(Player target, float scale)
 		{
 			try
 			{
-				NetworkIdentity identity = target.GetComponent<NetworkIdentity>();
-				target.transform.localScale = Vector3.one * scale;
-
-				ObjectDestroyMessage destroyMessage = new();
-				destroyMessage.netId = identity.netId;
-
-				foreach (GameObject player in PlayerManager.players)
-				{
-					if (player == target)
-						continue;
-
-					NetworkConnection playerCon = player.GetComponent<NetworkIdentity>().connectionToClient;
-					playerCon.Send(destroyMessage, 0);
-
-					object[] parameters = new object[] { identity, playerCon };
-					Extensions.InvokeStaticMethod(typeof(NetworkServer), "SendSpawnMessage", parameters);
-				}
+				target.Scale = Vector3.one * scale;
 			}
 			catch (Exception e)
 			{
@@ -199,7 +141,7 @@ namespace AdminTools
 		{
 			const int maxAmnt = 50;
 			int amnt = 0;
-			while (player.Role != RoleType.Spectator)
+			while (player.Role != RoleTypeId.Spectator)
 			{
 				player.Position += Vector3.up * speed;
 				amnt++;
@@ -243,7 +185,7 @@ namespace AdminTools
 				player.IsOverwatchEnabled = false;
 			yield return Timing.WaitForSeconds(1f);
 			player.ClearInventory(false);
-			player.SetRole(RoleType.Tutorial);
+			player.Role.Set(RoleTypeId.Tutorial, SpawnReason.ForceClass, RoleSpawnFlags.None);
 			player.Position = new Vector3(53f, 1020f, -44f);
 		}
 
@@ -252,7 +194,7 @@ namespace AdminTools
 			Jailed jail = Plugin.JailedPlayers.Find(j => j.Userid == player.UserId);
 			if (jail.CurrentRound)
 			{
-				player.SetRole(jail.Role, SpawnReason.ForceClass, true);
+				player.Role.Set(jail.Role, SpawnReason.ForceClass, RoleSpawnFlags.None);
 				yield return Timing.WaitForSeconds(0.5f);
 				try
 				{
@@ -269,7 +211,7 @@ namespace AdminTools
 			}
 			else
 			{
-				player.SetRole(RoleType.Spectator);
+				player.Role.Set(RoleTypeId.Spectator);
 			}
 			Plugin.JailedPlayers.Remove(jail);
 		}
@@ -369,13 +311,13 @@ namespace AdminTools
 		public void OnTriggerTesla(TriggeringTeslaEventArgs ev)
 		{
 			if (ev.Player.IsGodModeEnabled)
-				ev.IsTriggerable = false;
+				ev.IsAllowed = false;
 		}
 
 		public void OnSetClass(ChangingRoleEventArgs ev)
 		{
 			if (_plugin.Config.GodTuts)
-				ev.Player.IsGodModeEnabled = ev.NewRole == RoleType.Tutorial;
+				ev.Player.IsGodModeEnabled = ev.NewRole == RoleTypeId.Tutorial;
 		}
 
 		public void OnWaitingForPlayers()

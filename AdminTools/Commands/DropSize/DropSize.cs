@@ -8,6 +8,8 @@ using UnityEngine;
 namespace AdminTools.Commands.DropSize
 {
     using Exiled.API.Features.Items;
+    using Exiled.API.Features.Pickups;
+    using PlayerRoles;
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
@@ -152,10 +154,10 @@ namespace AdminTools.Commands.DropSize
         {
             foreach (Player ply in Player.List)
             {
-                if (ply.Role == RoleType.Spectator || ply.Role == RoleType.None)
+                if (ply.Role == RoleTypeId.Spectator || ply.Role == RoleTypeId.None)
                     continue;
 
-                Item.Create(type).Spawn(ply.Position).Scale = Vector3.one * size;
+                Pickup.CreateAndSpawn(type, ply.Position, default, ply).Scale = Vector3.one * size;
             }
             message = $"Spawned in a {type.ToString()} that is a size of {size} at every player's position (\"Yay! Items with sizes!\" - Galaxy119)";
         }
@@ -164,23 +166,23 @@ namespace AdminTools.Commands.DropSize
         {
             foreach (Player ply in Player.List)
             {
-                if (ply.Role == RoleType.Spectator || ply.Role == RoleType.None)
+                if (ply.Role == RoleTypeId.Spectator || ply.Role == RoleTypeId.None)
                     continue;
 
-                Item.Create(type).Spawn(ply.Position).Scale = new Vector3(x, y, z);
+                Pickup.CreateAndSpawn(type, ply.Position, default, ply).Scale = new(x, y, z);
             }
             message = $"Spawned in a {type.ToString()} that is {x}x{y}x{z} at every player's position (\"Yay! Items with sizes!\" - Galaxy119)";
         }
 
         private void SpawnItem(Player ply, ItemType type, float size, out string message)
         {
-            Item.Create(type).Spawn(ply.Position).Scale = Vector3.one * size;
+            Pickup.CreateAndSpawn(type, ply.Position, default, ply).Scale = Vector3.one * size;
             message = $"Spawned in a {type.ToString()} that is a size of {size} at {ply.Nickname}'s position (\"Yay! Items with sizes!\" - Galaxy119)";
         }
 
         private void SpawnItem(Player ply, ItemType type, float x, float y, float z, out string message)
         {
-            Item.Create(type).Spawn(ply.Position).Scale = new Vector3(x, y, z);
+            Pickup.CreateAndSpawn(type, ply.Position, default, ply).Scale = new(x, y, z);
             message = $"Spawned in a {type.ToString()} that is {x}x{y}x{z} at {ply.Nickname}'s position (\"Yay! Items with sizes!\" - Galaxy119)";
         }
     }

@@ -6,6 +6,7 @@ using System.Text;
 namespace AdminTools.Commands.Enums
 {
     using Exiled.API.Enums;
+    using Exiled.API.Features.Pickups;
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
@@ -26,8 +27,15 @@ namespace AdminTools.Commands.Enums
             StringBuilder listBuilder = StringBuilderPool.Shared.Rent();
             listBuilder.Append("Here are the following enums you can use in commands:");
             listBuilder.AppendLine();
-            listBuilder.Append("GrenadeType: ");
-            foreach (GrenadeType gt in Enum.GetValues(typeof(GrenadeType)))
+            listBuilder.Append("ItemType: ");
+            foreach (ItemType type in Enum.GetValues(typeof(ItemType)))
+            {
+                listBuilder.Append(type.ToString());
+                listBuilder.Append(" ");
+            }
+            listBuilder.AppendLine();
+            listBuilder.Append("ProjectileType: ");
+            foreach (ProjectileType gt in Enum.GetValues(typeof(ProjectileType)))
             {
                 listBuilder.Append(gt.ToString());
                 listBuilder.Append(" ");

@@ -5,6 +5,8 @@ using System;
 
 namespace AdminTools.Commands.TeleportX
 {
+    using PlayerRoles;
+
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     public class TeleportX : ParentCommand
@@ -47,7 +49,7 @@ namespace AdminTools.Commands.TeleportX
 
                     foreach (Player plyr in Player.List)
                     {
-                        if (plyr.Role == RoleType.Spectator || ply.Role == RoleType.None)
+                        if (plyr.Role == RoleTypeId.Spectator || ply.Role == RoleTypeId.None)
                             continue;
 
                         plyr.Position = ply.Position;

@@ -7,6 +7,7 @@ using UnityEngine;
 namespace AdminTools.Commands.DropItem
 {
     using Exiled.API.Features.Items;
+    using Exiled.API.Features.Pickups;
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
@@ -60,7 +61,7 @@ namespace AdminTools.Commands.DropItem
 
                     foreach (Player ply in Player.List)
                         for (int i = 0; i < amount; i++)
-                            Item.Create(item).Spawn(ply.Position);
+                            Pickup.CreateAndSpawn(item, ply.Position, default, ply);
 
                     response = $"{amount} of {item.ToString()} was spawned on everyone (\"Hehexd\" - Galaxy119)";
                     return true;
@@ -91,7 +92,7 @@ namespace AdminTools.Commands.DropItem
                     }
 
                     for (int i = 0; i < am; i++)
-                        Item.Create(it).Spawn(pl.Position);
+                        Pickup.CreateAndSpawn(it, pl.Position, default, pl);
                     response = $"{am} of {it.ToString()} was spawned on {pl.Nickname} (\"Hehexd\" - Galaxy119)";
                     return true;
             }

@@ -8,6 +8,8 @@ using System.Text;
 
 namespace AdminTools.Commands.TargetGhost
 {
+    using Exiled.API.Features.Roles;
+
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     public class TargetGhost : ParentCommand
@@ -49,9 +51,11 @@ namespace AdminTools.Commands.TargetGhost
                 if (!GetPlayer(arg, out Player victim))
                     continue;
 
-                // Just remove if it's already in - iRebbok
-                if (!sourcePlayer.TargetGhostsHashSet.Add(victim.Id))
-                    sourcePlayer.TargetGhostsHashSet.Remove(victim.Id);
+                if (sourcePlayer.Role.Is(out FpcRole role))
+                {
+                    if (!role.IsInvisibleFor.Add(victim))
+                        role.IsInvisibleFor.Remove(victim);
+                }
             }
             response = $"Done modifying who can see {sourcePlayer.Nickname}";
             return true;

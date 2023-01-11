@@ -5,6 +5,8 @@ using System;
 
 namespace AdminTools.Commands.Ghost
 {
+    using CustomPlayerEffects;
+
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     public class Ghost : ParentCommand
@@ -38,14 +40,14 @@ namespace AdminTools.Commands.Ghost
             {
                 case "clear":
                     foreach (Player pl in Player.List)
-                        pl.IsInvisible = false;
+                        pl.DisableEffect<Invisible>();
 
                     response = "Everyone is no longer invisible";
                     return true;
                 case "*":
                 case "all":
                     foreach (Player pl in Player.List)
-                        pl.IsInvisible = true;
+                        pl.EnableEffect<Invisible>();
 
                     response = "Everyone is now invisible";
                     return true;
@@ -57,14 +59,14 @@ namespace AdminTools.Commands.Ghost
                         return false;
                     }
 
-                    if (!ply.IsInvisible)
+                    if (!ply.IsEffectActive<Invisible>())
                     {
-                        ply.IsInvisible = true;
+                        ply.EnableEffect<Invisible>();
                         response = $"Player {ply.Nickname} is now invisible";
                     }
                     else
                     {
-                        ply.IsInvisible = false;
+                        ply.DisableEffect<Invisible>();
                         response = $"Player {ply.Nickname} is no longer invisible";
                     }
                     return true;

@@ -8,7 +8,6 @@ An SCP:SL EXILED plugin that gives server owners fun commands and logging functi
 - Set AHP of players with ease
 - Spawn a SCP-018 ball on players with a jingle when everyone gets a SCP-018 instance
 - Break down doors, gates, bulletproof lockers, every door related item in the game
-- Cleanup all item pickups and ragdolls from the server manually with ease
 - Reload your permission and game config files to ensure nothing goes wrong
 - Drop a certain amount of items on players
 - Drop an item with a custom size on players
@@ -47,7 +46,6 @@ abc - PlayerPermissions.Broadcasting (config_remoteadmin.txt)
 ahp - PlayerPermissions.PlayersManagement (config_remoteadmin.txt)
 ball - at.ball
 breakdoors - at.bd
-cleanup - at.cleanup
 dropitem - at.items
 dropsize - at.items
 dummy - at.dummy

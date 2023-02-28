@@ -117,9 +117,6 @@
     <Compile Include="Commands\SpawnRagdoll\SpawnRagdoll.cs" />
     <Compile Include="Commands\Scale\Scale.cs" />
     <Compile Include="Commands\Broadcast\Message.cs" />
-    <Compile Include="Commands\Cleanup\Cleanup.cs" />
-    <Compile Include="Commands\Cleanup\Items.cs" />
-    <Compile Include="Commands\Cleanup\Ragdolls.cs" />
     <Compile Include="Commands\Size\Size.cs" />
     <Compile Include="Commands\SpawnWorkbench\SpawnWorkbench.cs" />
     <Compile Include="Commands\Tags\Hide.cs" />

@@ -6,6 +6,7 @@ namespace AdminTools
 {
 	using Exiled.API.Features.Items;
 	using PlayerRoles;
+    using RelativePositioning;
 
 	public class Jailed
 	{
@@ -13,7 +14,7 @@ namespace AdminTools
 		public string Name;
 		public List<Item> Items;
 		public RoleTypeId Role;
-		public Vector3 Position;
+		public RelativePosition RelativePosition;
 		public float Health;
 		public Dictionary<AmmoType, ushort> Ammo;
 		public bool CurrentRound;

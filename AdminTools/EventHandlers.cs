@@ -20,7 +20,8 @@ namespace AdminTools
 {
 	using Exiled.API.Extensions;
 	using Exiled.API.Features.Items;
-	using Exiled.Events.EventArgs.Player;
+    using Exiled.API.Features.Roles;
+    using Exiled.Events.EventArgs.Player;
 	using Exiled.Events.EventArgs.Server;
 	using Footprinting;
 	using InventorySystem.Items.Firearms.Attachments;
@@ -171,7 +172,7 @@ namespace AdminTools
 				Plugin.JailedPlayers.Add(new Jailed
 				{
 					Health = player.Health,
-					Position = player.Position,
+                    RelativePosition = (player.Role is FpcRole fpcRole) ? fpcRole.RelativePosition : default,
 					Items = items,
 					Name = player.Nickname,
 					Role = player.Role,
@@ -200,7 +201,7 @@ namespace AdminTools
 				{
 					player.ResetInventory(jail.Items);
 					player.Health = jail.Health;
-					player.Position = jail.Position;
+					player.Position = jail.RelativePosition.Position;
 					foreach (KeyValuePair<AmmoType, ushort> kvp in jail.Ammo)
 						player.Ammo[kvp.Key.GetItemType()] = kvp.Value;
 				}

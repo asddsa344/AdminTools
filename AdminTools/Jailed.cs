@@ -4,7 +4,8 @@ using UnityEngine;
 
 namespace AdminTools
 {
-	using Exiled.API.Features.Items;
+    using CustomPlayerEffects;
+    using Exiled.API.Features.Items;
 	using PlayerRoles;
     using RelativePositioning;
 
@@ -13,6 +14,7 @@ namespace AdminTools
 		public string Userid;
 		public string Name;
 		public List<Item> Items;
+		public List<StatusEffectBase> Effects;
 		public RoleTypeId Role;
 		public RelativePosition RelativePosition;
 		public float Health;

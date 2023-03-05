@@ -46,7 +46,7 @@ namespace AdminTools.Commands.Jail
             {
                 try
                 {
-                    Timing.RunCoroutine(EventHandlers.DoUnJail(ply));
+                    EventHandlers.DoUnJail(ply);
                     response = $"Player {ply.Nickname} has been unjailed now";
                 }
                 catch (Exception e)
@@ -58,7 +58,7 @@ namespace AdminTools.Commands.Jail
             }
             else
             {
-                Timing.RunCoroutine(EventHandlers.DoJail(ply));
+                EventHandlers.DoJail(ply);
                 response = $"Player {ply.Nickname} has been jailed now";
             }
             return true;

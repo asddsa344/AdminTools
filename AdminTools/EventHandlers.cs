@@ -159,44 +159,37 @@ namespace AdminTools
 			}
 		}
 
-		public static IEnumerator<float> DoJail(Player player, bool skipadd = false)
+		public static void DoJail(Player player, bool skipadd = false)
 		{
-			List<Item> items = new();
-			Dictionary<AmmoType, ushort> ammo = new();
-			foreach (KeyValuePair<ItemType, ushort> kvp in player.Ammo)
-				ammo.Add(kvp.Key.GetAmmoType(), kvp.Value);
-			foreach (Item item in player.Items)
-				items.Add(item);
 			if (!skipadd)
-			{
-				Plugin.JailedPlayers.Add(new Jailed
+            {
+                Plugin.JailedPlayers.Add(new Jailed
 				{
 					Health = player.Health,
                     RelativePosition = (player.Role is FpcRole fpcRole) ? fpcRole.RelativePosition : default,
-					Items = items,
+					Items = player.Items.ToList(),
+					Effects = player.ActiveEffects.ToList(),
 					Name = player.Nickname,
 					Role = player.Role,
 					Userid = player.UserId,
 					CurrentRound = true,
-					Ammo = ammo
-				});
+					Ammo = player.Ammo.ToDictionary(x => x.Key.GetAmmoType(), x => x.Value),
+                });
 			}
 
 			if (player.IsOverwatchEnabled)
 				player.IsOverwatchEnabled = false;
-			yield return Timing.WaitForSeconds(1f);
+
 			player.ClearInventory(false);
-			player.Role.Set(RoleTypeId.Tutorial, SpawnReason.ForceClass, RoleSpawnFlags.None);
-			player.Position = new Vector3(53f, 1020f, -44f);
+			player.Role.Set(RoleTypeId.Tutorial, SpawnReason.ForceClass, RoleSpawnFlags.UseSpawnpoint);
 		}
 
-		public static IEnumerator<float> DoUnJail(Player player)
+		public static void DoUnJail(Player player)
 		{
 			Jailed jail = Plugin.JailedPlayers.Find(j => j.Userid == player.UserId);
 			if (jail.CurrentRound)
 			{
 				player.Role.Set(jail.Role, SpawnReason.ForceClass, RoleSpawnFlags.None);
-				yield return Timing.WaitForSeconds(0.5f);
 				try
 				{
 					player.ResetInventory(jail.Items);
@@ -204,6 +197,8 @@ namespace AdminTools
 					player.Position = jail.RelativePosition.Position;
 					foreach (KeyValuePair<AmmoType, ushort> kvp in jail.Ammo)
 						player.Ammo[kvp.Key.GetItemType()] = kvp.Value;
+					foreach (CustomPlayerEffects.StatusEffectBase effect in jail.Effects)
+						player.ReferenceHub.playerEffectsController.ServerSyncEffect(effect);
 				}
 				catch (Exception e)
 				{
@@ -222,18 +217,18 @@ namespace AdminTools
 			try
 			{
 				if (Plugin.JailedPlayers.Any(j => j.Userid == ev.Player.UserId))
-					Timing.RunCoroutine(DoJail(ev.Player, true));
+					DoJail(ev.Player, true);
 
 				if (File.ReadAllText(_plugin.OverwatchFilePath).Contains(ev.Player.UserId))
 				{
 					Log.Debug($"Putting {ev.Player.UserId} into overwatch.");
-					Timing.CallDelayed(1, () => ev.Player.IsOverwatchEnabled = true);
+					ev.Player.IsOverwatchEnabled = true;
 				}
 
 				if (File.ReadAllText(_plugin.HiddenTagsFilePath).Contains(ev.Player.UserId))
 				{
 					Log.Debug($"Hiding {ev.Player.UserId}'s tag.");
-					Timing.CallDelayed(1, () => ev.Player.BadgeHidden = true);
+					Timing.CallDelayed(Timing.WaitForOneFrame, () => ev.Player.BadgeHidden = true);
 				}
 
 				if (Plugin.RoundStartMutes.Count != 0 && !ev.Player.ReferenceHub.serverRoles.RemoteAdmin && !Plugin.RoundStartMutes.Contains(ev.Player))

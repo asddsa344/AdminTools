@@ -84,11 +84,13 @@ namespace AdminTools
 						NetworkManager.singleton.spawnPrefabs.Find(p => p.gameObject.name == "Work Station"));
 				rotation.x += 180;
 				rotation.z += 180;
-				Offset offset = new();
-				offset.position = position;
-				offset.rotation = rotation;
-				offset.scale = Vector3.one;
-				bench.gameObject.transform.localScale = size;
+                Offset offset = new()
+                {
+                    position = position,
+                    rotation = rotation,
+                    scale = Vector3.one,
+                };
+                bench.gameObject.transform.localScale = size;
 				NetworkServer.Spawn(bench);
 				if (Plugin.BchHubs.TryGetValue(ply, out List<GameObject> objs))
 				{
@@ -166,7 +168,7 @@ namespace AdminTools
                 Plugin.JailedPlayers.Add(new Jailed
 				{
 					Health = player.Health,
-                    RelativePosition = (player.Role is FpcRole fpcRole) ? fpcRole.RelativePosition : default,
+                    RelativePosition = player.RelativePosition,
 					Items = player.Items.ToList(),
 					Effects = player.ActiveEffects.ToList(),
 					Name = player.Nickname,
@@ -181,7 +183,7 @@ namespace AdminTools
 				player.IsOverwatchEnabled = false;
 
 			player.ClearInventory(false);
-			player.Role.Set(RoleTypeId.Tutorial, SpawnReason.ForceClass, RoleSpawnFlags.UseSpawnpoint);
+			player.Role.Set(RoleTypeId.Tutorial, RoleSpawnFlags.UseSpawnpoint);
 		}
 
 		public static void DoUnJail(Player player)
@@ -189,7 +191,7 @@ namespace AdminTools
 			Jailed jail = Plugin.JailedPlayers.Find(j => j.Userid == player.UserId);
 			if (jail.CurrentRound)
 			{
-				player.Role.Set(jail.Role, SpawnReason.ForceClass, RoleSpawnFlags.None);
+				player.Role.Set(jail.Role, RoleSpawnFlags.None);
 				try
 				{
 					player.ResetInventory(jail.Items);

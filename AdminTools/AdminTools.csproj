@@ -6,8 +6,8 @@
     <AssemblyName>$(ProjectName)</AssemblyName>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
-    <AssemblyVersion>7.0.0</AssemblyVersion>
-    <FileVersion>7.0.0</FileVersion>
+    <AssemblyVersion>7.0.1</AssemblyVersion>
+    <FileVersion>7.0.1</FileVersion>
   </PropertyGroup>
 
   <Import Project="../../Plugin.props" />

@@ -19,6 +19,7 @@ using Object = UnityEngine.Object;
 namespace AdminTools
 {
 	using Exiled.API.Extensions;
+	using Exiled.API.Features.Doors;
 	using Exiled.API.Features.Items;
     using Exiled.API.Features.Roles;
     using Exiled.Events.EventArgs.Player;
@@ -39,8 +40,8 @@ namespace AdminTools
 
 		public void OnDoorOpen(InteractingDoorEventArgs ev)
 		{
-			if (Plugin.PryGateHubs.Contains(ev.Player))
-				ev.Door.TryPryOpen();
+			if (Plugin.PryGateHubs.Contains(ev.Player) && ev.Door is Gate gate)
+				gate.TryPry();
 		}
 
 		public static string FormatArguments(ArraySegment<string> sentence, int index)
@@ -326,8 +327,8 @@ namespace AdminTools
 
 		public void OnPlayerInteractingDoor(InteractingDoorEventArgs ev)
 		{
-			if (BreakDoorsList.Contains(ev.Player))
-				ev.Door.BreakDoor();
+			if (BreakDoorsList.Contains(ev.Player) && ev.Door is BreakableDoor breakable)
+				breakable.Break();
 		}
 	}
 }

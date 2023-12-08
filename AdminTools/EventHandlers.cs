@@ -24,8 +24,8 @@ namespace AdminTools
 
     public class EventHandlers
 	{
-		private readonly Main _plugin;
-		public EventHandlers(Main plugin) => this._plugin = plugin;
+		private readonly Main plugin;
+		public EventHandlers(Main plugin) => plugin = plugin;
 		public static List<Player> BreakDoorsList { get; } = new();
 
 		public void OnDoorOpen(InteractingDoorEventArgs ev)
@@ -89,7 +89,7 @@ namespace AdminTools
 				}
 				else
 				{
-					Main.BchHubs.Add(ply, new List<GameObject>());
+					Main.BchHubs.Add(ply, new());
 					Main.BchHubs[ply].Add(bench);
 					benchIndex = Main.BchHubs[ply].Count();
 				}
@@ -204,7 +204,7 @@ namespace AdminTools
 			}
 			else
 			{
-				player.Role.Set(RoleTypeId.Spectator);
+				player.Role.Set(RoleTypeId.Spectator, RoleSpawnFlags.UseSpawnpoint);
 			}
 			Main.JailedPlayers.Remove(jail);
 		}
@@ -216,13 +216,13 @@ namespace AdminTools
 				if (Main.JailedPlayers.Any(j => j.Userid == ev.Player.UserId))
 					DoJail(ev.Player, true);
 
-				if (File.ReadAllText(_plugin.OverwatchFilePath).Contains(ev.Player.UserId))
+				if (File.ReadAllText(plugin.OverwatchFilePath).Contains(ev.Player.UserId))
 				{
 					Log.Debug($"Putting {ev.Player.UserId} into overwatch.");
 					ev.Player.IsOverwatchEnabled = true;
 				}
 
-				if (File.ReadAllText(_plugin.HiddenTagsFilePath).Contains(ev.Player.UserId))
+				if (File.ReadAllText(plugin.HiddenTagsFilePath).Contains(ev.Player.UserId))
 				{
 					Log.Debug($"Hiding {ev.Player.UserId}'s tag.");
 					Timing.CallDelayed(Timing.WaitForOneFrame, () => ev.Player.BadgeHidden = true);
@@ -257,8 +257,8 @@ namespace AdminTools
 		{
 			try
 			{
-				List<string> overwatchRead = File.ReadAllLines(_plugin.OverwatchFilePath).ToList();
-				List<string> tagsRead = File.ReadAllLines(_plugin.HiddenTagsFilePath).ToList();
+				List<string> overwatchRead = File.ReadAllLines(plugin.OverwatchFilePath).ToList();
+				List<string> tagsRead = File.ReadAllLines(plugin.HiddenTagsFilePath).ToList();
 
 				foreach (Player player in Player.List)
 				{
@@ -279,8 +279,8 @@ namespace AdminTools
 					Log.Debug($"{s} is in overwatch.");
 				foreach (string s in tagsRead)
 					Log.Debug($"{s} has their tag hidden.");
-				File.WriteAllLines(_plugin.OverwatchFilePath, overwatchRead);
-				File.WriteAllLines(_plugin.HiddenTagsFilePath, tagsRead);
+				File.WriteAllLines(plugin.OverwatchFilePath, overwatchRead);
+				File.WriteAllLines(plugin.HiddenTagsFilePath, tagsRead);
 
 				// Update all the jails that it is no longer the current round, so when they are unjailed they don't teleport into the void.
 				foreach (Jailed jail in Main.JailedPlayers)
@@ -309,7 +309,7 @@ namespace AdminTools
 
 		public void OnSetClass(ChangingRoleEventArgs ev)
 		{
-			if (_plugin.Config.GodTuts)
+			if (plugin.Config.GodTuts)
 				ev.Player.IsGodModeEnabled = ev.NewRole == RoleTypeId.Tutorial;
 		}
 

@@ -6,6 +6,7 @@ using Handlers = Exiled.Events.Handlers;
 namespace AdminTools
 {
     using Exiled.Events.EventArgs.Player;
+    using PlayerStatsSystem;
 
     public class InstantKillComponent : MonoBehaviour
     {
@@ -34,7 +35,7 @@ namespace AdminTools
         public void RunWhenPlayerIsHurt(HurtingEventArgs ev)
         {
             if (ev.Attacker != ev.Player && ev.Attacker == Player)
-                ev.Amount = int.MaxValue;
+                ev.Amount = StandardDamageHandler.KillValue;
         }
     }
 }

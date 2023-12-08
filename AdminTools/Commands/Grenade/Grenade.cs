@@ -41,7 +41,7 @@ namespace AdminTools.Commands.Grenade
 
             if (!Enum.TryParse(arguments.At(1), true, out ProjectileType type))
             {
-                response = $"Invalid value for grenade type: {arguments.At(1)}";
+                response = $"Invalid value for projectile type: {arguments.At(1)}\n{string.Join(", ",Enum.GetNames(typeof(ProjectileType)))}.";
                 return false;
             }
 
@@ -54,10 +54,7 @@ namespace AdminTools.Commands.Grenade
             switch (arguments.At(0))
             {
                 case "*":
-                case "all":
-                    if (type == ProjectileType.Scp018)
-                        Cassie.Message("pitch_1.5 xmas_bouncyballs", true, false);
-                    
+                case "all":                
                     foreach (Player player in Player.List)
                     {
                         if (player.Role != RoleTypeId.Spectator) 

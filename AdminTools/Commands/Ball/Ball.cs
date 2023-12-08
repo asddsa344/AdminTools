@@ -75,8 +75,8 @@ namespace AdminTools.Commands.Ball
             response = players.Count == 1
                 ? $"{players[0].Nickname} has received a bouncing ball!"
                 : $"The balls are bouncing for {players.Count} players!";
-            if (players.Count > 1)
-                Cassie.Message("pitch_1.5 xmas_bouncyballs");
+
+            Cassie.Message("pitch_1.5 xmas_bouncyballs");
 
             foreach (Player p in players)
                 Projectile.CreateAndSpawn(ProjectileType.Scp018, p.Position, p.Transform.rotation);

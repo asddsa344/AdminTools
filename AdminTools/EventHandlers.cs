@@ -107,31 +107,11 @@ namespace AdminTools
 			}
 		}
 
-        public static void SetPlayerScale(Player target, float x, float y, float z)
-		{
-			try
-			{
-				target.Scale = new Vector3(x, y, z);
-			}
-			catch (Exception e)
-			{
-				Log.Info($"Set Scale error: {e}");
-			}
-		}
+        public static void SetPlayerScale(Player target, float x, float y, float z) => target.Scale = new Vector3(x, y, z);
 
-		public static void SetPlayerScale(Player target, float scale)
-		{
-			try
-			{
-				target.Scale = Vector3.one * scale;
-			}
-			catch (Exception e)
-			{
-				Log.Info($"Set Scale error: {e}");
-			}
-		}
+        public static void SetPlayerScale(Player target, float scale) => target.Scale = Vector3.one * scale;
 
-		public static IEnumerator<float> DoRocket(Player player, float speed)
+        public static IEnumerator<float> DoRocket(Player player, float speed)
 		{
 			const int maxAmnt = 50;
 			int amnt = 0;

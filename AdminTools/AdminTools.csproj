@@ -111,7 +111,6 @@
     <Compile Include="Config.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="EventHandlers.cs" />
-    <Compile Include="Extensions.cs" />
     <Compile Include="Components\InstantKillComponent.cs" />
     <Compile Include="Jailed.cs" />
     <Compile Include="Main.cs" />

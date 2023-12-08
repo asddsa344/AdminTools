@@ -25,7 +25,7 @@ namespace AdminTools
     public class EventHandlers
 	{
 		private readonly Main plugin;
-		public EventHandlers(Main plugin) => plugin = plugin;
+		public EventHandlers(Main main) => plugin = main;
 		public static List<Player> BreakDoorsList { get; } = new();
 
 		public void OnDoorOpen(InteractingDoorEventArgs ev)

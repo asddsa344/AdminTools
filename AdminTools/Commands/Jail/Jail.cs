@@ -42,7 +42,7 @@ namespace AdminTools.Commands.Jail
                 return false;
             }
 
-            if (Plugin.JailedPlayers.Any(j => j.Userid == ply.UserId))
+            if (Main.JailedPlayers.Any(j => j.Userid == ply.UserId))
             {
                 try
                 {

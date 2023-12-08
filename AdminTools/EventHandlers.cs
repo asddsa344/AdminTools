@@ -1,46 +1,39 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using Exiled.API.Enums;
-using Exiled.API.Features;
-using Exiled.Events.EventArgs;
-using Exiled.Permissions;
-using Interactables.Interobjects;
-using MEC;
-using Mirror;
-using NorthwoodLib.Pools;
-using RemoteAdmin;
-using UnityEngine;
-using Log = Exiled.API.Features.Log;
-using Object = UnityEngine.Object;
-
 namespace AdminTools
 {
-	using Exiled.API.Extensions;
-	using Exiled.API.Features.Items;
-    using Exiled.API.Features.Roles;
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Text;
+    using Exiled.API.Enums;
+    using Exiled.API.Features;
+    using MEC;
+    using Mirror;
+    using UnityEngine;
+    using Exiled.API.Extensions;
+    using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs.Player;
-	using Exiled.Events.EventArgs.Server;
-	using Footprinting;
-	using InventorySystem.Items.Firearms.Attachments;
-	using InventorySystem.Items.Pickups;
-	using InventorySystem.Items.ThrowableProjectiles;
-	using PlayerRoles;
-	using PlayerStatsSystem;
-	using Ragdoll = Exiled.API.Features.Ragdoll;
+    using Exiled.Events.EventArgs.Server;
+    using InventorySystem.Items.Firearms.Attachments;
+    using PlayerRoles;
 
-	public class EventHandlers
+    using Log = Exiled.API.Features.Log;
+    using Object = UnityEngine.Object;
+    using Utils.NonAllocLINQ;
+    using InventorySystem.Items.Firearms;
+    using Exiled.API.Features.Doors;
+    using Exiled.API.Interfaces;
+
+    public class EventHandlers
 	{
-		private readonly Plugin _plugin;
-		public EventHandlers(Plugin plugin) => this._plugin = plugin;
+		private readonly Main _plugin;
+		public EventHandlers(Main plugin) => this._plugin = plugin;
 		public static List<Player> BreakDoorsList { get; } = new();
 
 		public void OnDoorOpen(InteractingDoorEventArgs ev)
 		{
-			if (Plugin.PryGateHubs.Contains(ev.Player))
-				ev.Door.TryPryOpen();
+			if (Main.PryGateHubs.Contains(ev.Player) && ev.Door is Gate gate)
+                gate.TryPry();
 		}
 
 		public static string FormatArguments(ArraySegment<string> sentence, int index)
@@ -66,10 +59,10 @@ namespace AdminTools
 
         public void OnPlayerDestroyed(DestroyingEventArgs ev)
         {
-			if (Plugin.RoundStartMutes.Contains(ev.Player))
+			if (Main.RoundStartMutes.Contains(ev.Player))
             {
 				ev.Player.IsMuted = false;
-				Plugin.RoundStartMutes.Remove(ev.Player);
+				Main.RoundStartMutes.Remove(ev.Player);
             }
         }
 
@@ -92,15 +85,15 @@ namespace AdminTools
                 };
                 bench.gameObject.transform.localScale = size;
 				NetworkServer.Spawn(bench);
-				if (Plugin.BchHubs.TryGetValue(ply, out List<GameObject> objs))
+				if (Main.BchHubs.TryGetValue(ply, out List<GameObject> objs))
 				{
 					objs.Add(bench);
 				}
 				else
 				{
-					Plugin.BchHubs.Add(ply, new List<GameObject>());
-					Plugin.BchHubs[ply].Add(bench);
-					benchIndex = Plugin.BchHubs[ply].Count();
+					Main.BchHubs.Add(ply, new List<GameObject>());
+					Main.BchHubs[ply].Add(bench);
+					benchIndex = Main.BchHubs[ply].Count();
 				}
 
 				if (benchIndex != 1)
@@ -165,12 +158,12 @@ namespace AdminTools
 		{
 			if (!skipadd)
             {
-                Plugin.JailedPlayers.Add(new Jailed
+                Main.JailedPlayers.Add(new Jailed
 				{
 					Health = player.Health,
                     RelativePosition = player.RelativePosition,
 					Items = player.Items.ToList(),
-					Effects = player.ActiveEffects.ToList(),
+					Effects = player.ActiveEffects.Select(x => new Effect(x)).ToList(),
 					Name = player.Nickname,
 					Role = player.Role,
 					Userid = player.UserId,
@@ -181,28 +174,32 @@ namespace AdminTools
 
 			if (player.IsOverwatchEnabled)
 				player.IsOverwatchEnabled = false;
+			player.Ammo.Clear();
+			player.Inventory.SendAmmoNextFrame = true;
 
-			player.ClearInventory(false);
+            player.ClearInventory(false);
 			player.Role.Set(RoleTypeId.Tutorial, RoleSpawnFlags.UseSpawnpoint);
 		}
 
 		public static void DoUnJail(Player player)
 		{
-			Jailed jail = Plugin.JailedPlayers.Find(j => j.Userid == player.UserId);
+			Jailed jail = Main.JailedPlayers.Find(j => j.Userid == player.UserId);
 			if (jail.CurrentRound)
 			{
 				player.Role.Set(jail.Role, RoleSpawnFlags.None);
 				try
 				{
 					player.ResetInventory(jail.Items);
-					player.Health = jail.Health;
+                    player.Health = jail.Health;
 					player.Position = jail.RelativePosition.Position;
 					foreach (KeyValuePair<AmmoType, ushort> kvp in jail.Ammo)
 						player.Ammo[kvp.Key.GetItemType()] = kvp.Value;
-					foreach (CustomPlayerEffects.StatusEffectBase effect in jail.Effects)
-						player.ReferenceHub.playerEffectsController.ServerSyncEffect(effect);
-				}
-				catch (Exception e)
+					player.SyncEffects(jail.Effects);
+
+                    player.Inventory.SendItemsNextFrame = true;
+                    player.Inventory.SendAmmoNextFrame = true;
+                }
+                catch (Exception e)
 				{
 					Log.Error($"{nameof(DoUnJail)}: {e}");
 				}
@@ -211,14 +208,14 @@ namespace AdminTools
 			{
 				player.Role.Set(RoleTypeId.Spectator);
 			}
-			Plugin.JailedPlayers.Remove(jail);
+			Main.JailedPlayers.Remove(jail);
 		}
 
 		public void OnPlayerVerified(VerifiedEventArgs ev)
 		{
 			try
 			{
-				if (Plugin.JailedPlayers.Any(j => j.Userid == ev.Player.UserId))
+				if (Main.JailedPlayers.Any(j => j.Userid == ev.Player.UserId))
 					DoJail(ev.Player, true);
 
 				if (File.ReadAllText(_plugin.OverwatchFilePath).Contains(ev.Player.UserId))
@@ -233,11 +230,11 @@ namespace AdminTools
 					Timing.CallDelayed(Timing.WaitForOneFrame, () => ev.Player.BadgeHidden = true);
 				}
 
-				if (Plugin.RoundStartMutes.Count != 0 && !ev.Player.ReferenceHub.serverRoles.RemoteAdmin && !Plugin.RoundStartMutes.Contains(ev.Player))
+				if (Main.RoundStartMutes.Count != 0 && !ev.Player.ReferenceHub.serverRoles.RemoteAdmin && !Main.RoundStartMutes.Contains(ev.Player))
                 {
 					Log.Debug($"Muting {ev.Player.UserId} (no RA).");
 					ev.Player.IsMuted = true;
-					Plugin.RoundStartMutes.Add(ev.Player);
+					Main.RoundStartMutes.Add(ev.Player);
                 }
 			}
 			catch (Exception e)
@@ -248,14 +245,14 @@ namespace AdminTools
 
 		public void OnRoundStart()
 		{
-			foreach (Player ply in Plugin.RoundStartMutes)
+			foreach (Player ply in Main.RoundStartMutes)
 			{
 				if (ply != null)
 				{
 					ply.IsMuted = false;
 				}
 			}
-			Plugin.RoundStartMutes.Clear();
+			Main.RoundStartMutes.Clear();
 		}
 
 		public void OnRoundEnd(RoundEndedEventArgs ev)
@@ -288,7 +285,7 @@ namespace AdminTools
 				File.WriteAllLines(_plugin.HiddenTagsFilePath, tagsRead);
 
 				// Update all the jails that it is no longer the current round, so when they are unjailed they don't teleport into the void.
-				foreach (Jailed jail in Plugin.JailedPlayers)
+				foreach (Jailed jail in Main.JailedPlayers)
 				{
 					if(jail.CurrentRound)
 						jail.CurrentRound = false;
@@ -299,7 +296,7 @@ namespace AdminTools
 				Log.Error($"Round End: {e}");
 			}
 
-			if (Plugin.RestartOnEnd)
+			if (Main.RestartOnEnd)
 			{
 				Log.Info("Restarting server....");
 				Round.Restart(false, true, ServerStatic.NextRoundAction.Restart);
@@ -320,14 +317,14 @@ namespace AdminTools
 
 		public void OnWaitingForPlayers()
 		{
-			Plugin.IkHubs.Clear();
+			Main.IkHubs.Clear();
 			BreakDoorsList.Clear();
 		}
 
 		public void OnPlayerInteractingDoor(InteractingDoorEventArgs ev)
 		{
-			if (BreakDoorsList.Contains(ev.Player))
-				ev.Door.BreakDoor();
-		}
+			if (BreakDoorsList.Contains(ev.Player) && ev.Door is IDamageableDoor damageableDoor)
+                damageableDoor.Break();
+        }
 	}
 }

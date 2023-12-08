@@ -7,12 +7,12 @@ using UnityEngine;
 
 namespace AdminTools
 {
-	public class Plugin : Plugin<Config>
+	public class Main : Plugin<Config>
 	{
 		public override string Author { get; } = "Originally by Joker119. Modifications by KoukoCocoa & Thomasjosif";
 		public override string Name { get; } = "Admin Tools";
 		public override string Prefix { get; } = "AT";
-		public override Version RequiredExiledVersion { get; } = new(6, 0, 0);
+		public override Version RequiredExiledVersion { get; } = new(7, 0, 0);
 
 		public EventHandlers EventHandlers;
 		public static System.Random NumGen = new();
@@ -81,7 +81,5 @@ namespace AdminTools
 			EventHandlers = null;
 			NumGen = null;
 		}
-
-		public override void OnReloaded() { }
 	}
 }

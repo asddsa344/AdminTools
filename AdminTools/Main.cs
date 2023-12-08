@@ -9,10 +9,10 @@ namespace AdminTools
 {
 	public class Main : Plugin<Config>
 	{
-		public override string Author { get; } = "Originally by Joker119. Modifications by KoukoCocoa & Thomasjosif";
+		public override string Author { get; } = "Exiled-Team";
 		public override string Name { get; } = "Admin Tools";
 		public override string Prefix { get; } = "AT";
-		public override Version RequiredExiledVersion { get; } = new(7, 0, 0);
+		public override Version RequiredExiledVersion { get; } = new(8, 4, 3);
 
 		public EventHandlers EventHandlers;
 		public static System.Random NumGen = new();

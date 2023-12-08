@@ -12,17 +12,15 @@ namespace AdminTools
     using UnityEngine;
     using Exiled.API.Extensions;
     using Exiled.API.Features.Items;
+    using Exiled.API.Features.Doors;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Server;
     using InventorySystem.Items.Firearms.Attachments;
     using PlayerRoles;
-
+    using Utils.NonAllocLINQ;
+    using Exiled.API.Interfaces;
     using Log = Exiled.API.Features.Log;
     using Object = UnityEngine.Object;
-    using Utils.NonAllocLINQ;
-    using InventorySystem.Items.Firearms;
-    using Exiled.API.Features.Doors;
-    using Exiled.API.Interfaces;
 
     public class EventHandlers
 	{

@@ -36,7 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\References\Assembly-CSharp-firstpass.dll</HintPath>
+      <HintPath>$(EXILED_REFERENCES)\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
     <Reference Include="Mirror, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>$(EXILED_REFERENCES)\Mirror.dll</HintPath>
@@ -118,7 +118,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="EXILED">
-      <Version>8.4.3</Version>
+      <Version>8.5.0-beta.1</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

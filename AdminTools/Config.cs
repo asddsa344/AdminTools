@@ -11,7 +11,7 @@ namespace AdminTools
 
         public bool Debug { get; set; }
 
-        [Description("Should the tutorial class be in God Mode? Default: true")]
+        [Description("Should the tutorial class be in God Mode? Default: false")]
         public bool GodTuts { get; set; } = false;
     }
 }

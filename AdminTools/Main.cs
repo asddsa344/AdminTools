@@ -12,9 +12,11 @@ namespace AdminTools
 		public override string Author { get; } = "Exiled-Team";
 		public override string Name { get; } = "Admin Tools";
 		public override string Prefix { get; } = "AT";
-		public override Version RequiredExiledVersion { get; } = new(8, 4, 3);
+        public override Version Version { get; } = new(7, 1, 0);
 
-		public EventHandlers EventHandlers;
+        public override Version RequiredExiledVersion { get; } = new(8, 5, 0);
+
+        public EventHandlers EventHandlers;
 		public static System.Random NumGen = new();
 		public static List<Jailed> JailedPlayers = new();
 		public static Dictionary<Player, InstantKillComponent> IkHubs = new();
@@ -50,22 +52,22 @@ namespace AdminTools
 
 				OverwatchFilePath = overwatchFileName;
 				HiddenTagsFilePath = hiddenTagFileName;
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Loading error: {e}");
+            }
 
-				EventHandlers = new EventHandlers(this);
-				Handlers.Player.Verified += EventHandlers.OnPlayerVerified;
-				Handlers.Server.RoundEnded += EventHandlers.OnRoundEnd;
-				Handlers.Player.TriggeringTesla += EventHandlers.OnTriggerTesla;
-				Handlers.Player.ChangingRole += EventHandlers.OnSetClass;
-				Handlers.Server.WaitingForPlayers += EventHandlers.OnWaitingForPlayers;
-				Handlers.Player.InteractingDoor += EventHandlers.OnDoorOpen;
-				Handlers.Server.RoundStarted += EventHandlers.OnRoundStart;
-				Handlers.Player.Destroying += EventHandlers.OnPlayerDestroyed;
-				Handlers.Player.InteractingDoor += EventHandlers.OnPlayerInteractingDoor;
-			}
-			catch (Exception e)
-			{
-				Log.Error($"Loading error: {e}");
-			}
+            EventHandlers = new EventHandlers(this);
+            Handlers.Player.Verified += EventHandlers.OnPlayerVerified;
+            Handlers.Server.RoundEnded += EventHandlers.OnRoundEnd;
+            Handlers.Player.TriggeringTesla += EventHandlers.OnTriggerTesla;
+            Handlers.Player.ChangingRole += EventHandlers.OnSetClass;
+            Handlers.Server.WaitingForPlayers += EventHandlers.OnWaitingForPlayers;
+            Handlers.Player.InteractingDoor += EventHandlers.OnDoorOpen;
+            Handlers.Server.RoundStarted += EventHandlers.OnRoundStart;
+            Handlers.Player.Destroying += EventHandlers.OnPlayerDestroyed;
+            Handlers.Player.InteractingDoor += EventHandlers.OnPlayerInteractingDoor;
 		}
 
 		public override void OnDisabled()

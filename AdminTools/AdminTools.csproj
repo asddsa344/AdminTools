@@ -59,12 +59,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\AdminBroadcast\AdminBroadcast.cs" />
     <Compile Include="Commands\Ahp\Ahp.cs" />
     <Compile Include="Commands\Ball\Ball.cs" />
     <Compile Include="Commands\BreakDoors\BreakDoors.cs" />
-    <Compile Include="Commands\Configuration\Configuration.cs" />
-    <Compile Include="Commands\Configuration\Reload.cs" />
     <Compile Include="Commands\DropItem\DropItem.cs" />
     <Compile Include="Commands\DropSize\DropSize.cs" />
     <Compile Include="Commands\Enums\Enums.cs" />
@@ -73,7 +70,6 @@
     <Compile Include="Commands\Ghost\Ghost.cs" />
     <Compile Include="Commands\Grenade\Grenade.cs" />
     <Compile Include="Commands\HintBroadcast\HintBroadcast.cs" />
-    <Compile Include="Commands\Hp\Hp.cs" />
     <Compile Include="Commands\Jail\Jail.cs" />
     <Compile Include="Commands\Position\Position.cs" />
     <Compile Include="Commands\PryGates\PryGates.cs" />
@@ -81,7 +77,6 @@
     <Compile Include="Commands\Regeneration\Regeneration.cs" />
     <Compile Include="Commands\SpawnRagdoll\SpawnRagdoll.cs" />
     <Compile Include="Commands\Scale\Scale.cs" />
-    <Compile Include="Commands\Broadcast\Message.cs" />
     <Compile Include="Commands\Size\Size.cs" />
     <Compile Include="Commands\SpawnWorkbench\SpawnWorkbench.cs" />
     <Compile Include="Commands\Tags\Hide.cs" />
@@ -92,21 +87,17 @@
     <Compile Include="Commands\Inventory\Drop.cs" />
     <Compile Include="Commands\Inventory\Inventory.cs" />
     <Compile Include="Commands\Inventory\See.cs" />
-    <Compile Include="Commands\Kill\Kill.cs" />
     <Compile Include="Commands\Mute\All.cs" />
     <Compile Include="Commands\Mute\ICom.cs" />
     <Compile Include="Commands\Mute\Mute.cs" />
     <Compile Include="Commands\Mute\RoundStart.cs" />
     <Compile Include="Commands\Rocket\Rocket.cs" />
-    <Compile Include="Commands\Strip\Strip.cs" />
     <Compile Include="Commands\TargetGhost\TargetGhost.cs" />
     <Compile Include="Commands\TeleportX\TeleportX.cs" />
-    <Compile Include="Commands\Tutorial\Tutorial.cs" />
     <Compile Include="Commands\Unmute\All.cs" />
     <Compile Include="Commands\Unmute\ICom.cs" />
     <Compile Include="Commands\Unmute\Unmute.cs" />
     <Compile Include="Commands\Unmute\RoundStart.cs" />
-    <Compile Include="Commands\Kick\Kick.cs" />
     <Compile Include="Components\RegenerationComponent.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Enums.cs" />

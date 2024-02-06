@@ -6,6 +6,7 @@ using System;
 namespace AdminTools.Commands.TeleportX
 {
     using PlayerRoles;
+    using System.Collections.Generic;
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
@@ -35,47 +36,25 @@ namespace AdminTools.Commands.TeleportX
                 return false;
             }
 
-            switch (arguments.At(0))
+            Player ply = Player.Get(arguments.At(1));
+            if (ply == null)
             {
-                case "*":
-                case "all":
-                    Player ply = Player.Get(arguments.At(1));
-                    if (ply == null)
-                    {
-                        response = $"Player not found: {arguments.At(1)}";
-                        return false;
-                    }
-
-
-                    foreach (Player plyr in Player.List)
-                    {
-                        if (plyr.Role == RoleTypeId.Spectator || ply.Role == RoleTypeId.None)
-                            continue;
-
-                        plyr.Position = ply.Position;
-                    }
-
-                    response = $"Everyone has been teleported to Player {ply.Nickname}";
-                    return true;
-                default:
-                    Player pl = Player.Get(arguments.At(0));
-                    if (pl == null)
-                    {
-                        response = $"Player not found: {arguments.At(0)}";
-                        return false;
-                    }
-
-                    Player plr = Player.Get(arguments.At(1));
-                    if (plr == null)
-                    {
-                        response = $"Player not found: {arguments.At(1)}";
-                        return false;
-                    }
-
-                    pl.Position = plr.Position;
-                    response = $"Player {pl.Nickname} has been teleported to Player {plr.Nickname}";
-                    return true;
+                response = $"Player not found: {arguments.At(1)}";
+                return false;
             }
+
+            IEnumerable<Player> players = Player.GetProcessedData(arguments, 1);
+
+            foreach (Player plyr in players)
+            {
+                if (plyr.IsDead)
+                    continue;
+
+                plyr.Position = ply.Position;
+            }
+
+            response = $"Everyone has been teleported to Player {ply.Nickname}";
+            return true;
         }
     }
 }

@@ -3,6 +3,8 @@ using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
 using NorthwoodLib.Pools;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace AdminTools.Commands.PryGates
@@ -37,6 +39,8 @@ namespace AdminTools.Commands.PryGates
                     "\nprygate remove (player id / name)";
                 return false;
             }
+
+            IEnumerable<Player> players;
 
             switch (arguments.At(0))
             {
@@ -81,63 +85,39 @@ namespace AdminTools.Commands.PryGates
                         return false;
                     }
 
-                    Player plyr = Player.Get(arguments.At(1));
-                    if (plyr == null)
+                    players = Player.GetProcessedData(arguments, 1);
+
+                    if (players.Count() is 0)
                     {
                         response = $"Player not found: {arguments.At(1)}";
                         return false;
                     }
-
-                    if (Main.PryGateHubs.Contains(plyr))
+                    response = string.Empty;
+                    foreach (Player ply in players)
                     {
-                        Main.PryGateHubs.Remove(plyr);
-                        response = $"Player \"{plyr.Nickname}\" cannot pry gates open now";
+                        if (Main.PryGateHubs.Remove(ply))
+                        {
+                            response += $"Player \"{ply.Nickname}\" cannot pry gates open now";
+                            continue;
+                        }
+                        response += $"Player {ply.Nickname} does not have the ability to pry gates open";
                     }
-                    else
-                        response = $"Player {plyr.Nickname} does not have the ability to pry gates open";
                     return true;
-                case "*":
-                case "all":
+                default:
+
+                    players = Player.GetProcessedData(arguments);
+
                     if (arguments.Count != 1)
                     {
                         response = "Usage: prygates (all / *)";
                         return false;
                     }
 
-                    foreach (Player ply in Player.List)
-                    {
-                        if (!Main.PryGateHubs.Contains(ply))
-                            Main.PryGateHubs.Add(ply);
-                    }
+                    foreach (Player ply in players)
+                        Main.PryGateHubs.Add(ply);
 
                     response = "The ability to pry gates open is on for all players now";
                     return true;
-                default:
-                    if (arguments.Count != 1)
-                    {
-                        response = "Usage: prygate (player id / name)";
-                        return false;
-                    }
-
-                    Player pl = Player.Get(arguments.At(0));
-                    if (pl == null)
-                    {
-                        response = $"Player \"{arguments.At(0)}\" not found";
-                        return false;
-                    }
-
-                    if (!Main.PryGateHubs.Contains(pl))
-                    {
-                        Main.PryGateHubs.Add(pl);
-                        response = $"Player \"{pl.Nickname}\" can now pry gates open";
-                        return true;
-                    }
-                    else
-                    {
-                        Main.PryGateHubs.Remove(pl);
-                        response = $"Player \"{pl.Nickname}\" cannot pry gates open now";
-                        return true;
-                    }
             }
         }
     }

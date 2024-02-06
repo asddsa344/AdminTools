@@ -53,29 +53,13 @@ namespace AdminTools.Commands.SpawnRagdoll
                 return false;
             }
 
-            switch (arguments.At(0))
+            IEnumerable<Player> players = Player.GetProcessedData(arguments);
+
+            foreach (Player player in players)
             {
-                case "*":
-                case "all":
-                    foreach (Player player in Player.List)
-                    {
-                        if (player.Role != RoleTypeId.Spectator) 
-                            Timing.RunCoroutine(SpawnDolls(player, type, amount));
-                    }
-
-                    break;
-                default:
-                    Player ply = Player.Get(arguments.At(0));
-                    if (ply is null)
-                    {
-                        response = $"Player {arguments.At(0)} not found.";
-                        return false;
-                    }
-
-                    Timing.RunCoroutine(SpawnDolls(ply, type, amount));
-
-                    break;
+                Timing.RunCoroutine(SpawnDolls(player, type, amount));
             }
+
 
             response = $"{amount} {type} ragdoll(s) have been spawned on {arguments.At(0)}.";
             return true;
@@ -85,7 +69,8 @@ namespace AdminTools.Commands.SpawnRagdoll
         {
             for (int i = 0; i < amount; i++)
             {
-                Ragdoll.CreateAndSpawn(type, "SCP-343", "End of the Universe", player.Position, default);
+                if (player.IsAlive)
+                    Ragdoll.CreateAndSpawn(type, "SCP-343", "End of the Universe", player.Position, default);
                 yield return Timing.WaitForSeconds(0.5f);
             }
         }

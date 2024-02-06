@@ -8,6 +8,7 @@ using System.Text;
 namespace AdminTools.Commands.BreakDoors
 {
     using System.Collections.Generic;
+    using System.Linq;
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
@@ -31,27 +32,7 @@ namespace AdminTools.Commands.BreakDoors
                 return false;
             }
 
-            List<Player> players = new();
-            switch (arguments.At(0))
-            {
-                case "*":
-                case "all":
-                    foreach (Player player in Player.List) 
-                        players.Add(player);
-
-                    break;
-                default:
-                    Player ply = Player.Get(arguments.At(0));
-                    if (ply is null)
-                    {
-                        response = $"Player {arguments.At(0)} not found.";
-                        return false;
-                    }
-
-                    players.Add(ply);
-
-                    break;
-            }
+            IEnumerable<Player> players = Player.GetProcessedData(arguments);
 
             foreach (Player player in players)
                 if (EventHandlers.BreakDoorsList.Contains(player))
@@ -60,7 +41,7 @@ namespace AdminTools.Commands.BreakDoors
                     EventHandlers.BreakDoorsList.Add(player);
 
             response =
-                $"{players.Count} players have been updated. (Players with BD were removed, those without it were added)";
+                $"{players.Count()} players have been updated. (Players with BD were removed, those without it were added)";
             return true;
         }
     }

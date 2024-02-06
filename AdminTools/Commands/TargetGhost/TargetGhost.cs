@@ -9,6 +9,7 @@ using System.Text;
 namespace AdminTools.Commands.TargetGhost
 {
     using Exiled.API.Features.Roles;
+    using System.Collections.Generic;
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
@@ -40,31 +41,29 @@ namespace AdminTools.Commands.TargetGhost
                 return false;
             }
 
-            if (!GetPlayer(arguments.At(0), out Player sourcePlayer))
+            IEnumerable<Player> sourcePlayers = Player.GetProcessedData(arguments);
+
+            if (sourcePlayers.Count() is 0)
             {
                 response = $"Invalid source player: {arguments.At(0)}";
                 return false;
             }
 
-            foreach (string arg in arguments.Skip(1))
+            IEnumerable<Player> players = Player.GetProcessedData(arguments, 1);
+            foreach (Player sourcePlayer in sourcePlayers)
             {
-                if (!GetPlayer(arg, out Player victim))
-                    continue;
-
-                if (sourcePlayer.Role.Is(out FpcRole role))
+                foreach (Player victim in players)
                 {
-                    if (!role.IsInvisibleFor.Add(victim))
-                        role.IsInvisibleFor.Remove(victim);
+                    if (sourcePlayer.Role.Is(out FpcRole role))
+                    {
+                        if (!role.IsInvisibleFor.Add(victim))
+                            role.IsInvisibleFor.Remove(victim);
+                    }
                 }
             }
-            response = $"Done modifying who can see {sourcePlayer.Nickname}";
-            return true;
-        }
 
-        private bool GetPlayer(string str, out Player player)
-        {
-            player = Player.Get(str);
-            return player != null;
+            response = $"Done modifying who can see";
+            return true;
         }
     }
 }

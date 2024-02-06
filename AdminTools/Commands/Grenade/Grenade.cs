@@ -10,6 +10,9 @@ namespace AdminTools.Commands.Grenade
     using Exiled.API.Extensions;
     using InventorySystem.Items.ThrowableProjectiles;
     using PlayerRoles;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Exiled.API.Features.Pickups.Projectiles;
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
@@ -51,55 +54,18 @@ namespace AdminTools.Commands.Grenade
                 return false;
             }
 
-            switch (arguments.At(0))
+            IEnumerable<Player> players = Player.GetProcessedData(arguments);
+
+            foreach (Player player in players)
             {
-                case "*":
-                case "all":                
-                    foreach (Player player in Player.List)
-                    {
-                        if (player.Role != RoleTypeId.Spectator) 
-                            SpawnGrenade(player, type, fuseTime);
-                    }
-
-                    break;
-                default:
-                    Player ply = Player.Get(arguments.At(0));
-                    if (ply is null)
-                    {
-                        response = $"Player {arguments.At(0)} not found.";
-                        return false;
-                    }
-
-                    SpawnGrenade(ply, type, fuseTime);
-                    break;
+                if (player.IsDead)
+                    continue;
+                if (Projectile.CreateAndSpawn(type, player.Position, player.Rotation).Is(out TimeGrenadeProjectile timeGrenadeProjectile))
+                    timeGrenadeProjectile.FuseTime = fuseTime;
             }
 
-            response = $"Grenade has been sent to {arguments.At(0)}";
+            response = $"{type} has been sent to {string.Join(" ,", players.Select(x => $"({x.Id}){x.Nickname}"))}";
             return true;
-        }
-
-        private void SpawnGrenade(Player player, ProjectileType type, float fuseTime)
-        {
-            switch (type)
-            {
-                case ProjectileType.Flashbang:
-                    FlashGrenade flash = (FlashGrenade) Item.Create(ItemType.GrenadeFlash);
-                    flash.FuseTime = fuseTime;
-                    flash.SpawnActive(player.Position);
-
-                    break;
-                case ProjectileType.Scp2176:
-                    Scp2176 scp2176 = (Scp2176)Item.Create(ItemType.SCP2176);
-                    scp2176.FuseTime = fuseTime;
-                    scp2176.SpawnActive(player.Position);
-
-                    break;
-                default:
-                    ExplosiveGrenade grenade = (ExplosiveGrenade) Item.Create(type.GetItemType());
-                    grenade.FuseTime = fuseTime;
-                    grenade.SpawnActive(player.Position);
-                    break;
-            }
         }
     }
 }

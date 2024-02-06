@@ -6,6 +6,7 @@ using System;
 namespace AdminTools.Commands.Ahp
 {
     using System.Collections.Generic;
+    using System.Linq;
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
@@ -35,29 +36,12 @@ namespace AdminTools.Commands.Ahp
                 return false;
             }
 
-            List<Player> players = new();
+            IEnumerable<Player> players = Player.GetProcessedData(arguments).ToList();
+
             if (!float.TryParse(arguments.At(1), out float value))
             {
                 response = $"Invalid value for AHP: {value}";
                 return false;
-            }
-            switch (arguments.At(0))
-            {
-                case "*":
-                case "all":
-                    foreach (Player ply in Player.List)
-                        players.Add(ply);
-                    break;
-                default:
-                    Player player = Player.Get(arguments.At(0));
-                    if (player == null)
-                    {
-                        response = $"Player not found: {arguments.At(0)}";
-                        return false;
-                    }
-
-                    players.Add(player);
-                    break;
             }
 
             response = string.Empty;

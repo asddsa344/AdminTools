@@ -17,9 +17,9 @@ namespace AdminTools.Commands.HintBroadcast
     {
         public HintBroadcast() => LoadGeneratedCommands();
 
-        public override string Command { get; } = "hbc";
+        public override string Command { get; } = "hint";
 
-        public override string[] Aliases { get; } = new string[] { "broadcasthint" };
+        public override string[] Aliases { get; } = new string[] { "broadcasthint" , "hbc" };
 
         public override string Description { get; } = "Broadcasts a message to either a user, a group, a role, all staff, or everyone";
 

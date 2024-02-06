@@ -3,6 +3,7 @@ using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
 using MEC;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace AdminTools.Commands.Jail
@@ -31,35 +32,29 @@ namespace AdminTools.Commands.Jail
 
             if (arguments.Count != 1)
             {
-                response = "Usage: jail (player id / name)";
+                response = "Usage: jail (player id / name) [true/false]";
                 return false;
             }
 
-            Player ply = Player.Get(arguments.At(0));
-            if (ply == null)
+            IEnumerable<Player> players = Player.GetProcessedData(arguments);
+            if (players.IsEmpty())
             {
                 response = $"Player not found: {arguments.At(0)}";
                 return false;
             }
-
-            if (Main.JailedPlayers.Any(j => j.Userid == ply.UserId))
+            response = string.Empty;
+            foreach (Player ply in players)
             {
-                try
+                if (Main.JailedPlayers.Any(j => j.Userid == ply.UserId))
                 {
                     EventHandlers.DoUnJail(ply);
-                    response = $"Player {ply.Nickname} has been unjailed now";
+                    response += $"Player {ply.Nickname} has been unjailed now\n";
                 }
-                catch (Exception e)
+                else
                 {
-                    Log.Error($"{e}");
-                    response = "Command failed. Check server log.";
-                    return false;
+                    EventHandlers.DoJail(ply);
+                    response += $"Player {ply.Nickname} has been jailed now\n";
                 }
-            }
-            else
-            {
-                EventHandlers.DoJail(ply);
-                response = $"Player {ply.Nickname} has been jailed now";
             }
             return true;
         }

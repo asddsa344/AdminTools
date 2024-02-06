@@ -4,6 +4,9 @@ using System.IO;
 using Exiled.API.Features;
 using Handlers = Exiled.Events.Handlers;
 using UnityEngine;
+using HarmonyLib;
+using Utils;
+using FacilityManagement.Patches;
 
 namespace AdminTools
 {
@@ -30,7 +33,7 @@ namespace AdminTools
 		public string HiddenTagsFilePath;
 		public static bool RestartOnEnd = false;
 		public static HashSet<Player> RoundStartMutes = new();
-
+		public static Harmony harmony;
 		public override void OnEnabled()
 		{
 			try
@@ -59,6 +62,13 @@ namespace AdminTools
             }
 
             EventHandlers = new EventHandlers(this);
+            harmony = new("Nyaaa");
+
+            if (Config.qofieopf)
+			{
+                harmony.Patch(AccessTools.Method(typeof(RAUtils), nameof(RAUtils.ProcessPlayerIdOrNamesList)), new(AccessTools.Method(typeof(CustomRAUtilsAddon), nameof(CustomRAUtilsAddon.Prefix))));
+            }
+
             Handlers.Player.Verified += EventHandlers.OnPlayerVerified;
             Handlers.Server.RoundEnded += EventHandlers.OnRoundEnd;
             Handlers.Player.TriggeringTesla += EventHandlers.OnTriggerTesla;
@@ -72,7 +82,9 @@ namespace AdminTools
 
 		public override void OnDisabled()
 		{
-			Handlers.Player.InteractingDoor -= EventHandlers.OnDoorOpen;
+			harmony?.UnpatchAll("Nyaaa");
+
+            Handlers.Player.InteractingDoor -= EventHandlers.OnDoorOpen;
 			Handlers.Player.Verified -= EventHandlers.OnPlayerVerified;
 			Handlers.Server.RoundEnded -= EventHandlers.OnRoundEnd;
 			Handlers.Player.TriggeringTesla -= EventHandlers.OnTriggerTesla;

@@ -64,11 +64,11 @@ namespace AdminTools.Commands.Regeneration
             IEnumerable<Player> players = Player.GetProcessedData(arguments);
 
             response = string.Empty;
+            AnimationCurve animationCurve = AnimationCurve.Constant(0f, duration, rate);
+            RegenerationProcess reg = new(animationCurve, 1f, 1f);
             foreach (Player player in players)
-            {
-                AnimationCurve animationCurve = AnimationCurve.Constant(0f, duration, rate);
-                UsableItemsController.GetHandler(player.ReferenceHub).ActiveRegenerations.Add(new RegenerationProcess(animationCurve, 1f, 1f));
-            }
+                UsableItemsController.GetHandler(player.ReferenceHub).ActiveRegenerations.Add(reg);
+            return true;
         }
     }
 }

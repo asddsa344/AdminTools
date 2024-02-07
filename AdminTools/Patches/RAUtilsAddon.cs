@@ -59,9 +59,11 @@ namespace FacilityManagement.Patches
                                 list.AddRange(Player.List.Select(x => x.ReferenceHub));
                                 break;
                             }
-                            if (int.TryParse(array[i], out int playerId) && ReferenceHub.TryGetHub(playerId, out ReferenceHub item) && !list.Contains(item))
+                            if (int.TryParse(array[i], out int playerId))
                             {
-                                list.Add(item);
+                                if (ReferenceHub.TryGetHub(playerId, out ReferenceHub item))
+                                    list.Add(item);
+                                break;
                             }
                             else if (Enum.TryParse(array[i], out Side side))
                             {

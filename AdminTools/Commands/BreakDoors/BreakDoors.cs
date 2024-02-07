@@ -40,8 +40,7 @@ namespace AdminTools.Commands.BreakDoors
                 else
                     EventHandlers.BreakDoorsList.Add(player);
 
-            response =
-                $"{players.Count()} players have been updated. (Players with BD were removed, those without it were added)";
+            response = $"{players.Count()} players have been updated. (Players with BD were removed, those without it were added)";
             return true;
         }
     }

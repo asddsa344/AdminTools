@@ -72,7 +72,7 @@ namespace AdminTools
             Handlers.Server.WaitingForPlayers += EventHandlers.OnWaitingForPlayers;
             Handlers.Player.InteractingDoor += EventHandlers.OnDoorOpen;
             Handlers.Server.RoundStarted += EventHandlers.OnRoundStart;
-            Handlers.Player.Destroying += EventHandlers.OnPlayerDestroyed;
+            Handlers.Player.Destroying += EventHandlers.OnPlayerDestroying;
             Handlers.Player.InteractingDoor += EventHandlers.OnPlayerInteractingDoor;
 		}
 
@@ -87,8 +87,9 @@ namespace AdminTools
 			Handlers.Player.ChangingRole -= EventHandlers.OnSetClass;
 			Handlers.Server.WaitingForPlayers -= EventHandlers.OnWaitingForPlayers;
 			Handlers.Server.RoundStarted -= EventHandlers.OnRoundStart;
-			Handlers.Player.Destroying -= EventHandlers.OnPlayerDestroyed;
-			EventHandlers = null;
+			Handlers.Player.Destroying -= EventHandlers.OnPlayerDestroying;
+            Handlers.Player.InteractingDoor -= EventHandlers.OnPlayerInteractingDoor;
+            EventHandlers = null;
 			harmony = null;
 		}
 	}

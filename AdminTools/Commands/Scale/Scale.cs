@@ -2,6 +2,7 @@
 using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
 using System;
+using UnityEngine;
 
 namespace AdminTools.Commands.Scale
 {
@@ -43,7 +44,7 @@ namespace AdminTools.Commands.Scale
                         return false;
                     }
                     foreach (Player plyr in Player.List)
-                        EventHandlers.SetPlayerScale(plyr, 1);
+                        SetPlayerScale(plyr, 1);
 
                     response = $"Everyone's scale has been reset";
                     return true;
@@ -62,7 +63,7 @@ namespace AdminTools.Commands.Scale
                     }
 
                     foreach (Player ply in Player.List)
-                        EventHandlers.SetPlayerScale(ply, value);
+                        SetPlayerScale(ply, value);
 
                     response = $"Everyone's scale has been set to {value}";
                     return true;
@@ -86,10 +87,11 @@ namespace AdminTools.Commands.Scale
                         return false;
                     }
 
-                    EventHandlers.SetPlayerScale(pl, val);
+                    SetPlayerScale(pl, val);
                     response = $"Player {pl.Nickname}'s scale has been set to {val}";
                     return true;
             }
+            void SetPlayerScale(Player target, float scale) => target.Scale = Vector3.one * scale;
         }
     }
 }

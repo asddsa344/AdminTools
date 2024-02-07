@@ -21,6 +21,7 @@ namespace AdminTools
     using Exiled.API.Interfaces;
     using Log = Exiled.API.Features.Log;
     using Object = UnityEngine.Object;
+    using Exiled.API.Features.Pickups.Projectiles;
 
     public class EventHandlers
 	{
@@ -45,21 +46,11 @@ namespace AdminTools
 			return msg;
 		}
 
-		public static IEnumerator<float> SpawnBodies(Player player, RoleTypeId role, int count)
-		{
-			for (int i = 0; i < count; i++)
-			{
-				Ragdoll.CreateAndSpawn(role, "SCP-343", "End of the Universe", player.Position, default, null);
-				yield return Timing.WaitForSeconds(0.15f);
-			}
-		}
-
-        public void OnPlayerDestroyed(DestroyingEventArgs ev)
+        public void OnPlayerDestroying(DestroyingEventArgs ev)
         {
-			if (Main.RoundStartMutes.Contains(ev.Player))
+			if (Main.RoundStartMutes.Remove(ev.Player))
             {
 				ev.Player.IsMuted = false;
-				Main.RoundStartMutes.Remove(ev.Player);
             }
         }
 
@@ -106,10 +97,6 @@ namespace AdminTools
 			}
 		}
 
-        public static void SetPlayerScale(Player target, float x, float y, float z) => target.Scale = new Vector3(x, y, z);
-
-        public static void SetPlayerScale(Player target, float scale) => target.Scale = Vector3.one * scale;
-
         public static IEnumerator<float> DoRocket(Player player, float speed)
 		{
 			const int maxAmnt = 50;
@@ -121,10 +108,9 @@ namespace AdminTools
 				if (amnt >= maxAmnt)
 				{
 					player.IsGodModeEnabled = false;
-					ExplosiveGrenade grenade = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE);
-					grenade.FuseTime = 0.5f;
-					grenade.SpawnActive(player.Position, player);
-					player.Kill("Went on a trip in their favorite rocket ship.");
+					if (Projectile.CreateAndSpawn(ProjectileType.FragGrenade, player.Position, player.Rotation).Is(out TimeGrenadeProjectile timeGrenadeProjectile))
+						timeGrenadeProjectile.Explode();
+                    player.Kill("Went on a trip in their favorite rocket ship.");
 				}
 
 				yield return Timing.WaitForOneFrame;

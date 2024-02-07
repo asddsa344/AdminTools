@@ -7,6 +7,7 @@ namespace AdminTools.Commands.Size
 {
     using PlayerRoles;
     using System.Collections.Generic;
+    using UnityEngine;
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
@@ -40,7 +41,7 @@ namespace AdminTools.Commands.Size
             {
                 foreach (Player ply in Player.List)
                 {
-                    EventHandlers.SetPlayerScale(ply, 1, 1, 1);
+                    SetPlayerScale(ply, 1, 1, 1);
                 }
                 response = "all the size has been reset";
                 return true;
@@ -74,11 +75,13 @@ namespace AdminTools.Commands.Size
 
             foreach (Player ply in players)
             {
-                EventHandlers.SetPlayerScale(ply, xval, yval, zval);
+                SetPlayerScale(ply, xval, yval, zval);
             }
 
             response = $"Everyone's scale has been set to {xval} {yval} {zval}";
             return true;
+
+            void SetPlayerScale(Player target, float x, float y, float z) => target.Scale = new Vector3(x, y, z);
         }
     }
 }

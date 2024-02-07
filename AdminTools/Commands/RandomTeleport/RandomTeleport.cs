@@ -1,4 +1,5 @@
 ﻿using CommandSystem;
+using Exiled.API.Extensions;
 using Exiled.API.Features;
 using RemoteAdmin;
 using System;
@@ -41,7 +42,7 @@ namespace AdminTools.Commands.RandomTeleport
                 case "all":
                     foreach (Player ply in Player.List)
                     {
-                        Room randRoom = Room.List.ElementAt(Main.NumGen.Next(0, Room.List.Count()));
+                        Room randRoom = Room.List.GetRandomValue();
                         ply.Position = randRoom.Position + Vector3.up;
                     }
 
@@ -55,7 +56,7 @@ namespace AdminTools.Commands.RandomTeleport
                         return false;
                     }
 
-                    Room rand = Room.List.ElementAt(Main.NumGen.Next(0, Room.List.Count()));
+                    Room rand = Room.List.GetRandomValue();
                     pl.Position = rand.Position + Vector3.up;
 
                     response = $"Player {pl.Nickname} was teleported to {rand.Name}";

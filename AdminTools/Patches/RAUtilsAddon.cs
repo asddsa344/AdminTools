@@ -12,6 +12,7 @@ using System.Linq;
 using System.Security.Policy;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using UnityEngine;
 using Utils;
 
@@ -65,19 +66,19 @@ namespace FacilityManagement.Patches
                                     list.Add(item);
                                 break;
                             }
-                            else if (Enum.TryParse(array[i], out Side side))
+                            else if (Enum.TryParse(array[i], true, out Side side))
                             {
                                 list.AddRange(Player.Get(side).Select(x => x.ReferenceHub));
                             }
-                            else if (Enum.TryParse(array[i], out RoleTypeId roletype))
+                            else if (Enum.TryParse(array[i], true, out RoleTypeId roletype))
                             {
                                 list.AddRange(Player.Get(roletype).Select(x => x.ReferenceHub));
                             }
-                            else if (Enum.TryParse(array[i], out Team team1))
+                            else if (Enum.TryParse(array[i], true, out Team team1))
                             {
                                 list.AddRange(Player.Get(team1).Select(x => x.ReferenceHub));
                             }
-                            else if (Enum.TryParse(array[i], out SimplifyTeam simplifyTeam))
+                            else if (Enum.TryParse(array[i], true, out SimplifyTeam simplifyTeam))
                             {
                                 list.AddRange(Player.Get((Team)team1).Select(x => x.ReferenceHub));
                             }

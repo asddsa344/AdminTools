@@ -31,7 +31,7 @@ namespace AdminTools.Commands.FakeSync
                 return false;
             }
 
-            if (!Enum.TryParse(arguments.At(1), out RoleTypeId roletype))
+            if (!Enum.TryParse(arguments.At(1), true, out RoleTypeId roletype))
             {
                 response = "Usage:\nghost ((player id / name) or (all / *))" +
                     "\nghost clear";

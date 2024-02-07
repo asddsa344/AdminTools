@@ -36,10 +36,10 @@ namespace AdminTools.Commands.TeleportX
                 return false;
             }
 
-            Player ply = Player.Get(arguments.At(1));
+            Player ply = Player.Get(arguments.At(0));
             if (ply == null)
             {
-                response = $"Player not found: {arguments.At(1)}";
+                response = $"Player not found: {arguments.At(0)}";
                 return false;
             }
 

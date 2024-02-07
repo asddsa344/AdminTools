@@ -19,7 +19,7 @@ namespace AdminTools.Commands
 
         public string Description { get; } = "Sets a user or users Artificial HP to a specified value";
 
-        public string[] Usage { get; } = new string[] { "%player%", "Value", "[decay]", "[efficacy]", "[sustain]", "[IsPersistant]" };
+        public string[] Usage { get; } = new string[] { "%player%", "Value", "[limit = 75]", "[decay = 1.2]", "[efficacy = 0.7]", "[sustain = 0]", "[IsPersistant = false]" };
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {

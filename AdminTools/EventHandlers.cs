@@ -272,12 +272,6 @@ namespace AdminTools
 			{
 				Log.Error($"Round End: {e}");
 			}
-
-			if (Main.RestartOnEnd)
-			{
-				Log.Info("Restarting server....");
-				Round.Restart(false, true, ServerStatic.NextRoundAction.Restart);
-			}
 		}
 
 		public void OnTriggerTesla(TriggeringTeslaEventArgs ev)

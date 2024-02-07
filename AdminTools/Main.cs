@@ -15,26 +15,24 @@ namespace AdminTools
 		public override string Author { get; } = "Exiled-Team";
 		public override string Name { get; } = "Admin Tools";
 		public override string Prefix { get; } = "AT";
-        public override Version Version { get; } = new(7, 1, 0);
+        public override Version Version { get; } = new(8, 0, 0);
 
-        public override Version RequiredExiledVersion { get; } = new(8, 5, 0);
-		public string HarmonyID = "AdminTools-" + DateTime.Now;
-        public EventHandlers EventHandlers;
-		public static System.Random NumGen = new();
-		public static List<Jailed> JailedPlayers = new();
-		public static HashSet<Player> PryGateHubs = new();
-		public static Dictionary<Player, List<GameObject>> BchHubs = new();
-		public static Dictionary<Player, List<GameObject>> DumHubs = new();
-		public static List<Player> IK = new();
-        public static List<Player> BreakDoors { get; } = new();
-        public static float HealthGain = 5;
-		public static float HealthInterval = 1;
-		public string OverwatchFilePath;
-		public string HiddenTagsFilePath;
-		public static bool RestartOnEnd = false;
-		public static HashSet<Player> RoundStartMutes = new();
-		public static Harmony harmony;
-		public override void OnEnabled()
+        public override Version RequiredExiledVersion { get; } = new(8, 8, 0);
+        public EventHandlers EventHandlers { get; private set; }
+        public string HarmonyID { get; } = "AdminTools-" + DateTime.Now;
+		public static System.Random NumGen { get; } = new();
+		public static List<Jailed> JailedPlayers { get; } = new();
+		public static List<Player> PryGateHubs { get; } = new();
+		public static List<Player> IK { get; } = new();
+		public static List<Player> BreakDoors { get; } = new();
+        public static List<Player> RoundStartMutes { get; } = new();
+        public static Dictionary<Player, List<GameObject>> BchHubs { get; } = new();
+        public static float HealthGain { get; } = 5;
+		public static float HealthInterval { get; } = 1;
+		public string OverwatchFilePath { get; private set; }
+        public string HiddenTagsFilePath { get; private set; }
+        public static Harmony harmony { get; private set; }
+        public override void OnEnabled()
 		{
 			try
 			{
@@ -91,7 +89,7 @@ namespace AdminTools
 			Handlers.Server.RoundStarted -= EventHandlers.OnRoundStart;
 			Handlers.Player.Destroying -= EventHandlers.OnPlayerDestroyed;
 			EventHandlers = null;
-			NumGen = null;
+			harmony = null;
 		}
 	}
 }

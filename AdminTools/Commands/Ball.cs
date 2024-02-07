@@ -15,14 +15,16 @@ namespace AdminTools.Commands
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
-    public class Ball : ICommand
+    public class Ball : ICommand, IUsageProvider
     {
         public string Command { get; } = "ball";
 
         public string[] Aliases { get; } = new string[] { };
 
         public string Description { get; } = "Spawns a bouncy ball (SCP-018) on a user or all users";
-        
+
+        public string[] Usage { get; } = new string[] { "%player%" };
+
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (!((CommandSender)sender).CheckPermission("at.ball"))

@@ -19,6 +19,8 @@ namespace AdminTools.Commands
 
         public string Description { get; } = "Sets the size of all users or a user";
 
+        public string[] Usage { get; } = new string[] { "%player%", "x", "y", "z" };
+
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (!((CommandSender)sender).CheckPermission("at.size"))
@@ -33,15 +35,6 @@ namespace AdminTools.Commands
                     "\nsize reset";
                 return false;
             }
-            if (arguments.At(0) is "reset")
-            {
-                foreach (Player ply in Player.List)
-                {
-                    SetPlayerScale(ply, 1, 1, 1);
-                }
-                response = "all the size has been reset";
-                return true;
-            }
 
             IEnumerable<Player> players = Player.GetProcessedData(arguments);
 
@@ -51,19 +44,19 @@ namespace AdminTools.Commands
                 return false;
             }
 
-            if (!float.TryParse(arguments.At(1), out float xval))
+            if (!float.TryParse(arguments.At(1), out float x))
             {
                 response = $"Invalid value for x size: {arguments.At(1)}";
                 return false;
             }
 
-            if (!float.TryParse(arguments.At(2), out float yval))
+            if (!float.TryParse(arguments.At(2), out float y))
             {
                 response = $"Invalid value for y size: {arguments.At(2)}";
                 return false;
             }
 
-            if (!float.TryParse(arguments.At(3), out float zval))
+            if (!float.TryParse(arguments.At(3), out float z))
             {
                 response = $"Invalid value for z size: {arguments.At(3)}";
                 return false;
@@ -71,13 +64,12 @@ namespace AdminTools.Commands
 
             foreach (Player ply in players)
             {
-                SetPlayerScale(ply, xval, yval, zval);
+                ply.Scale = new Vector3(x, y, z);
             }
 
-            response = $"Everyone's scale has been set to {xval} {yval} {zval}";
+            response = $"Everyone's scale has been set to {x} {y} {z}";
             return true;
 
-            void SetPlayerScale(Player target, float x, float y, float z) => target.Scale = new Vector3(x, y, z);
         }
     }
 }

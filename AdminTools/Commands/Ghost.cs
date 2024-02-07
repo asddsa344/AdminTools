@@ -9,14 +9,16 @@ namespace AdminTools.Commands
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
-    public class Ghost : ICommand
+    public class Ghost : ICommand, IUsageProvider
     {
         public string Command { get; } = "ghost";
 
         public string[] Aliases { get; } = new string[] { };
 
         public string Description { get; } = "Sets everyone or a user to be invisible";
-        
+
+        public string[] Usage { get; } = new string[] { "%player% / Clear", };
+
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (!((CommandSender)sender).CheckPermission("at.ghost"))

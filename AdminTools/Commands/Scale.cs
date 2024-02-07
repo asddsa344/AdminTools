@@ -4,12 +4,13 @@ using Exiled.Permissions.Extensions;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 namespace AdminTools.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
-    public class Scale : ICommand
+    public class Scale : ICommand, IUsageProvider
     {
         public string Command { get; } = "scale";
 
@@ -17,7 +18,7 @@ namespace AdminTools.Commands
 
         public string Description { get; } = "Scales all users or a user by a specified value";
 
-        public void LoadGeneratedCommands() { }
+        public string[] Usage { get; } = new string[] { "%player%", "size" };
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -34,40 +35,25 @@ namespace AdminTools.Commands
                 return false;
             }
 
-            switch (arguments.At(0))
+            if (arguments.Count != 2)
             {
-                case "reset":
-                    if (arguments.Count != 1)
-                    {
-                        response = "Usage: scale reset";
-                        return false;
-                    }
-                    foreach (Player plyr in Player.List)
-                        SetPlayerScale(plyr, 1);
-
-                    response = $"Everyone's scale has been reset";
-                    return true;
-                default:
-                    if (arguments.Count != 2)
-                    {
-                        response = "Usage: scale (all / *) (value)";
-                        return false;
-                    }
-                    IEnumerable<Player> players = Player.GetProcessedData(arguments);
-
-                    if (!float.TryParse(arguments.At(1), out float value))
-                    {
-                        response = $"Invalid value for scale: {arguments.At(1)}";
-                        return false;
-                    }
-
-                    foreach (Player ply in players)
-                        SetPlayerScale(ply, value);
-
-                    response = $"Everyone's scale has been set to {value}";
-                    return true;
+                response = "Usage: scale (all / *) (value)";
+                return false;
             }
-            void SetPlayerScale(Player target, float scale) => target.Scale = Vector3.one * scale;
+
+            IEnumerable<Player> players = Player.GetProcessedData(arguments);
+
+            if (!float.TryParse(arguments.At(1), out float scale))
+            {
+                response = $"Invalid value for scale: {arguments.At(1)}";
+                return false;
+            }
+
+            foreach (Player ply in players)
+                ply.Scale = Vector3.one * scale;
+
+            response = $"Everyone's scale has been set to {scale}";
+            return true;
         }
     }
 }

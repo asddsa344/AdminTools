@@ -10,14 +10,16 @@ namespace AdminTools.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
-    public class Jail : ICommand
+    public class Jail : ICommand, IUsageProvider
     {
         public string Command { get; } = "jail";
 
         public string[] Aliases { get; } = new string[] { };
 
         public string Description { get; } = "Jails or unjails a user";
-        
+
+        public string[] Usage { get; } = new string[] { "%player%", };
+
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (!((CommandSender)sender).CheckPermission("at.jail"))

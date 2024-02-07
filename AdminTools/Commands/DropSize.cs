@@ -14,7 +14,7 @@ namespace AdminTools.Commands
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
-    public class DropSize : ICommand
+    public class DropSize : ICommand, IUsageProvider
     {
         public string Command { get; } = "dropsize";
 
@@ -22,7 +22,7 @@ namespace AdminTools.Commands
 
         public string Description { get; } = "Drops a selected amount of a selected item on a user or all users";
 
-        public void LoadGeneratedCommands() { }
+        public string[] Usage { get; } = new string[] { "%player%", "%item%", "size", "[size]", "[size]" };
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {

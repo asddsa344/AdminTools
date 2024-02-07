@@ -5,18 +5,21 @@ using System;
 
 namespace AdminTools.Commands
 {
+    using Exiled.API.Enums;
     using System.Collections.Generic;
     using System.Linq;
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
-    public class Ahp : ICommand
+    public class Ahp : ICommand, IUsageProvider
     {
         public string Command { get; } = "ahp";
 
         public string[] Aliases { get; } = new string[] { };
 
         public string Description { get; } = "Sets a user or users Artificial HP to a specified value";
+
+        public string[] Usage { get; } = new string[] { "%player%", "Value", "[decay]", "[efficacy]", "[sustain]", "[IsPersistant]" };
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {

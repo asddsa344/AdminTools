@@ -12,14 +12,16 @@ namespace AdminTools.Commands
     using PlayerRoles;
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    public class SpawnWorkbench : ICommand
+    public class SpawnWorkbench : ICommand, IUsageProvider
     {
         public string Command { get; } = "bench";
 
         public string[] Aliases { get; } = new string[] { "sw", "wb", "workbench" };
 
         public string Description { get; } = "Spawns a workbench on all users or a user";
-        
+
+        public string[] Usage { get; } = new string[] { "%player%", };
+
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (!((CommandSender)sender).CheckPermission("at.benches"))

@@ -3,6 +3,7 @@ using Exiled.API.Extensions;
 using Exiled.API.Features;
 using RemoteAdmin;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -10,13 +11,15 @@ namespace AdminTools.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
-    public class RandomTeleport : ICommand
+    public class RandomTeleport : ICommand, IUsageProvider
     {
         public string Command { get; } = "randomtp";
 
         public string[] Aliases { get; } = new string[] { };
 
         public string Description { get; } = "Randomly teleports a user or all users to a random room in the facility";
+
+        public string[] Usage { get; } = new string[] { "%player%", };
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -32,32 +35,17 @@ namespace AdminTools.Commands
                 return false;
             }
 
-            switch (arguments.At(0))
+            IEnumerable<Player> players = Player.GetProcessedData(arguments);
+
+            foreach (Player ply in players)
             {
-                case "*":
-                case "all":
-                    foreach (Player ply in Player.List)
-                    {
-                        Room randRoom = Room.List.GetRandomValue();
-                        ply.Position = randRoom.Position + Vector3.up;
-                    }
-
-                    response = $"Everyone was teleported to a random room in the facility";
-                    return true;
-                default:
-                    Player pl = Player.Get(arguments.At(0));
-                    if (pl == null)
-                    {
-                        response = $"Player not found: {arguments.At(0)}";
-                        return false;
-                    }
-
-                    Room rand = Room.List.GetRandomValue();
-                    pl.Position = rand.Position + Vector3.up;
-
-                    response = $"Player {pl.Nickname} was teleported to {rand.Name}";
-                    return true;
+                Room randRoom = Room.List.GetRandomValue();
+                ply.Position = randRoom.Position + Vector3.up;
             }
+
+            response = $"Everyone was teleported to a random room in the facility";
+            return true;
+
         }
     }
 }

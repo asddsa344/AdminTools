@@ -22,7 +22,9 @@ namespace AdminTools.Commands
         public string[] Aliases { get; } = new string[] { "tg" };
 
         public string Description { get; } = "Sets a user to be invisible to another user";
-        
+
+        public string[] Usage { get; } = new string[] { "%player%", "%player%", };
+
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (!((CommandSender)sender).CheckPermission("at.targetghost"))

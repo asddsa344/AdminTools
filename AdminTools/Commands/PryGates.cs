@@ -11,7 +11,7 @@ namespace AdminTools.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
-    public class PryGates : ICommand
+    public class PryGates : ICommand, IUsageProvider
     {
         public string Command { get; } = "prygate";
 
@@ -19,7 +19,7 @@ namespace AdminTools.Commands
 
         public string Description { get; } = "Gives the ability to pry gates to players, clear the ability from players, and shows who has the ability";
 
-        public void LoadGeneratedCommands() { }
+        public string[] Usage { get; } = new string[] { "%player%", };
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {

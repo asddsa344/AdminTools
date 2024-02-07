@@ -13,14 +13,16 @@ namespace AdminTools.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
-    public class InstantKill : ICommand
+    public class InstantKill : ICommand, IUsageProvider
     {
         public string Command { get; } = "instakill";
 
         public string[] Aliases { get; } = new string[] { "ik" };
 
         public string Description { get; } = "Manage instant kill properties for users";
-        
+
+        public string[] Usage { get; } = new string[] { "", };
+
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (!((CommandSender)sender).CheckPermission("at.ik"))

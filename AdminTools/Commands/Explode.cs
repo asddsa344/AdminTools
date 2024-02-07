@@ -13,7 +13,7 @@ namespace AdminTools.Commands
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
-    public class Explode : ICommand
+    public class Explode : ICommand, IUsageProvider
     {
         public string Command { get; } = "expl";
 
@@ -21,7 +21,7 @@ namespace AdminTools.Commands
 
         public string Description { get; } = "Explodes a specified user or everyone instantly";
 
-        public void LoadGeneratedCommands() { }
+        public string[] Usage { get; } = new string[] { "%player%", };
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {

@@ -18,8 +18,6 @@ namespace AdminTools.Commands
 
         public string Description { get; } = "Lists all enums AdminTools uses";
 
-        public void LoadGeneratedCommands() { }
-
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             StringBuilder listBuilder = StringBuilderPool.Shared.Rent();

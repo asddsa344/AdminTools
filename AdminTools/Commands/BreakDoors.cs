@@ -12,14 +12,16 @@ namespace AdminTools.Commands
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
-    public class BreakDoors : ICommand
+    public class BreakDoors : ICommand, IUsageProvider
     {
         public string Command { get; } = "breakdoors";
 
         public string[] Aliases { get; } = new string[] { "bd" };
 
         public string Description { get; } = "Manage breaking door/gate properties for players";
-        
+
+        public string[] Usage { get; } = new string[] { "%player%",  };
+
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (!((CommandSender)sender).CheckPermission("at.bd"))

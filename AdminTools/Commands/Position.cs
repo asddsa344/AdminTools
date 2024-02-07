@@ -1,4 +1,5 @@
 ﻿using CommandSystem;
+using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
 using NorthwoodLib.Pools;
@@ -12,13 +13,15 @@ namespace AdminTools.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
-    public class Position : ICommand
+    public class Position : ICommand, IUsageProvider
     {
         public string Command { get; } = "position";
 
         public string[] Aliases { get; } = new string[] { "pos" };
 
         public string Description { get; } = "Modifies or retrieves the position of a user or all users";
+
+        public string[] Usage { get; } = new string[] { "%player%", string.Join(", ", Enum.GetNames(typeof(PositionModifier))), };
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {

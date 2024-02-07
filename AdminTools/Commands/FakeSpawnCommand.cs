@@ -11,14 +11,16 @@ namespace AdminTools.Commands
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
-    public class FakeSpawnCommand : ICommand
+    public class FakeSpawnCommand : ICommand, IUsageProvider
     {
         public string Command { get; } = "fakesync";
 
         public string[] Aliases { get; } = new string[] { };
 
         public string Description { get; } = "Sets everyone or a user to be invisible";
-        
+
+        public string[] Usage { get; } = new string[] { "%player% / Clear", };
+
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (!((CommandSender)sender).CheckPermission("at.ghost"))

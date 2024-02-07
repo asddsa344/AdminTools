@@ -12,13 +12,15 @@ namespace AdminTools.Commands
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
-    public class Grenade : ICommand
+    public class Grenade : ICommand, IUsageProvider
     {
         public string Command { get; } = "grenade";
 
         public string[] Aliases { get; } = new string[] { "gn" };
 
         public string Description { get; } = $"Spawns a {string.Join("/", Enum.GetNames(typeof(ProjectileType)))} grenade on a user or users";
+
+        public string[] Usage { get; } = new string[] { "%player%", string.Join(", ", Enum.GetNames(typeof(ProjectileType))), "FuseTime" };
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {

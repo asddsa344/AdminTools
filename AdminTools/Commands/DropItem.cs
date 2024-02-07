@@ -12,14 +12,16 @@ namespace AdminTools.Commands
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
-    public class DropItem : ICommand
+    public class DropItem : ICommand, IUsageProvider
     {
         public string Command { get; } = "dropitem";
 
         public string[] Aliases { get; } = new string[] { "drop", "dropi" };
 
         public string Description { get; } = "Drops a specified amount of a specified item on either all users or a user";
-        
+
+        public string[] Usage { get; } = new string[] { "%player%", "%item%", "amount" };
+
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (!((CommandSender)sender).CheckPermission("at.items"))

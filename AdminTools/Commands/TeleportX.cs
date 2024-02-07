@@ -10,14 +10,16 @@ namespace AdminTools.Commands
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
-    public class TeleportX : ICommand
+    public class TeleportX : ICommand, IUsageProvider
     {
         public string Command { get; } = "teleportx";
 
         public string[] Aliases { get; } = new string[] { "tpx" };
 
         public string Description { get; } = "Teleports all users or a user to another user";
-        
+
+        public string[] Usage { get; } = new string[] { "%player%", "%player%", };
+
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (!((CommandSender)sender).CheckPermission("at.tp"))
@@ -32,20 +34,17 @@ namespace AdminTools.Commands
                 return false;
             }
 
-            Player ply = Player.Get(arguments.At(0));
+            Player ply = Player.Get(arguments.At(1));
             if (ply == null)
             {
-                response = $"Player not found: {arguments.At(0)}";
+                response = $"Player not found: {arguments.At(1)}";
                 return false;
             }
 
-            IEnumerable<Player> players = Player.GetProcessedData(arguments, 1);
+            IEnumerable<Player> players = Player.GetProcessedData(arguments, 0);
 
             foreach (Player plyr in players)
             {
-                if (plyr.IsDead)
-                    continue;
-
                 plyr.Position = ply.Position;
             }
 

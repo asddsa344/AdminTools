@@ -11,13 +11,15 @@ namespace AdminTools.Commands
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
-    public class Rocket : ICommand
+    public class Rocket : ICommand, IUsageProvider
     {
         public string Command { get; } = "rocket";
 
         public string[] Aliases { get; } = new string[] { };
 
         public string Description { get; } = "Sends players high in the sky and explodes them";
+
+        public string[] Usage { get; } = new string[] { "%player%", "speed" };
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -27,7 +29,7 @@ namespace AdminTools.Commands
                 return false;
             }
 
-            if (arguments.Count != 2)
+            if (arguments.Count < 2)
             {
                 response = "Usage: rocket ((player id / name) or (all / *)) (speed)";
                 return false;

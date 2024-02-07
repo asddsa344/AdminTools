@@ -15,7 +15,7 @@ namespace AdminTools.Commands
     {
         public string Command { get; } = "prygate";
 
-        public string[] Aliases { get; } = new string[] { };
+        public string[] Aliases { get; } = Array.Empty<string>();
 
         public string Description { get; } = "Gives the ability to pry gates to players, clear the ability from players, and shows who has the ability";
 

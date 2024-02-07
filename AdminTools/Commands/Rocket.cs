@@ -15,7 +15,7 @@ namespace AdminTools.Commands
     {
         public string Command { get; } = "rocket";
 
-        public string[] Aliases { get; } = new string[] { };
+        public string[] Aliases { get; } = Array.Empty<string>();
 
         public string Description { get; } = "Sends players high in the sky and explodes them";
 

@@ -6,15 +6,17 @@ namespace AdminTools.Commands.Unmute
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
-    public class Unmute : ParentCommand
+    public class Unmute : ParentCommand, IUsageProvider
     {
         public Unmute() => LoadGeneratedCommands();
 
         public override string Command { get; } = "punmute";
 
-        public override string[] Aliases { get; } = new string[] { };
+        public override string[] Aliases { get; } = Array.Empty<string>();
 
         public override string Description { get; } = "Unmutes everyone from speaking or by intercom in the server";
+
+        public string[] Usage { get; } = new string[] { "all/icom/roundstart" };
 
         public override void LoadGeneratedCommands()
         {

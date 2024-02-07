@@ -15,7 +15,7 @@ namespace AdminTools.Commands
     {
         public string Command { get; } = "fakesync";
 
-        public string[] Aliases { get; } = new string[] { };
+        public string[] Aliases { get; } = Array.Empty<string>();
 
         public string Description { get; } = "Sets everyone or a user to be invisible";
 

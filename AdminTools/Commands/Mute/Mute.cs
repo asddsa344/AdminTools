@@ -12,7 +12,7 @@ namespace AdminTools.Commands.Mute
 
         public override string Command { get; } = "pmute";
 
-        public override string[] Aliases { get; } = new string[] { };
+        public override string[] Aliases { get; } = Array.Empty<string>();
 
         public override string Description { get; } = "Mutes everyone from speaking or by intercom in the server";
 

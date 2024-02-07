@@ -15,7 +15,7 @@ namespace AdminTools.Commands
     {
         public string Command { get; } = "size";
 
-        public string[] Aliases { get; } = new string[] { };
+        public string[] Aliases { get; } = Array.Empty<string>();
 
         public string Description { get; } = "Sets the size of all users or a user";
 

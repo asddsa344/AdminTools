@@ -7,19 +7,17 @@ namespace AdminTools.Commands.Inventory
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
-    public class Drop : ParentCommand
+    public class Drop : ICommand, IUsageProvider
     {
-        public Drop() => LoadGeneratedCommands();
+        public string Command { get; } = "drop";
 
-        public override string Command { get; } = "drop";
+        public string[] Aliases { get; } = Array.Empty<string>();
 
-        public override string[] Aliases { get; } = new string[] { };
+        public string Description { get; } = "Drops the items in a players inventory";
 
-        public override string Description { get; } = "Drops the items in a players inventory";
+        public string[] Usage { get; } = new string[] { "%player%", };
 
-        public override void LoadGeneratedCommands() { }
-
-        protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
+        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (!((CommandSender)sender).CheckPermission("at.inv"))
             {

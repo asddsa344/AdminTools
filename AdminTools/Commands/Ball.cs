@@ -19,7 +19,7 @@ namespace AdminTools.Commands
     {
         public string Command { get; } = "ball";
 
-        public string[] Aliases { get; } = new string[] { };
+        public string[] Aliases { get; } = Array.Empty<string>();
 
         public string Description { get; } = "Spawns a bouncy ball (SCP-018) on a user or all users";
 

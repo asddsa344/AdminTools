@@ -15,7 +15,7 @@ namespace AdminTools.Commands
     {
         public string Command { get; } = "ahp";
 
-        public string[] Aliases { get; } = new string[] { };
+        public string[] Aliases { get; } = Array.Empty<string>();
 
         public string Description { get; } = "Sets a user or users Artificial HP to a specified value";
 

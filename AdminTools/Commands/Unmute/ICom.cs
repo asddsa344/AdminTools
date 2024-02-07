@@ -9,7 +9,7 @@ namespace AdminTools.Commands.Unmute
     {
         public string Command { get; } = "icom";
 
-        public string[] Aliases { get; } = new string[] { };
+        public string[] Aliases { get; } = Array.Empty<string>();
 
         public string Description { get; } = "Removes intercom mutes everyone in the server";
 

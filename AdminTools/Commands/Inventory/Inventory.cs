@@ -6,7 +6,7 @@ namespace AdminTools.Commands.Inventory
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
-    public class Inventory : ParentCommand
+    public class Inventory : ParentCommand, IUsageProvider
     {
         public Inventory() => LoadGeneratedCommands();
 
@@ -15,6 +15,8 @@ namespace AdminTools.Commands.Inventory
         public override string[] Aliases { get; } = new string[] { "inv" };
 
         public override string Description { get; } = "Manages player inventories";
+
+        public string[] Usage { get; } = new string[] { "drop / see", };
 
         public override void LoadGeneratedCommands()
         {

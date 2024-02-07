@@ -7,15 +7,17 @@ namespace AdminTools.Commands.Tags
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
-    public class Tags : ParentCommand
+    public class Tags : ParentCommand, IUsageProvider
     {
         public Tags() => LoadGeneratedCommands();
 
         public override string Command { get; } = "tags";
 
-        public override string[] Aliases { get; } = new string[] { };
+        public override string[] Aliases { get; } = Array.Empty<string>();
 
         public override string Description { get; } = "Hides staff tags in the server";
+
+        public string[] Usage { get; } = new string[] { "hide/show" };
 
         public override void LoadGeneratedCommands() 
         {

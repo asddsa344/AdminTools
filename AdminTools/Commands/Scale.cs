@@ -14,7 +14,7 @@ namespace AdminTools.Commands
     {
         public string Command { get; } = "scale";
 
-        public string[] Aliases { get; } = new string[] { };
+        public string[] Aliases { get; } = Array.Empty<string>();
 
         public string Description { get; } = "Scales all users or a user by a specified value";
 

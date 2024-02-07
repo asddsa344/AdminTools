@@ -9,7 +9,7 @@ namespace AdminTools.Commands.Mute
     {
         public string Command { get; } = "icom";
 
-        public string[] Aliases { get; } = new string[] { };
+        public string[] Aliases { get; } = Array.Empty<string>();
 
         public string Description { get; } = "Intercom mutes everyone in the server";
 

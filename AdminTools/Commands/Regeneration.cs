@@ -17,7 +17,7 @@ namespace AdminTools.Commands
     {
         public string Command { get; } = "reg";
 
-        public string[] Aliases { get; } = new string[] { };
+        public string[] Aliases { get; } = Array.Empty<string>();
 
         public string Description { get; } = "Manages regeneration properties for users";
         public string[] Usage { get; } = new string[] { "%player%", "duration", "rate" };

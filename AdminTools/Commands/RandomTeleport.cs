@@ -15,7 +15,7 @@ namespace AdminTools.Commands
     {
         public string Command { get; } = "randomtp";
 
-        public string[] Aliases { get; } = new string[] { };
+        public string[] Aliases { get; } = Array.Empty<string>();
 
         public string Description { get; } = "Randomly teleports a user or all users to a random room in the facility";
 

@@ -18,16 +18,16 @@ namespace AdminTools
         public override Version Version { get; } = new(7, 1, 0);
 
         public override Version RequiredExiledVersion { get; } = new(8, 5, 0);
-
+		public string HarmonyID = "AdminTools-" + DateTime.Now;
         public EventHandlers EventHandlers;
 		public static System.Random NumGen = new();
 		public static List<Jailed> JailedPlayers = new();
-		public static Dictionary<Player, InstantKillComponent> IkHubs = new();
-		public static Dictionary<Player, RegenerationComponent> RgnHubs = new();
 		public static HashSet<Player> PryGateHubs = new();
 		public static Dictionary<Player, List<GameObject>> BchHubs = new();
 		public static Dictionary<Player, List<GameObject>> DumHubs = new();
-		public static float HealthGain = 5;
+		public static List<Player> IK = new();
+        public static List<Player> BreakDoors { get; } = new();
+        public static float HealthGain = 5;
 		public static float HealthInterval = 1;
 		public string OverwatchFilePath;
 		public string HiddenTagsFilePath;
@@ -38,9 +38,7 @@ namespace AdminTools
 		{
 			try
 			{
-				string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-				string pluginPath = Path.Combine(appData, "Plugins");
-				string path = Path.Combine(Paths.Plugins, "AdminTools");
+				string path = Path.Combine(Paths.Config, "AdminTools");
 				string overwatchFileName = Path.Combine(path, "AdminTools-Overwatch.txt");
 				string hiddenTagFileName = Path.Combine(path, "AdminTools-HiddenTags.txt");
 
@@ -62,7 +60,7 @@ namespace AdminTools
             }
 
             EventHandlers = new EventHandlers(this);
-            harmony = new("Nyaaa");
+            harmony = new(HarmonyID);
 
             if (Config.qofieopf)
 			{
@@ -82,7 +80,7 @@ namespace AdminTools
 
 		public override void OnDisabled()
 		{
-			harmony?.UnpatchAll("Nyaaa");
+			harmony?.UnpatchAll(HarmonyID);
 
             Handlers.Player.InteractingDoor -= EventHandlers.OnDoorOpen;
 			Handlers.Player.Verified -= EventHandlers.OnPlayerVerified;

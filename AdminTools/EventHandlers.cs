@@ -26,7 +26,6 @@ namespace AdminTools
 	{
 		private readonly Main plugin;
 		public EventHandlers(Main main) => plugin = main;
-		public static List<Player> BreakDoorsList { get; } = new();
 
 		public void OnDoorOpen(InteractingDoorEventArgs ev)
 		{
@@ -115,7 +114,7 @@ namespace AdminTools
 		{
 			const int maxAmnt = 50;
 			int amnt = 0;
-			while (player.Role != RoleTypeId.Spectator)
+			while (player.IsAlive)
 			{
 				player.Position += Vector3.up * speed;
 				amnt++;
@@ -290,18 +289,18 @@ namespace AdminTools
 		public void OnSetClass(ChangingRoleEventArgs ev)
 		{
 			if (plugin.Config.GodTuts)
-				ev.Player.IsGodModeEnabled = ev.NewRole == RoleTypeId.Tutorial;
+				ev.Player.IsGodModeEnabled = ev.NewRole is RoleTypeId.Tutorial;
 		}
 
 		public void OnWaitingForPlayers()
 		{
-			Main.IkHubs.Clear();
-			BreakDoorsList.Clear();
+			Main.IK.Clear();
+            Main.BreakDoors.Clear();
 		}
 
 		public void OnPlayerInteractingDoor(InteractingDoorEventArgs ev)
 		{
-			if (BreakDoorsList.Contains(ev.Player) && ev.Door is IDamageableDoor damageableDoor)
+			if (Main.BreakDoors.Contains(ev.Player) && ev.Door is IDamageableDoor damageableDoor)
                 damageableDoor.Break();
         }
 	}

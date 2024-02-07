@@ -35,10 +35,10 @@ namespace AdminTools.Commands.BreakDoors
             IEnumerable<Player> players = Player.GetProcessedData(arguments);
 
             foreach (Player player in players)
-                if (EventHandlers.BreakDoorsList.Contains(player))
-                    EventHandlers.BreakDoorsList.Remove(player);
+                if (Main.BreakDoors.Contains(player))
+                    Main.BreakDoors.Remove(player);
                 else
-                    EventHandlers.BreakDoorsList.Add(player);
+                    Main.BreakDoors.Add(player);
 
             response = $"{players.Count()} players have been updated. (Players with BD were removed, those without it were added)";
             return true;

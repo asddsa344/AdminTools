@@ -60,7 +60,7 @@ namespace AdminTools
             EventHandlers = new EventHandlers(this);
             harmony = new(HarmonyID);
 
-            if (Config.qofieopf)
+            if (Config.BetterCommand)
 			{
                 harmony.Patch(AccessTools.Method(typeof(RAUtils), nameof(RAUtils.ProcessPlayerIdOrNamesList)), new(AccessTools.Method(typeof(CustomRAUtilsAddon), nameof(CustomRAUtilsAddon.Prefix))));
             }

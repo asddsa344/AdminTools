@@ -14,7 +14,7 @@ namespace AdminTools
         [Description("Should the tutorial class be in God Mode? Default: false")]
         public bool GodTuts { get; set; } = false;
 
-        [Description("Extending Command use")]
-        public bool qofieopf { get; set; } = false;
+        [Description("Extending Command use for Getting a player")]
+        public bool BetterCommand { get; set; } = true;
     }
 }

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace AdminTools.Commands.SpawnWorkbench
+namespace AdminTools.Commands
 {
     using PlayerRoles;
 

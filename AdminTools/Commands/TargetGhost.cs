@@ -6,7 +6,7 @@ using System;
 using System.Linq;
 using System.Text;
 
-namespace AdminTools.Commands.TargetGhost
+namespace AdminTools.Commands
 {
     using Exiled.API.Features.Roles;
     using System.Collections.Generic;

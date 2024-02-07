@@ -3,7 +3,7 @@ using Exiled.API.Features;
 using RemoteAdmin;
 using System;
 
-namespace AdminTools.Commands.Ahp
+namespace AdminTools.Commands
 {
     using System.Collections.Generic;
     using System.Linq;

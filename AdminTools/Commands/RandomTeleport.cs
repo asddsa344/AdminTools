@@ -6,7 +6,7 @@ using System;
 using System.Linq;
 using UnityEngine;
 
-namespace AdminTools.Commands.RandomTeleport
+namespace AdminTools.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]

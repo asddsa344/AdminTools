@@ -4,7 +4,7 @@ using Exiled.Permissions.Extensions;
 using MEC;
 using System;
 
-namespace AdminTools.Commands.Rocket
+namespace AdminTools.Commands
 {
     using PlayerRoles;
     using System.Collections.Generic;

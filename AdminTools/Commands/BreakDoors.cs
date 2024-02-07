@@ -5,7 +5,7 @@ using NorthwoodLib.Pools;
 using System;
 using System.Text;
 
-namespace AdminTools.Commands.BreakDoors
+namespace AdminTools.Commands
 {
     using System.Collections.Generic;
     using System.Linq;

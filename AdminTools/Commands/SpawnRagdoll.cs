@@ -4,7 +4,7 @@ using Exiled.Permissions.Extensions;
 using MEC;
 using System;
 
-namespace AdminTools.Commands.SpawnRagdoll
+namespace AdminTools.Commands
 {
     using System.Collections.Generic;
     using Mirror;

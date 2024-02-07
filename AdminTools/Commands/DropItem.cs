@@ -4,7 +4,7 @@ using Exiled.Permissions.Extensions;
 using System;
 using UnityEngine;
 
-namespace AdminTools.Commands.DropItem
+namespace AdminTools.Commands
 {
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;

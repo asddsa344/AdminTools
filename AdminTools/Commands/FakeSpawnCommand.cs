@@ -3,7 +3,7 @@ using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
 using System;
 
-namespace AdminTools.Commands.FakeSync
+namespace AdminTools.Commands
 {
     using CustomPlayerEffects;
     using Exiled.API.Extensions;

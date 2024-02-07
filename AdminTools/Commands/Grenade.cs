@@ -3,13 +3,9 @@ using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
 using System;
 
-namespace AdminTools.Commands.Grenade
+namespace AdminTools.Commands
 {
     using Exiled.API.Enums;
-    using Exiled.API.Features.Items;
-    using Exiled.API.Extensions;
-    using InventorySystem.Items.ThrowableProjectiles;
-    using PlayerRoles;
     using System.Collections.Generic;
     using System.Linq;
     using Exiled.API.Features.Pickups.Projectiles;
@@ -22,7 +18,7 @@ namespace AdminTools.Commands.Grenade
 
         public string[] Aliases { get; } = new string[] { "gn" };
 
-        public string Description { get; } = "Spawns a frag/flash/scp018 grenade on a user or users";
+        public string Description { get; } = $"Spawns a {string.Join("/", Enum.GetNames(typeof(ProjectileType)))} grenade on a user or users";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {

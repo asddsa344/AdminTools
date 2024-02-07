@@ -3,7 +3,7 @@ using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
 using System;
 
-namespace AdminTools.Commands.Ghost
+namespace AdminTools.Commands
 {
     using CustomPlayerEffects;
 

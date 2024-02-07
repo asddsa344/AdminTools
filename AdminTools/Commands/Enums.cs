@@ -3,7 +3,7 @@ using NorthwoodLib.Pools;
 using System;
 using System.Text;
 
-namespace AdminTools.Commands.Enums
+namespace AdminTools.Commands
 {
     using Exiled.API.Enums;
     using Exiled.API.Features.Pickups;

@@ -3,7 +3,7 @@ using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
 using System;
 
-namespace AdminTools.Commands.Explode
+namespace AdminTools.Commands
 {
     using Exiled.API.Enums;
     using Exiled.API.Features.Items;

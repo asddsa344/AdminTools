@@ -5,7 +5,7 @@ using Mirror;
 using System;
 using UnityEngine;
 
-namespace AdminTools.Commands.DropSize
+namespace AdminTools.Commands
 {
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;

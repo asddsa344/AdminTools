@@ -2,6 +2,7 @@
 using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace AdminTools.Commands.Scale
@@ -48,13 +49,13 @@ namespace AdminTools.Commands.Scale
 
                     response = $"Everyone's scale has been reset";
                     return true;
-                case "*":
-                case "all":
+                default:
                     if (arguments.Count != 2)
                     {
                         response = "Usage: scale (all / *) (value)";
                         return false;
                     }
+                    IEnumerable<Player> players = Player.GetProcessedData(arguments);
 
                     if (!float.TryParse(arguments.At(1), out float value))
                     {
@@ -62,33 +63,10 @@ namespace AdminTools.Commands.Scale
                         return false;
                     }
 
-                    foreach (Player ply in Player.List)
+                    foreach (Player ply in players)
                         SetPlayerScale(ply, value);
 
                     response = $"Everyone's scale has been set to {value}";
-                    return true;
-                default:
-                    if (arguments.Count != 2)
-                    {
-                        response = "Usage: scale (player id / name) (value)";
-                        return false;
-                    }
-
-                    Player pl = Player.Get(arguments.At(0));
-                    if (pl == null)
-                    {
-                        response = $"Player not found: {arguments.At(0)}";
-                        return true;
-                    }
-
-                    if (!float.TryParse(arguments.At(1), out float val))
-                    {
-                        response = $"Invalid value for scale: {arguments.At(1)}";
-                        return false;
-                    }
-
-                    SetPlayerScale(pl, val);
-                    response = $"Player {pl.Nickname}'s scale has been set to {val}";
                     return true;
             }
             void SetPlayerScale(Player target, float scale) => target.Scale = Vector3.one * scale;

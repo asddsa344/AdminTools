@@ -69,13 +69,17 @@ namespace FacilityManagement.Patches
                             {
                                 list.AddRange(Player.Get(side).Select(x => x.ReferenceHub));
                             }
-                            else if (Enum.TryParse(array[i], out Team team) || Enum.TryParse(array[i], out team))
-                            {
-                                list.AddRange(Player.Get(team).Select(x => x.ReferenceHub));
-                            }
                             else if (Enum.TryParse(array[i], out RoleTypeId roletype))
                             {
                                 list.AddRange(Player.Get(roletype).Select(x => x.ReferenceHub));
+                            }
+                            else if (Enum.TryParse(array[i], out Team team1))
+                            {
+                                list.AddRange(Player.Get(team1).Select(x => x.ReferenceHub));
+                            }
+                            else if (Enum.TryParse(array[i], out SimplifyTeam simplifyTeam))
+                            {
+                                list.AddRange(Player.Get((Team)team1).Select(x => x.ReferenceHub));
                             }
                         }
                     }

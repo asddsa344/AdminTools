@@ -36,7 +36,7 @@ namespace AdminTools.Commands.Ahp
                 return false;
             }
 
-            IEnumerable<Player> players = Player.GetProcessedData(arguments).ToList();
+            IEnumerable<Player> players = Player.GetProcessedData(arguments);
 
             if (!float.TryParse(arguments.At(1), out float value))
             {

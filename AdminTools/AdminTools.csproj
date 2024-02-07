@@ -82,7 +82,6 @@
     <Compile Include="Commands\Tags\Hide.cs" />
     <Compile Include="Commands\Tags\Show.cs" />
     <Compile Include="Commands\Tags\Tags.cs" />
-    <Compile Include="Commands\Id\ID.cs" />
     <Compile Include="Commands\InstantKill\InstantKill.cs" />
     <Compile Include="Commands\Inventory\Drop.cs" />
     <Compile Include="Commands\Inventory\Inventory.cs" />

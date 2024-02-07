@@ -44,10 +44,25 @@ namespace AdminTools.Commands.Ahp
                 return false;
             }
 
+            if (!float.TryParse(arguments.At(2), out float limit))
+                limit = 75f;
+
+
+            if (!float.TryParse(arguments.At(3), out float decay))
+                decay = 1.2f;
+
+
+            if (!float.TryParse(arguments.At(4), out float efficacy))
+                efficacy = 0.7f;
+
+            float.TryParse(arguments.At(5), out float sustain);
+
+            bool.TryParse(arguments.At(6), out bool persistant);
+
             response = string.Empty;
             foreach (Player p in players)
             {
-                p.ArtificialHealth = value;
+                p.AddAhp(value, limit, decay, efficacy, sustain, persistant);
                 response += $"\n{p.Nickname}'s AHP has been set to {value}";
             }
 

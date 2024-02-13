@@ -21,7 +21,7 @@ namespace AdminTools.Commands
 
         public string Description { get; } = "Broadcasts a message to either a user, a group, a role, all staff, or everyone";
 
-        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
+        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response) // TODO: Make it ParentCommand
         {
             if (!CommandProcessor.CheckPermissions(((CommandSender)sender), "hints", PlayerPermissions.Broadcasting, "AdminTools", false))
             {
@@ -305,8 +305,7 @@ namespace AdminTools.Commands
                     }
 
                     foreach (Player py in Player.List)
-                        if (py.ReferenceHub.queryProcessor._ipAddress != "127.0.0.1")
-                            py.ShowHint(EventHandlers.FormatArguments(arguments, 2), tm);
+                        py.ShowHint(EventHandlers.FormatArguments(arguments, 2), tm);
                     break;
             }
             response = "";

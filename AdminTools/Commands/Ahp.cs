@@ -29,7 +29,7 @@ namespace AdminTools.Commands
                 return false;
             }
 
-            if (arguments.Count != 2)
+            if (arguments.Count < 2)
             {
                 response = "Usage: ahp ((player id / name) or (all / *)) (value)";
                 return false;

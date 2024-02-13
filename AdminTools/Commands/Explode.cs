@@ -39,12 +39,6 @@ namespace AdminTools.Commands
 
             IEnumerable<Player> players = Player.GetProcessedData(arguments);
 
-            if (arguments.Count != 1)
-            {
-                response = "Usage: expl (all / *)";
-                return false;
-            }
-
             foreach (Player ply in players)
             {
                 if (ply.IsDead)

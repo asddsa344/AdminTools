@@ -20,7 +20,7 @@ namespace AdminTools.Commands
 
         public string Description { get; } = "Drops a specified amount of a specified item on either all users or a user";
 
-        public string[] Usage { get; } = new string[] { "%player%", "%item%", "amount" };
+        public string[] Usage { get; } = new string[] { "%player%", "%item%", "[amount = 1]" };
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -32,7 +32,7 @@ namespace AdminTools.Commands
 
             if (arguments.Count != 3)
             {
-                response = "Usage: dropitem (all / *) (ItemType) (amount)";
+                response = "Usage: dropitem (all / *) (ItemType) [amount = 1]";
                 return false;
             }
 
@@ -44,11 +44,8 @@ namespace AdminTools.Commands
                 return false;
             }
 
-            if (!uint.TryParse(arguments.At(2), out uint amount))
-            {
-                response = $"Invalid amount of item to drop: {arguments.At(2)}";
-                return false;
-            }
+            if (uint.TryParse(arguments.At(2), out uint amount))
+                amount = 1;
 
             foreach (Player ply in players)
                 for (int i = 0; i < amount; i++)

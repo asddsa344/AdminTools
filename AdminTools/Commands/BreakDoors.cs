@@ -34,7 +34,7 @@ namespace AdminTools.Commands
 
             if (players.IsEmpty())
             {
-                response = $"Player not found: {arguments.At(0)}";
+                response = $"Player not found: {arguments.ElementAtOrDefault(0)}";
                 return false;
             }
 

@@ -34,7 +34,7 @@ namespace AdminTools.Commands
                 return false;
             }
 
-            if (arguments.Count != 1)
+            if (arguments.Count < 1)
             {
                 response = "Usage: ball ((player id/ name) or (all / *)) [IsMute]";
                 return false;

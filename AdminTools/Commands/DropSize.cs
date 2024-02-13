@@ -83,16 +83,7 @@ namespace AdminTools.Commands
         }
 
         private void SpawnItem(IEnumerable<Player> players, ItemType type, float size, out string message)
-        {
-            foreach (Player ply in players)
-            {
-                if (ply.IsDead)
-                    continue;
-
-                Pickup.CreateAndSpawn(type, ply.Position, default, ply).Scale = Vector3.one * size;
-            }
-            message = $"Spawned in a {type.ToString()} that is a size of {size} at every player's position:{Extensions.LogPlayers(players)}";
-        }
+            => SpawnItem(players, type, size, size, size, out message);
 
         private void SpawnItem(IEnumerable<Player> players, ItemType type, float x, float y, float z, out string message)
         {
@@ -103,7 +94,7 @@ namespace AdminTools.Commands
 
                 Pickup.CreateAndSpawn(type, ply.Position, default, ply).Scale = new(x, y, z);
             }
-            message = $"Spawned in a {type.ToString()} that is {x}x{y}x{z} at all the followed player:{Extensions.LogPlayers(players)}";
+            message = $"Spawned a {type} that is ({x}, {y}, {z}) at all the followed player:{Extensions.LogPlayers(players)}";
         }
     }
 }

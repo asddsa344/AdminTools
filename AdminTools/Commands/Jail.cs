@@ -77,7 +77,7 @@ namespace AdminTools.Commands
                     Items = player.Items.ToList(),
                     Effects = player.ActiveEffects.Select(x => new Effect(x)).ToList(),
                     Name = player.Nickname,
-                    Role = player.Role,
+                    Role = player.Role.Type,
                     Userid = player.UserId,
                     CurrentRound = true,
                     Ammo = player.Ammo.ToDictionary(x => x.Key.GetAmmoType(), x => x.Value),
@@ -118,7 +118,7 @@ namespace AdminTools.Commands
             }
             else
             {
-                player.Role.Set(RoleTypeId.Spectator, RoleSpawnFlags.UseSpawnpoint);
+                player.Role.Set(RoleTypeId.Spectator);
             }
             Main.JailedPlayers.Remove(jail);
         }

@@ -64,7 +64,6 @@ namespace FacilityManagement.Patches
                             {
                                 if (ReferenceHub.TryGetHub(playerId, out ReferenceHub item))
                                     list.Add(item);
-                                break;
                             }
                             else if (Enum.TryParse(array[i], true, out Side side))
                             {

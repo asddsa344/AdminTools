@@ -49,7 +49,7 @@ namespace AdminTools.Commands
             foreach (Player ply in players)
                 Timing.RunCoroutine(DoRocket(ply, speed));
 
-            response = "Everyone has been rocketed into the sky (We're going on a trip, in our favorite rocketship)";
+            response = $"All the followed player has been rocketed into the sky\n(We're going on a trip, in our favorite rocketship)\n{Extensions.LogPlayers(players)}";
             return true;
         }
         public static IEnumerator<float> DoRocket(Player player, float speed)

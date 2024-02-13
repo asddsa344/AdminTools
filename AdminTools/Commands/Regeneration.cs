@@ -15,9 +15,9 @@ namespace AdminTools.Commands
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     public class Regeneration : ICommand, IUsageProvider
     {
-        public string Command { get; } = "reg";
+        public string Command { get; } = "Regeneration";
 
-        public string[] Aliases { get; } = Array.Empty<string>();
+        public string[] Aliases { get; } = new string[] { "reg" };
 
         public string Description { get; } = "Manages regeneration properties for users";
         public string[] Usage { get; } = new string[] { "%player%", "duration", "rate" };
@@ -32,18 +32,18 @@ namespace AdminTools.Commands
 
             if (arguments.Count < 3)
             {
-                response = "";
+                response = "Usage: regeneration ((player id / name) or (all / *)) (duration) (rate)";
                 return false;
             }
 
             if (float.TryParse(arguments.At(1), out float duration))
             {
-                response = "";
+                response = $"Duration should be a float number: {arguments.At(1)}";
                 return false;
             }
             if (float.TryParse(arguments.At(2), out float rate))
             {
-                response = "";
+                response = $"Rate should be a float number: {arguments.At(1)}";
                 return false;
             }
 

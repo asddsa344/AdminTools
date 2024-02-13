@@ -32,7 +32,7 @@ namespace AdminTools.Commands
 
             if (arguments.Count < 2 || arguments.Count > 3)
             {
-                response = "Usage: grenade ((player id / name) or (all / *)) (ProjectileType) (grenade time)";
+                response = "Usage: grenade ((player id / name) or (all / *)) (ProjectileType) [grenade time = default]";
                 return false;
             }
 
@@ -42,11 +42,9 @@ namespace AdminTools.Commands
                 return false;
             }
 
-            if (!float.TryParse(arguments.At(2), out float fuseTime))
-            {
-                response = $"Invalid fuse time for grenade: {arguments.At(2)}";
-                return false;
-            }
+            float? fusetime = null;
+            if (float.TryParse(arguments.At(2), out float value))
+                fusetime = value;
 
             IEnumerable<Player> players = Player.GetProcessedData(arguments);
 
@@ -54,11 +52,11 @@ namespace AdminTools.Commands
             {
                 if (player.IsDead)
                     continue;
-                if (Projectile.CreateAndSpawn(type, player.Position, player.Rotation).Is(out TimeGrenadeProjectile timeGrenadeProjectile))
-                    timeGrenadeProjectile.FuseTime = fuseTime;
+                if (Projectile.CreateAndSpawn(type, player.Position, player.Rotation).Is(out TimeGrenadeProjectile timeGrenadeProjectile) && fusetime.HasValue)
+                    fusetime = timeGrenadeProjectile.FuseTime = fusetime.Value;
             }
 
-            response = $"{type} has been sent to {string.Join(" ,", players.Select(x => $"({x.Id}){x.Nickname}"))}";
+            response = $"{type} has been sent to the followed player{(fusetime.HasValue ? $". Will explode in {fusetime}s" : string.Empty)}: {Extensions.LogPlayers(players)}";
             return true;
         }
     }

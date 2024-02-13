@@ -67,7 +67,7 @@ namespace AdminTools.Commands
                 ply.Scale = new Vector3(x, y, z);
             }
 
-            response = $"Everyone's scale has been set to {x} {y} {z}";
+            response = $"Size has been set to ({x}, {y}, {z}) for the followed player:{Extensions.LogPlayers(players)}";
             return true;
 
         }

@@ -54,8 +54,7 @@ namespace AdminTools.Commands
                         response = $"Invalid value for item scale: {arguments.At(2)}";
                         return false;
                     }
-                    SpawnItem(players, type, size, out string msg);
-                    response = msg;
+                    SpawnItem(players, type, size, out response);
                     return true;
                 case 5:
                     if (!float.TryParse(arguments.At(2), out float xval))
@@ -75,8 +74,7 @@ namespace AdminTools.Commands
                         response = $"Invalid value for item scale: {arguments.At(4)}";
                         return false;
                     }
-                    SpawnItem(players, type, xval, yval, zval, out string message);
-                    response = message;
+                    SpawnItem(players, type, xval, yval, zval, out response);
                     return true;
                 default:
                     response = "\nUsage:\ndrops (all / *) (ItemType) (size) \ndrops (all / *) (ItemType) (x size) (y size) (z size)";
@@ -93,7 +91,7 @@ namespace AdminTools.Commands
 
                 Pickup.CreateAndSpawn(type, ply.Position, default, ply).Scale = Vector3.one * size;
             }
-            message = $"Spawned in a {type.ToString()} that is a size of {size} at every player's position (\"Yay! Items with sizes!\" - Galaxy119)";
+            message = $"Spawned in a {type.ToString()} that is a size of {size} at every player's position:{Extensions.LogPlayers(players)}";
         }
 
         private void SpawnItem(IEnumerable<Player> players, ItemType type, float x, float y, float z, out string message)
@@ -105,7 +103,7 @@ namespace AdminTools.Commands
 
                 Pickup.CreateAndSpawn(type, ply.Position, default, ply).Scale = new(x, y, z);
             }
-            message = $"Spawned in a {type.ToString()} that is {x}x{y}x{z} at every player's position (\"Yay! Items with sizes!\" - Galaxy119)";
+            message = $"Spawned in a {type.ToString()} that is {x}x{y}x{z} at all the followed player:{Extensions.LogPlayers(players)}";
         }
     }
 }

@@ -6,6 +6,8 @@ using System;
 namespace AdminTools.Commands
 {
     using CustomPlayerEffects;
+    using Exiled.API.Features.Roles;
+    using System.Collections.Generic;
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
@@ -37,38 +39,27 @@ namespace AdminTools.Commands
             switch (arguments.At(0))
             {
                 case "clear":
-                    foreach (Player pl in Player.List)
-                        pl.DisableEffect<Invisible>();
+                    {
+                        foreach (Player pl in Player.List)
+                            if (pl.Role is FpcRole fpc)
+                                fpc.IsInvisible = false;
 
-                    response = "Everyone is no longer invisible";
-                    return true;
-                case "*":
-                case "all":
-                    foreach (Player pl in Player.List)
-                        pl.EnableEffect<Invisible>();
-
-                    response = "Everyone is now invisible";
-                    return true;
+                        response = "Everyone is no longer invisible";
+                        return true;
+                    }
                 default:
-                    Player ply = Player.Get(arguments.At(0));
-                    if (ply == null)
                     {
-                        response = $"Player not found: {arguments.At(0)}";
-                        return false;
-                    }
+                        IEnumerable<Player> players = Player.GetProcessedData(arguments);
 
-                    if (!ply.IsEffectActive<Invisible>())
-                    {
-                        ply.EnableEffect<Invisible>();
-                        response = $"Player {ply.Nickname} is now invisible";
+                        foreach (Player pl in Player.List)
+                            if (pl.Role is FpcRole fpc)
+                                fpc.IsInvisible = !fpc.IsInvisible;
+                        
+                        response = $"The followed player has been affect by the command:{Extensions.LogPlayers(players)}";
+                        return true;
                     }
-                    else
-                    {
-                        ply.DisableEffect<Invisible>();
-                        response = $"Player {ply.Nickname} is no longer invisible";
-                    }
-                    return true;
             }
         }
     }
 }
+

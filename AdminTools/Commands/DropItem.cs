@@ -32,17 +32,11 @@ namespace AdminTools.Commands
 
             if (arguments.Count != 3)
             {
-                response = "Usage: dropitem ((player id/ name) or (all / *)) (ItemType) (amount (200 max for one user, 15 max for all users))";
+                response = "Usage: dropitem (all / *) (ItemType) (amount)";
                 return false;
             }
 
             IEnumerable<Player> players = Player.GetProcessedData(arguments);
-
-            if (arguments.Count != 3)
-            {
-                response = "Usage: dropitem (all / *) (ItemType) (amount (15 max))";
-                return false;
-            }
 
             if (!Enum.TryParse(arguments.At(1), true, out ItemType item))
             {
@@ -52,15 +46,15 @@ namespace AdminTools.Commands
 
             if (!uint.TryParse(arguments.At(2), out uint amount))
             {
-                response = $"Invalid amount of item to drop: {arguments.At(2)} {(amount > 30 ? "(\"Try a lower number that won't crash my servers, ty.\" - Galaxy119)" : "")}";
+                response = $"Invalid amount of item to drop: {arguments.At(2)}";
                 return false;
             }
 
             foreach (Player ply in players)
                 for (int i = 0; i < amount; i++)
-                    Pickup.CreateAndSpawn(item, ply.Position, default, ply);
+                    Pickup.CreateAndSpawn(item, ply.Position, ply.Rotation, ply);
 
-            response = $"{amount} of {item.ToString()} was spawned on everyone (\"Hehexd\" - Galaxy119)";
+            response = $"{amount} of {item} was spawned on all the followed player:{Extensions.LogPlayers(players)}";
             return true;
         }
     }

@@ -52,7 +52,7 @@ namespace AdminTools.Commands
             foreach (Player ply in players)
                 ply.Scale = Vector3.one * scale;
 
-            response = $"Everyone's scale has been set to {scale}";
+            response = $"Scale has been set to {scale} for the followed player:{Extensions.LogPlayers(players)}";
             return true;
         }
     }

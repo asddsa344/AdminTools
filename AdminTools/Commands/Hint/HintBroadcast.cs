@@ -13,7 +13,7 @@ namespace AdminTools.Commands
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
-    public class HintBroadcast : ICommand
+    public class Hint : ICommand
     {
         public string Command { get; } = "hint";
 

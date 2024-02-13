@@ -61,7 +61,7 @@
   <ItemGroup>
     <Compile Include="Commands\Ahp.cs" />
     <Compile Include="Commands\Ball.cs" />
-    <Compile Include="Commands\BreakDoors.cs" />
+    <Compile Include="Commands\BreakDoor\BreakDoors.cs" />
     <Compile Include="Commands\DropItem.cs" />
     <Compile Include="Commands\DropSize.cs" />
     <Compile Include="Commands\Enums.cs" />
@@ -69,7 +69,7 @@
     <Compile Include="Commands\FakeSpawnCommand.cs" />
     <Compile Include="Commands\Ghost.cs" />
     <Compile Include="Commands\Grenade.cs" />
-    <Compile Include="Commands\HintBroadcast.cs" />
+    <Compile Include="Commands\Hint\HintBroadcast.cs" />
     <Compile Include="Commands\InstantKill\Add.cs" />
     <Compile Include="Commands\InstantKill\InstantKill.cs" />
     <Compile Include="Commands\InstantKill\List.cs" />
@@ -121,6 +121,9 @@
     <None Include="..\.editorconfig">
       <Link>.editorconfig</Link>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Commands\PryGate\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

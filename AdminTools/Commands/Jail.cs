@@ -66,10 +66,7 @@ namespace AdminTools.Commands
             }
             return true;
         }
-
-        public static void DoJail(Player player) => DoJail(player, false);
-
-        public static void DoJail(Player player, bool skipadd)
+        public static void DoJail(Player player, bool skipadd = false)
         {
             if (!skipadd)
             {

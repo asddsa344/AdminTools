@@ -52,7 +52,7 @@ namespace AdminTools.Commands
 
             if (!uint.TryParse(arguments.At(2), out uint amount))
             {
-                response = $"Invalid amount of item to drop: {arguments.At(2)} {(amount > 15 ? "(\"Try a lower number that won't crash my servers, ty.\" - Galaxy119)" : "")}";
+                response = $"Invalid amount of item to drop: {arguments.At(2)} {(amount > 30 ? "(\"Try a lower number that won't crash my servers, ty.\" - Galaxy119)" : "")}";
                 return false;
             }
 

@@ -182,7 +182,7 @@ namespace AdminTools.Commands
                         if (p.Role == RoleTypeId.Spectator || p.Role == RoleTypeId.None)
                             continue;
 
-                        EventHandlers.SpawnWorkbench(player, p.Position + p.ReferenceHub.PlayerCameraReference.forward * 2, p.GameObject.transform.rotation.eulerAngles, new Vector3(xval, yval, zval), out int benchIndex);
+                        Extensions.SpawnWorkbench(player, p.Position + p.ReferenceHub.PlayerCameraReference.forward * 2, p.GameObject.transform.rotation.eulerAngles, new Vector3(xval, yval, zval), out int benchIndex);
                         index = benchIndex;
                     }
 
@@ -225,7 +225,7 @@ namespace AdminTools.Commands
                         return false;
                     }
 
-                    EventHandlers.SpawnWorkbench(player, pl.Position + pl.ReferenceHub.PlayerCameraReference.forward * 2, pl.GameObject.transform.rotation.eulerAngles, new Vector3(x, y, z), out int benchI);
+                    Extensions.SpawnWorkbench(player, pl.Position + pl.ReferenceHub.PlayerCameraReference.forward * 2, pl.GameObject.transform.rotation.eulerAngles, new Vector3(x, y, z), out int benchI);
                     response = $"A workbench has spawned on Player {pl.Nickname}, you now spawned in a total of {(benchI != 1 ? $"{benchI} workbenches" : $"{benchI} workbench")}";
                     return true;
             }

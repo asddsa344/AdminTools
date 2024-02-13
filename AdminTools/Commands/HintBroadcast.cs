@@ -66,7 +66,7 @@ namespace AdminTools.Commands
                         return false;
                     }
 
-                    ply.ShowHint(EventHandlers.FormatArguments(arguments, 3), time);
+                    ply.ShowHint(Extensions.FormatArguments(arguments, 3), time);
                     response = $"Hint sent to {ply.Nickname}";
                     return true;
                 case "users":
@@ -93,7 +93,7 @@ namespace AdminTools.Commands
                     }
 
                     foreach (Player p in plyList)
-                        p.ShowHint(EventHandlers.FormatArguments(arguments, 3), tme);
+                        p.ShowHint(Extensions.FormatArguments(arguments, 3), tme);
 
 
                     StringBuilder builder = StringBuilderPool.Shared.Rent("Hint sent to players: ");
@@ -131,7 +131,7 @@ namespace AdminTools.Commands
                     foreach (Player player in Player.List)
                     {
                         if (player.Group.BadgeText.Equals(broadcastGroup.BadgeText))
-                            player.ShowHint(EventHandlers.FormatArguments(arguments, 3), tim);
+                            player.ShowHint(Extensions.FormatArguments(arguments, 3), tim);
                     }
 
                     response = $"Hint sent to all members of \"{arguments.At(1)}\"";
@@ -161,7 +161,7 @@ namespace AdminTools.Commands
 
                     foreach (Player p in Player.List)
                         if (groupList.Contains(p.Group.BadgeText))
-                            p.ShowHint(EventHandlers.FormatArguments(arguments, 3), e);
+                            p.ShowHint(Extensions.FormatArguments(arguments, 3), e);
 
 
                     StringBuilder bdr = StringBuilderPool.Shared.Rent("Hint sent to groups with badge text: ");
@@ -198,7 +198,7 @@ namespace AdminTools.Commands
                     foreach (Player player in Player.List)
                     {
                         if (player.Role == role)
-                            player.ShowHint(EventHandlers.FormatArguments(arguments, 3), te);
+                            player.ShowHint(Extensions.FormatArguments(arguments, 3), te);
                     }
 
                     response = $"Hint sent to all members of \"{arguments.At(1)}\"";
@@ -226,7 +226,7 @@ namespace AdminTools.Commands
 
                     foreach (Player p in Player.List)
                         if (roleList.Contains(p.Role))
-                            p.ShowHint(EventHandlers.FormatArguments(arguments, 3), ti);
+                            p.ShowHint(Extensions.FormatArguments(arguments, 3), ti);
 
                     StringBuilder build = StringBuilderPool.Shared.Rent("Hint sent to roles: ");
                     foreach (RoleTypeId ro in roleList)
@@ -255,7 +255,7 @@ namespace AdminTools.Commands
                     }
 
                     Player plyr = Player.List.ToList()[Main.NumGen.Next(0, Player.List.Count())];
-                    plyr.ShowHint(EventHandlers.FormatArguments(arguments, 2), me);
+                    plyr.ShowHint(Extensions.FormatArguments(arguments, 2), me);
                     response = $"Hint sent to {plyr.Nickname}";
                     return true;
                 case "staff":
@@ -275,7 +275,7 @@ namespace AdminTools.Commands
                     foreach (Player pl in Player.List)
                     {
                         if (pl.ReferenceHub.serverRoles.RemoteAdmin)
-                            pl.ShowHint($"<color=orange>[Admin Hint]</color> <color=green>{EventHandlers.FormatArguments(arguments, 2)} - {((CommandSender)sender).Nickname}</color>", t);
+                            pl.ShowHint($"<color=orange>[Admin Hint]</color> <color=green>{Extensions.FormatArguments(arguments, 2)} - {((CommandSender)sender).Nickname}</color>", t);
                     }
 
                     response = $"Hint sent to all currently online staff";
@@ -305,7 +305,7 @@ namespace AdminTools.Commands
                     }
 
                     foreach (Player py in Player.List)
-                        py.ShowHint(EventHandlers.FormatArguments(arguments, 2), tm);
+                        py.ShowHint(Extensions.FormatArguments(arguments, 2), tm);
                     break;
             }
             response = "";

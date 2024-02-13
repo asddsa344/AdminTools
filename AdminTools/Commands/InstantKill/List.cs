@@ -28,9 +28,9 @@ namespace AdminTools.Commands.InstantKill
 
             StringBuilder playerLister = StringBuilderPool.Pool.Get();
 
-            playerLister.Append(Main.IK.Any() ? "Players with instant killing on:\n" : "No players currently online have instant killing on");
+            playerLister.Append(Main.InstantKill.Any() ? "Players with instant killing on:\n" : "No players currently online have instant killing on");
 
-            foreach (Player ply in Main.IK)
+            foreach (Player ply in Main.InstantKill)
             {
                 playerLister.Append("\n- ");
                 playerLister.Append(ply.Nickname);

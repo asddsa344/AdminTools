@@ -32,13 +32,13 @@ namespace AdminTools
 
 		public void OnInteractingDoor(InteractingDoorEventArgs ev)
 		{
-			if (Main.PryGateHubs.Contains(ev.Player) && ev.Door is Gate gate)
+			if (Main.PryGate.Contains(ev.Player) && ev.Door is Gate gate)
                 gate.TryPry();
 		}
 
         public static void OnHurting(HurtingEventArgs ev)
         {
-            if (ev.Attacker != ev.Player && Main.IK.Contains(ev.Attacker))
+            if (ev.Attacker != ev.Player && Main.InstantKill.Contains(ev.Attacker))
                 ev.Amount = StandardDamageHandler.KillValue;
         }
         public static string FormatArguments(ArraySegment<string> sentence, int index)
@@ -195,13 +195,13 @@ namespace AdminTools
             else if (!player.BadgeHidden && tagsRead.Remove(userId))
                 Log.Debug($"{player.Nickname}({player.UserId}) has remove their tag hidden.");
         }
-        public void OnTriggerTesla(TriggeringTeslaEventArgs ev)
+        public void OnTriggeringTesla(TriggeringTeslaEventArgs ev)
 		{
 			if (ev.Player.IsGodModeEnabled)
 				ev.IsAllowed = false;
 		}
 
-		public void OnSetClass(ChangingRoleEventArgs ev)
+		public void OnChangingRole(ChangingRoleEventArgs ev)
 		{
 			if (plugin.Config.GodTuts)
 				ev.Player.IsGodModeEnabled = ev.NewRole is RoleTypeId.Tutorial;
@@ -209,11 +209,12 @@ namespace AdminTools
 
         public void OnWaitingForPlayers()
 		{
-			Main.IK.Clear();
+			Main.InstantKill.Clear();
             Main.BreakDoors.Clear();
-		}
+            Main.PryGate.Clear();
+        }
 
-		public void OnPlayerInteractingDoor(InteractingDoorEventArgs ev)
+        public void OnPlayerInteractingDoor(InteractingDoorEventArgs ev)
 		{
 			if (Main.BreakDoors.Contains(ev.Player) && ev.Door is IDamageableDoor damageableDoor)
                 damageableDoor.Break();

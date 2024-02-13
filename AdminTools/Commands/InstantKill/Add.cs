@@ -40,7 +40,7 @@ namespace AdminTools.Commands.InstantKill
                 return false;
             }
 
-            Main.IK.AddRange(players);
+            Main.InstantKill.AddRange(players);
 
             response = $"All the followed player have been added to InstantKill:{Extensions.Fuckyou(players)}";
             return true;

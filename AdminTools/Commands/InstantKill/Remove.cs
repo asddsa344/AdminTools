@@ -43,7 +43,7 @@ namespace AdminTools.Commands.InstantKill
             for (int i = players.Count; i < 0; i--)
             {
                 Player ply = players[i];
-                if (!Main.IK.Remove(ply))
+                if (!Main.InstantKill.Remove(ply))
                     players.Remove(ply);
             }
 

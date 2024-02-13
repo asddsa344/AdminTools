@@ -25,8 +25,8 @@ namespace AdminTools
         public static List<string> Overwatch { get; internal set; }
         public static List<string> HiddenTags { get; internal set; }
         public static List<Jailed> JailedPlayers { get; } = new();
-		public static List<Player> PryGateHubs { get; } = new();
-		public static List<Player> IK { get; } = new();
+		public static List<Player> PryGate { get; } = new();
+		public static List<Player> InstantKill { get; } = new();
 		public static List<Player> BreakDoors { get; } = new();
         public static List<Player> RoundStartMutes { get; } = new();
         public static Dictionary<Player, List<GameObject>> BchHubs { get; } = new();
@@ -73,8 +73,8 @@ namespace AdminTools
 
             Handlers.Player.Verified += EventHandlers.OnPlayerVerified;
             Handlers.Server.RoundEnded += EventHandlers.OnRoundEnded;
-            Handlers.Player.TriggeringTesla += EventHandlers.OnTriggerTesla;
-            Handlers.Player.ChangingRole += EventHandlers.OnSetClass;
+            Handlers.Player.TriggeringTesla += EventHandlers.OnTriggeringTesla;
+            Handlers.Player.ChangingRole += EventHandlers.OnChangingRole;
             Handlers.Server.WaitingForPlayers += EventHandlers.OnWaitingForPlayers;
             Handlers.Player.InteractingDoor += EventHandlers.OnInteractingDoor;
             Handlers.Server.RoundStarted += EventHandlers.OnRoundStarted;
@@ -89,8 +89,8 @@ namespace AdminTools
             Handlers.Player.InteractingDoor -= EventHandlers.OnInteractingDoor;
 			Handlers.Player.Verified -= EventHandlers.OnPlayerVerified;
 			Handlers.Server.RoundEnded -= EventHandlers.OnRoundEnded;
-			Handlers.Player.TriggeringTesla -= EventHandlers.OnTriggerTesla;
-			Handlers.Player.ChangingRole -= EventHandlers.OnSetClass;
+			Handlers.Player.TriggeringTesla -= EventHandlers.OnTriggeringTesla;
+			Handlers.Player.ChangingRole -= EventHandlers.OnChangingRole;
             Handlers.Server.WaitingForPlayers -= EventHandlers.OnWaitingForPlayers;
 			Handlers.Server.RoundStarted -= EventHandlers.OnRoundStarted;
 			Handlers.Player.Destroying -= EventHandlers.OnPlayerDestroying;

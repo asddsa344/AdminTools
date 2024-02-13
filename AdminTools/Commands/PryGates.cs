@@ -49,7 +49,7 @@ namespace AdminTools.Commands
                         return false;
                     }
 
-                    Main.PryGateHubs.Clear();
+                    Main.PryGate.Clear();
                     response = "The ability to pry gates is cleared from all players now";
                     return true;
                 case "list":
@@ -59,10 +59,10 @@ namespace AdminTools.Commands
                         return false;
                     }
 
-                    StringBuilder playerLister = StringBuilderPool.Shared.Rent(Main.PryGateHubs.Count != 0 ? "Players with the ability to pry gates:\n" : "No players currently online have the ability to pry gates");
-                    if (Main.PryGateHubs.Count > 0)
+                    StringBuilder playerLister = StringBuilderPool.Shared.Rent(Main.PryGate.Count != 0 ? "Players with the ability to pry gates:\n" : "No players currently online have the ability to pry gates");
+                    if (Main.PryGate.Count > 0)
                     {
-                        foreach (Player ply in Main.PryGateHubs)
+                        foreach (Player ply in Main.PryGate)
                             playerLister.Append(ply.Nickname + ", ");
 
                         int length = playerLister.ToString().Length;
@@ -93,7 +93,7 @@ namespace AdminTools.Commands
                     response = string.Empty;
                     foreach (Player ply in players)
                     {
-                        if (Main.PryGateHubs.Remove(ply))
+                        if (Main.PryGate.Remove(ply))
                         {
                             response += $"Player \"{ply.Nickname}\" cannot pry gates open now";
                             continue;
@@ -112,7 +112,7 @@ namespace AdminTools.Commands
                     }
 
                     foreach (Player ply in players)
-                        Main.PryGateHubs.Add(ply);
+                        Main.PryGate.Add(ply);
 
                     response = "The ability to pry gates open is on for all players now";
                     return true;

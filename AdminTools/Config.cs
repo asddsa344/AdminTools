@@ -16,5 +16,8 @@ namespace AdminTools
 
         [Description("Extending Command use for Getting a player")]
         public bool BetterCommand { get; set; } = true;
+
+        [Description("Unjail all jailed players automatically when the round restarts? Default: false")]
+        public bool ClearJailsOnRestart { get; set; } = false;
     }
 }

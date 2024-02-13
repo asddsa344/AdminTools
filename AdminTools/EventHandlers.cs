@@ -24,6 +24,7 @@ namespace AdminTools
     using Exiled.API.Features.Pickups.Projectiles;
     using PlayerStatsSystem;
     using HarmonyLib;
+    using Exiled.Events.Commands.Reload;
 
     public class EventHandlers
 	{
@@ -176,6 +177,8 @@ namespace AdminTools
 			Main.InstantKill.Clear();
             Main.BreakDoors.Clear();
             Main.PryGate.Clear();
+            if (plugin.Config.ClearJailsOnRestart)
+                Main.JailedPlayers.Clear();
         }
 
         public void OnPlayerInteractingDoor(InteractingDoorEventArgs ev)

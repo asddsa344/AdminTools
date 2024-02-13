@@ -60,7 +60,7 @@ namespace AdminTools
 				ev.Player.IsMuted = false;
             }
 			if (!Round.IsEnded)
-				SavingPlayerData(ev.Player);
+				Extensions.SavingPlayerData(ev.Player);
         }
 
         public static void SpawnWorkbench(Player ply, Vector3 position, Vector3 rotation, Vector3 size, out int benchIndex)
@@ -108,35 +108,28 @@ namespace AdminTools
 
 		public void OnPlayerVerified(VerifiedEventArgs ev)
 		{
-			try
-			{
-				if (Main.JailedPlayers.Any(j => j.Userid == ev.Player.UserId))
-					AdminTools.Commands.Jail.DoJail(ev.Player, true);
+            if (Main.JailedPlayers.Any(j => j.Userid == ev.Player.UserId))
+                AdminTools.Commands.Jail.DoJail(ev.Player, true);
 
-				if (ev.Player.RemoteAdminPermissions.HasFlag(PlayerPermissions.Overwatch) && Main.Overwatch.Contains(ev.Player.UserId))
-				{
-					Log.Debug($"Putting {ev.Player.UserId} into overwatch.");
-					ev.Player.IsOverwatchEnabled = true;
-				}
+            if (ev.Player.RemoteAdminPermissions.HasFlag(PlayerPermissions.Overwatch) && Main.Overwatch.Contains(ev.Player.UserId))
+            {
+                Log.Debug($"Putting {ev.Player.UserId} into overwatch.");
+                ev.Player.IsOverwatchEnabled = true;
+            }
 
-				if (Main.HiddenTags.Contains(ev.Player.UserId))
-				{
-					Log.Debug($"Hiding {ev.Player.UserId}'s tag.");
-					Timing.CallDelayed(Timing.WaitForOneFrame, () => ev.Player.BadgeHidden = true);
-				}
+            if (Main.HiddenTags.Contains(ev.Player.UserId))
+            {
+                Log.Debug($"Hiding {ev.Player.UserId}'s tag.");
+                Timing.CallDelayed(Timing.WaitForOneFrame, () => ev.Player.BadgeHidden = true);
+            }
 
-				if (Main.RoundStartMutes.Count != 0 && !ev.Player.RemoteAdminAccess && !Main.RoundStartMutes.Contains(ev.Player))
-                {
-					Log.Debug($"Muting {ev.Player.UserId} (no RA).");
-					ev.Player.IsMuted = true;
-					Main.RoundStartMutes.Add(ev.Player);
-                }
-			}
-			catch (Exception e)
-			{
-				Log.Error($"Player Join: {e}");
-			}
-		}
+            if (Main.RoundStartMutes.Count != 0 && !ev.Player.RemoteAdminAccess && !Main.RoundStartMutes.Contains(ev.Player))
+            {
+                Log.Debug($"Muting {ev.Player.UserId} (no RA).");
+                ev.Player.IsMuted = true;
+                Main.RoundStartMutes.Add(ev.Player);
+            }
+        }
 
 		public void OnRoundStarted()
 		{
@@ -151,50 +144,21 @@ namespace AdminTools
 		}
 
 		public void OnRoundEnded(RoundEndedEventArgs ev)
-		{
-			try
-			{
-				foreach (Player player in Player.List)
-					SavingPlayerData(player);
-
-                File.WriteAllLines(plugin.OverwatchFilePath, Main.Overwatch);
-				File.WriteAllLines(plugin.HiddenTagsFilePath, Main.HiddenTags);
-
-				// Update all the jails that it is no longer the current round, so when they are unjailed they don't teleport into the void.
-				foreach (Jailed jail in Main.JailedPlayers)
-				{
-					if(jail.CurrentRound)
-						jail.CurrentRound = false;
-				}
-			}
-			catch (Exception e)
-			{
-				Log.Error($"Round End: {e}");
-			}
-		}
-		public void SavingPlayerData(Player player)
         {
-            List<string> overwatchRead = Main.Overwatch;
-            List<string> tagsRead = Main.HiddenTags;
-
-            string userId = player.UserId;
-
-            if (player.IsOverwatchEnabled && !overwatchRead.Contains(userId))
+			// Update all the jails that it is no longer the current round, so when they are unjailed they don't teleport into the void.
+            foreach (Jailed jail in Main.JailedPlayers)
             {
-                overwatchRead.Add(userId);
-                Log.Debug($"{player.Nickname}({player.UserId}) has added their overwatch.");
+                if (jail.CurrentRound)
+                    jail.CurrentRound = false;
             }
-            else if (!player.IsOverwatchEnabled && overwatchRead.Remove(userId))
-                Log.Debug($"{player.Nickname}({player.UserId}) has remove their overwatch.");
 
-            if (player.BadgeHidden && !tagsRead.Contains(userId))
-            {
-                tagsRead.Add(userId);
-                Log.Debug($"{player.Nickname}({player.UserId}) has added their tag hidden.");
-            }
-            else if (!player.BadgeHidden && tagsRead.Remove(userId))
-                Log.Debug($"{player.Nickname}({player.UserId}) has remove their tag hidden.");
+            foreach (Player player in Player.List)
+                Extensions.SavingPlayerData(player);
+
+            File.WriteAllLines(plugin.OverwatchFilePath, Main.Overwatch);
+            File.WriteAllLines(plugin.HiddenTagsFilePath, Main.HiddenTags);
         }
+
         public void OnTriggeringTesla(TriggeringTeslaEventArgs ev)
 		{
 			if (ev.Player.IsGodModeEnabled)

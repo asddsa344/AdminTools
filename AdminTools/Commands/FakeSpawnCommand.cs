@@ -7,7 +7,9 @@ namespace AdminTools.Commands
 {
     using CustomPlayerEffects;
     using Exiled.API.Extensions;
+    using Exiled.API.Features.Roles;
     using PlayerRoles;
+    using System.Collections.Generic;
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
@@ -19,7 +21,7 @@ namespace AdminTools.Commands
 
         public string Description { get; } = "Sets everyone or a user to be invisible";
 
-        public string[] Usage { get; } = new string[] { "%player% / Clear", };
+        public string[] Usage { get; } = new string[] { "%player%", "%role%" };
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -31,46 +33,16 @@ namespace AdminTools.Commands
 
             if (!Enum.TryParse(arguments.At(1), true, out RoleTypeId roletype))
             {
-                response = "Usage:\nghost ((player id / name) or (all / *))" +
-                    "\nghost clear";
+                response = "Usage:\nfakesync ((player id / name) or (all / *))";
                 return false;
             }
 
-            switch (arguments.At(0))
-            {
-                case "clear":
-                    foreach (Player pl in Player.List)
-                        pl.ChangeAppearance(roletype, Player.List, true, 0);
+            IEnumerable<Player> players = Player.GetProcessedData(arguments);
+            foreach (Player player in players)
+                player.ChangeAppearance(roletype);
 
-                    response = "Everyone is no longer invisible";
-                    return true;
-                case "*":
-                case "all":
-                    foreach (Player pl in Player.List)
-                        pl.EnableEffect<Invisible>();
-
-                    response = "Everyone is now invisible";
-                    return true;
-                default:
-                    Player ply = Player.Get(arguments.At(0));
-                    if (ply == null)
-                    {
-                        response = $"Player not found: {arguments.At(0)}";
-                        return false;
-                    }
-
-                    if (!ply.IsEffectActive<Invisible>())
-                    {
-                        ply.EnableEffect<Invisible>();
-                        response = $"Player {ply.Nickname} is now invisible";
-                    }
-                    else
-                    {
-                        ply.DisableEffect<Invisible>();
-                        response = $"Player {ply.Nickname} is no longer invisible";
-                    }
-                    return true;
-            }
+            response = $"The followed player have been change to {roletype}:{Extensions.LogPlayers(players)}";
+            return false;
         }
     }
 }

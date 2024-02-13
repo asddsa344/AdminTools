@@ -22,19 +22,26 @@ namespace AdminTools
     using Log = Exiled.API.Features.Log;
     using Object = UnityEngine.Object;
     using Exiled.API.Features.Pickups.Projectiles;
+    using PlayerStatsSystem;
+    using HarmonyLib;
 
     public class EventHandlers
 	{
 		private readonly Main plugin;
 		public EventHandlers(Main main) => plugin = main;
 
-		public void OnDoorOpen(InteractingDoorEventArgs ev)
+		public void OnInteractingDoor(InteractingDoorEventArgs ev)
 		{
 			if (Main.PryGateHubs.Contains(ev.Player) && ev.Door is Gate gate)
                 gate.TryPry();
 		}
 
-		public static string FormatArguments(ArraySegment<string> sentence, int index)
+        public static void OnHurting(HurtingEventArgs ev)
+        {
+            if (ev.Attacker != ev.Player && Main.IK.Contains(ev.Attacker))
+                ev.Amount = StandardDamageHandler.KillValue;
+        }
+        public static string FormatArguments(ArraySegment<string> sentence, int index)
 		{
 			StringBuilder sb = new();
 			foreach (string word in sentence.Segment(index))
@@ -52,6 +59,8 @@ namespace AdminTools
             {
 				ev.Player.IsMuted = false;
             }
+			if (!Round.IsEnded)
+				SavingPlayerData(ev.Player);
         }
 
         public static void SpawnWorkbench(Player ply, Vector3 position, Vector3 rotation, Vector3 size, out int benchIndex)
@@ -97,103 +106,26 @@ namespace AdminTools
 			}
 		}
 
-        public static IEnumerator<float> DoRocket(Player player, float speed)
-		{
-			const int maxAmnt = 50;
-			int amnt = 0;
-			while (player.IsAlive)
-			{
-				player.Position += Vector3.up * speed;
-				amnt++;
-				if (amnt >= maxAmnt)
-				{
-					player.IsGodModeEnabled = false;
-					if (Projectile.CreateAndSpawn(ProjectileType.FragGrenade, player.Position, player.Rotation).Is(out TimeGrenadeProjectile timeGrenadeProjectile))
-						timeGrenadeProjectile.Explode();
-                    player.Kill("Went on a trip in their favorite rocket ship.");
-				}
-
-				yield return Timing.WaitForOneFrame;
-			}
-		}
-
-		public static void DoJail(Player player, bool skipadd = false)
-		{
-			if (!skipadd)
-            {
-                Main.JailedPlayers.Add(new Jailed
-				{
-					Health = player.Health,
-                    RelativePosition = player.RelativePosition,
-					Items = player.Items.ToList(),
-					Effects = player.ActiveEffects.Select(x => new Effect(x)).ToList(),
-					Name = player.Nickname,
-					Role = player.Role,
-					Userid = player.UserId,
-					CurrentRound = true,
-					Ammo = player.Ammo.ToDictionary(x => x.Key.GetAmmoType(), x => x.Value),
-                });
-			}
-
-			if (player.IsOverwatchEnabled)
-				player.IsOverwatchEnabled = false;
-			player.Ammo.Clear();
-			player.Inventory.SendAmmoNextFrame = true;
-
-            player.ClearInventory(false);
-			player.Role.Set(RoleTypeId.Tutorial, RoleSpawnFlags.UseSpawnpoint);
-		}
-
-		public static void DoUnJail(Player player)
-		{
-			Jailed jail = Main.JailedPlayers.Find(j => j.Userid == player.UserId);
-			if (jail.CurrentRound)
-			{
-				player.Role.Set(jail.Role, RoleSpawnFlags.None);
-				try
-				{
-					player.ResetInventory(jail.Items);
-                    player.Health = jail.Health;
-					player.Position = jail.RelativePosition.Position;
-					foreach (KeyValuePair<AmmoType, ushort> kvp in jail.Ammo)
-						player.Ammo[kvp.Key.GetItemType()] = kvp.Value;
-					player.SyncEffects(jail.Effects);
-
-                    player.Inventory.SendItemsNextFrame = true;
-                    player.Inventory.SendAmmoNextFrame = true;
-                }
-                catch (Exception e)
-				{
-					Log.Error($"{nameof(DoUnJail)}: {e}");
-				}
-			}
-			else
-			{
-				player.Role.Set(RoleTypeId.Spectator, RoleSpawnFlags.UseSpawnpoint);
-			}
-			Main.JailedPlayers.Remove(jail);
-		}
-
 		public void OnPlayerVerified(VerifiedEventArgs ev)
 		{
 			try
 			{
 				if (Main.JailedPlayers.Any(j => j.Userid == ev.Player.UserId))
-					DoJail(ev.Player, true);
+					AdminTools.Commands.Jail.DoJail(ev.Player, true);
 
-				if (File.ReadAllText(plugin.OverwatchFilePath).Contains(ev.Player.UserId))
+				if (ev.Player.RemoteAdminPermissions.HasFlag(PlayerPermissions.Overwatch) && Main.Overwatch.Contains(ev.Player.UserId))
 				{
 					Log.Debug($"Putting {ev.Player.UserId} into overwatch.");
 					ev.Player.IsOverwatchEnabled = true;
 				}
 
-				if (File.ReadAllText(plugin.HiddenTagsFilePath).Contains(ev.Player.UserId))
+				if (Main.HiddenTags.Contains(ev.Player.UserId))
 				{
 					Log.Debug($"Hiding {ev.Player.UserId}'s tag.");
 					Timing.CallDelayed(Timing.WaitForOneFrame, () => ev.Player.BadgeHidden = true);
 				}
 
-				if (Main.RoundStartMutes.Count != 0 && !ev.Player.ReferenceHub.serverRoles.RemoteAdmin && !Main.RoundStartMutes.Contains(ev.Player))
+				if (Main.RoundStartMutes.Count != 0 && !ev.Player.RemoteAdminAccess && !Main.RoundStartMutes.Contains(ev.Player))
                 {
 					Log.Debug($"Muting {ev.Player.UserId} (no RA).");
 					ev.Player.IsMuted = true;
@@ -206,7 +138,7 @@ namespace AdminTools
 			}
 		}
 
-		public void OnRoundStart()
+		public void OnRoundStarted()
 		{
 			foreach (Player ply in Main.RoundStartMutes)
 			{
@@ -218,34 +150,15 @@ namespace AdminTools
 			Main.RoundStartMutes.Clear();
 		}
 
-		public void OnRoundEnd(RoundEndedEventArgs ev)
+		public void OnRoundEnded(RoundEndedEventArgs ev)
 		{
 			try
 			{
-				List<string> overwatchRead = File.ReadAllLines(plugin.OverwatchFilePath).ToList();
-				List<string> tagsRead = File.ReadAllLines(plugin.HiddenTagsFilePath).ToList();
-
 				foreach (Player player in Player.List)
-				{
-					string userId = player.UserId;
+					SavingPlayerData(player);
 
-					if (player.IsOverwatchEnabled && !overwatchRead.Contains(userId))
-						overwatchRead.Add(userId);
-					else if (!player.IsOverwatchEnabled && overwatchRead.Contains(userId))
-						overwatchRead.Remove(userId);
-
-					if (player.BadgeHidden && !tagsRead.Contains(userId))
-						tagsRead.Add(userId);
-					else if (!player.BadgeHidden && tagsRead.Contains(userId))
-						tagsRead.Remove(userId);
-				}
-
-				foreach (string s in overwatchRead)
-					Log.Debug($"{s} is in overwatch.");
-				foreach (string s in tagsRead)
-					Log.Debug($"{s} has their tag hidden.");
-				File.WriteAllLines(plugin.OverwatchFilePath, overwatchRead);
-				File.WriteAllLines(plugin.HiddenTagsFilePath, tagsRead);
+                File.WriteAllLines(plugin.OverwatchFilePath, Main.Overwatch);
+				File.WriteAllLines(plugin.HiddenTagsFilePath, Main.HiddenTags);
 
 				// Update all the jails that it is no longer the current round, so when they are unjailed they don't teleport into the void.
 				foreach (Jailed jail in Main.JailedPlayers)
@@ -259,8 +172,30 @@ namespace AdminTools
 				Log.Error($"Round End: {e}");
 			}
 		}
+		public void SavingPlayerData(Player player)
+        {
+            List<string> overwatchRead = Main.Overwatch;
+            List<string> tagsRead = Main.HiddenTags;
 
-		public void OnTriggerTesla(TriggeringTeslaEventArgs ev)
+            string userId = player.UserId;
+
+            if (player.IsOverwatchEnabled && !overwatchRead.Contains(userId))
+            {
+                overwatchRead.Add(userId);
+                Log.Debug($"{player.Nickname}({player.UserId}) has added their overwatch.");
+            }
+            else if (!player.IsOverwatchEnabled && overwatchRead.Remove(userId))
+                Log.Debug($"{player.Nickname}({player.UserId}) has remove their overwatch.");
+
+            if (player.BadgeHidden && !tagsRead.Contains(userId))
+            {
+                tagsRead.Add(userId);
+                Log.Debug($"{player.Nickname}({player.UserId}) has added their tag hidden.");
+            }
+            else if (!player.BadgeHidden && tagsRead.Remove(userId))
+                Log.Debug($"{player.Nickname}({player.UserId}) has remove their tag hidden.");
+        }
+        public void OnTriggerTesla(TriggeringTeslaEventArgs ev)
 		{
 			if (ev.Player.IsGodModeEnabled)
 				ev.IsAllowed = false;
@@ -272,7 +207,7 @@ namespace AdminTools
 				ev.Player.IsGodModeEnabled = ev.NewRole is RoleTypeId.Tutorial;
 		}
 
-		public void OnWaitingForPlayers()
+        public void OnWaitingForPlayers()
 		{
 			Main.IK.Clear();
             Main.BreakDoors.Clear();

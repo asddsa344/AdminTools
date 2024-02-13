@@ -25,7 +25,7 @@ namespace AdminTools.Commands
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!((CommandSender)sender).CheckPermission("at.explode"))
+            if (sender.CheckPermission("at.explode"))
             {
                 response = "You do not have permission to use this command";
                 return false;

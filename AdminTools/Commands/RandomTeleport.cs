@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using AdminTools;
 
 namespace AdminTools.Commands
 {
@@ -43,9 +44,8 @@ namespace AdminTools.Commands
                 ply.Position = randRoom.Position + Vector3.up;
             }
 
-            response = $"Everyone was teleported to a random room in the facility";
+            response = $"Followed player was teleported to a random room in the facility:{Extensions.Fuckyou(players)}";
             return true;
-
         }
     }
 }

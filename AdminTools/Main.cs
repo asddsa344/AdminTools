@@ -7,6 +7,7 @@ using UnityEngine;
 using HarmonyLib;
 using Utils;
 using FacilityManagement.Patches;
+using System.Linq;
 
 namespace AdminTools
 {
@@ -21,7 +22,9 @@ namespace AdminTools
         public EventHandlers EventHandlers { get; private set; }
         public string HarmonyID { get; } = "AdminTools-" + DateTime.Now;
 		public static System.Random NumGen { get; } = new();
-		public static List<Jailed> JailedPlayers { get; } = new();
+        public static List<string> Overwatch { get; internal set; }
+        public static List<string> HiddenTags { get; internal set; }
+        public static List<Jailed> JailedPlayers { get; } = new();
 		public static List<Player> PryGateHubs { get; } = new();
 		public static List<Player> IK { get; } = new();
 		public static List<Player> BreakDoors { get; } = new();
@@ -45,11 +48,14 @@ namespace AdminTools
 
 				if (!File.Exists(overwatchFileName))
 					File.Create(overwatchFileName).Close();
-
-				if (!File.Exists(hiddenTagFileName))
+				else
+                    Overwatch = File.ReadAllLines(overwatchFileName).ToList();
+                if (!File.Exists(hiddenTagFileName))
 					File.Create(hiddenTagFileName).Close();
+                else
+                    HiddenTags = File.ReadAllLines(hiddenTagFileName).ToList();
 
-				OverwatchFilePath = overwatchFileName;
+                OverwatchFilePath = overwatchFileName;
 				HiddenTagsFilePath = hiddenTagFileName;
             }
             catch (Exception e)
@@ -66,12 +72,12 @@ namespace AdminTools
             }
 
             Handlers.Player.Verified += EventHandlers.OnPlayerVerified;
-            Handlers.Server.RoundEnded += EventHandlers.OnRoundEnd;
+            Handlers.Server.RoundEnded += EventHandlers.OnRoundEnded;
             Handlers.Player.TriggeringTesla += EventHandlers.OnTriggerTesla;
             Handlers.Player.ChangingRole += EventHandlers.OnSetClass;
             Handlers.Server.WaitingForPlayers += EventHandlers.OnWaitingForPlayers;
-            Handlers.Player.InteractingDoor += EventHandlers.OnDoorOpen;
-            Handlers.Server.RoundStarted += EventHandlers.OnRoundStart;
+            Handlers.Player.InteractingDoor += EventHandlers.OnInteractingDoor;
+            Handlers.Server.RoundStarted += EventHandlers.OnRoundStarted;
             Handlers.Player.Destroying += EventHandlers.OnPlayerDestroying;
             Handlers.Player.InteractingDoor += EventHandlers.OnPlayerInteractingDoor;
 		}
@@ -80,13 +86,13 @@ namespace AdminTools
 		{
 			harmony?.UnpatchAll(HarmonyID);
 
-            Handlers.Player.InteractingDoor -= EventHandlers.OnDoorOpen;
+            Handlers.Player.InteractingDoor -= EventHandlers.OnInteractingDoor;
 			Handlers.Player.Verified -= EventHandlers.OnPlayerVerified;
-			Handlers.Server.RoundEnded -= EventHandlers.OnRoundEnd;
+			Handlers.Server.RoundEnded -= EventHandlers.OnRoundEnded;
 			Handlers.Player.TriggeringTesla -= EventHandlers.OnTriggerTesla;
 			Handlers.Player.ChangingRole -= EventHandlers.OnSetClass;
-			Handlers.Server.WaitingForPlayers -= EventHandlers.OnWaitingForPlayers;
-			Handlers.Server.RoundStarted -= EventHandlers.OnRoundStart;
+            Handlers.Server.WaitingForPlayers -= EventHandlers.OnWaitingForPlayers;
+			Handlers.Server.RoundStarted -= EventHandlers.OnRoundStarted;
 			Handlers.Player.Destroying -= EventHandlers.OnPlayerDestroying;
             Handlers.Player.InteractingDoor -= EventHandlers.OnPlayerInteractingDoor;
             EventHandlers = null;

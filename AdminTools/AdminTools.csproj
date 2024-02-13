@@ -70,7 +70,10 @@
     <Compile Include="Commands\Ghost.cs" />
     <Compile Include="Commands\Grenade.cs" />
     <Compile Include="Commands\HintBroadcast.cs" />
-    <Compile Include="Commands\InstantKill.cs" />
+    <Compile Include="Commands\InstantKill\Add.cs" />
+    <Compile Include="Commands\InstantKill\InstantKill.cs" />
+    <Compile Include="Commands\InstantKill\List.cs" />
+    <Compile Include="Commands\InstantKill\Remove.cs" />
     <Compile Include="Commands\Jail.cs" />
     <Compile Include="Commands\Position.cs" />
     <Compile Include="Commands\PryGates.cs" />
@@ -100,6 +103,7 @@
     <Compile Include="Config.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="EventHandlers.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="Jailed.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Patches\RAUtilsAddon.cs" />

@@ -62,9 +62,8 @@ namespace AdminTools.Commands
             foreach (Player p in players)
             {
                 p.AddAhp(value, limit, decay, efficacy, sustain, persistant);
-                response += $"\n{p.Nickname}'s AHP has been set to {value}";
             }
-
+            response = $"AHP has been set to {value} for all the followed player:{Extensions.Fuckyou(players)}";
             return true;
         }
     }

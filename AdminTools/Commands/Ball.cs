@@ -12,6 +12,7 @@ namespace AdminTools.Commands
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Pickups.Projectiles;
     using PlayerRoles;
+    using YamlDotNet.Core.Tokens;
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
@@ -23,11 +24,11 @@ namespace AdminTools.Commands
 
         public string Description { get; } = "Spawns a bouncy ball (SCP-018) on a user or all users";
 
-        public string[] Usage { get; } = new string[] { "%player%" };
+        public string[] Usage { get; } = new string[] { "%player%", "[IsMute]"};
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!((CommandSender)sender).CheckPermission("at.ball"))
+            if (sender.CheckPermission("at.ball"))
             {
                 response = "You do not have permission to use this command";
                 return false;
@@ -35,20 +36,19 @@ namespace AdminTools.Commands
 
             if (arguments.Count != 1)
             {
-                response = "Usage: ball ((player id/ name) or (all / *))";
+                response = "Usage: ball ((player id/ name) or (all / *)) [IsMute]";
                 return false;
             }
 
             IEnumerable<Player> players = Player.GetProcessedData(arguments);
 
-            response = players.Count() == 1
-                ? $"{players.Single().Nickname} has received a bouncing ball!"
-                : $"The balls are bouncing for {players.Count()} players!";
-
-            Cassie.Message("pitch_1.5 xmas_bouncyballs");
+            if (!bool.TryParse(arguments.ElementAtOrDefault(1), out bool IsMute) || !IsMute)
+                Cassie.Message("pitch_1.5 xmas_bouncyballs");
 
             foreach (Player p in players)
                 Projectile.CreateAndSpawn(ProjectileType.Scp018, p.Position, p.Transform.rotation);
+
+            response = $"Ball has been spawn for all the followed player:{Extensions.Fuckyou(players)}";
             return true;
         }
     }

@@ -20,11 +20,11 @@ namespace AdminTools.Commands
 
         public string Description { get; } = "Manage breaking door/gate properties for players";
 
-        public string[] Usage { get; } = new string[] { "%player%",  };
+        public string[] Usage { get; } = new string[] { "%player%", "IsEnable" };
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!((CommandSender)sender).CheckPermission("at.bd"))
+            if (sender.CheckPermission("at.bd"))
             {
                 response = "You do not have permission to use this command";
                 return false;
@@ -32,13 +32,33 @@ namespace AdminTools.Commands
 
             IEnumerable<Player> players = Player.GetProcessedData(arguments);
 
-            foreach (Player player in players)
-                if (Main.BreakDoors.Contains(player))
-                    Main.BreakDoors.Remove(player);
-                else
-                    Main.BreakDoors.Add(player);
+            if (players.IsEmpty())
+            {
+                response = $"Player not found: {arguments.At(0)}";
+                return false;
+            }
 
-            response = $"{players.Count()} players have been updated. (Players with BD were removed, those without it were added)";
+            bool? isJail = null;
+            if (bool.TryParse(arguments.At(1), out bool result))
+                isJail = result;
+
+            foreach (Player player in players)
+                if (isJail is true)
+                {
+                    if (Main.BreakDoors.Contains(player))
+                        Main.BreakDoors.Add(player);
+                }
+                else if (isJail is false)
+                {
+                    Main.BreakDoors.Remove(player);
+                }
+                else
+                {
+                    if (!Main.BreakDoors.Remove(player))
+                        Main.BreakDoors.Add(player);
+                }
+
+            response = $"BreakDoor has been enable for all the followed player:{Extensions.Fuckyou(players)}";
             return true;
         }
     }

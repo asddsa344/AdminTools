@@ -23,7 +23,7 @@ namespace AdminTools.Commands
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!((CommandSender)sender).CheckPermission("at.prygate"))
+            if (sender.CheckPermission("at.prygate"))
             {
                 response = "You do not have permission to use this command";
                 return false;

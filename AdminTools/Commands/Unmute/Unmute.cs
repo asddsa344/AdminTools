@@ -27,7 +27,7 @@ namespace AdminTools.Commands.Unmute
 
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!((CommandSender)sender).CheckPermission("at.mute"))
+            if (sender.CheckPermission("at.mute"))
             {
                 response = "You do not have permission to use this command";
                 return false;

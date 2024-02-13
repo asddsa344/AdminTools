@@ -3,18 +3,19 @@ using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace AdminTools.Commands.Inventory
+namespace AdminTools.Commands.InstantKill
 {
-    [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    [CommandHandler(typeof(GameConsoleCommandHandler))]
-    public class Drop : ICommand, IUsageProvider
+    public class Add : ICommand, IUsageProvider
     {
-        public string Command { get; } = "drop";
+        public string Command { get; } = "Add";
 
         public string[] Aliases { get; } = Array.Empty<string>();
 
-        public string Description { get; } = "Drops the items in a players inventory";
+        public string Description { get; } = "add instantkill to this player";
 
         public string[] Usage { get; } = new string[] { "%player%", };
 
@@ -39,8 +40,9 @@ namespace AdminTools.Commands.Inventory
                 return false;
             }
 
+            Main.IK.AddRange(players);
 
-            response = "All items from everyones inventories has been dropped";
+            response = $"All the followed player have been added to InstantKill:{Extensions.Fuckyou(players)}";
             return true;
         }
     }

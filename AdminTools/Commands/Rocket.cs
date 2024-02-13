@@ -6,8 +6,11 @@ using System;
 
 namespace AdminTools.Commands
 {
+    using Exiled.API.Enums;
+    using Exiled.API.Features.Pickups.Projectiles;
     using PlayerRoles;
     using System.Collections.Generic;
+    using UnityEngine;
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
@@ -23,7 +26,7 @@ namespace AdminTools.Commands
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!((CommandSender)sender).CheckPermission("at.rocket"))
+            if (sender.CheckPermission("at.rocket"))
             {
                 response = "You do not have permission to use this command";
                 return false;
@@ -44,10 +47,29 @@ namespace AdminTools.Commands
             }
 
             foreach (Player ply in players)
-                Timing.RunCoroutine(EventHandlers.DoRocket(ply, speed));
+                Timing.RunCoroutine(DoRocket(ply, speed));
 
             response = "Everyone has been rocketed into the sky (We're going on a trip, in our favorite rocketship)";
             return true;
+        }
+        public static IEnumerator<float> DoRocket(Player player, float speed)
+        {
+            const int maxAmnt = 50;
+            int amnt = 0;
+            while (player.IsAlive)
+            {
+                player.Position += Vector3.up * speed;
+                amnt++;
+                if (amnt >= maxAmnt)
+                {
+                    player.IsGodModeEnabled = false;
+                    if (Projectile.CreateAndSpawn(ProjectileType.FragGrenade, player.Position, player.Rotation).Is(out TimeGrenadeProjectile timeGrenadeProjectile))
+                        timeGrenadeProjectile.Explode();
+                    player.Kill("Went on a trip in their favorite rocket ship.");
+                }
+
+                yield return Timing.WaitForOneFrame;
+            }
         }
     }
 }

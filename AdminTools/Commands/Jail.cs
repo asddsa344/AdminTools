@@ -1,7 +1,10 @@
 ﻿using CommandSystem;
+using Exiled.API.Enums;
+using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
 using MEC;
+using PlayerRoles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,11 +21,11 @@ namespace AdminTools.Commands
 
         public string Description { get; } = "Jails or unjails a user";
 
-        public string[] Usage { get; } = new string[] { "%player%", };
+        public string[] Usage { get; } = new string[] { "%player%", "[IsJail]"};
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!((CommandSender)sender).CheckPermission("at.jail"))
+            if (sender.CheckPermission("at.jail"))
             {
                 response = "You do not have permission to use this command";
                 return false;
@@ -40,21 +43,87 @@ namespace AdminTools.Commands
                 response = $"Player not found: {arguments.At(0)}";
                 return false;
             }
+            
+            bool? isJail = null;
+            if (Enum.TryParse(arguments.At(1), out bool result))
+                isJail = result;
+
             response = string.Empty;
             foreach (Player ply in players)
             {
-                if (Main.JailedPlayers.Any(j => j.Userid == ply.UserId))
-                {
-                    EventHandlers.DoUnJail(ply);
-                    response += $"Player {ply.Nickname} has been unjailed now\n";
-                }
+                
+                if (isJail is true)
+                    DoJail(ply);
+                else if (isJail is false)
+                        DoUnJail(ply);
                 else
                 {
-                    EventHandlers.DoJail(ply);
-                    response += $"Player {ply.Nickname} has been jailed now\n";
+                    if (Main.JailedPlayers.Any(j => j.Userid == ply.UserId))
+                        DoUnJail(ply);
+                    else
+                        DoJail(ply);
                 }
             }
             return true;
+        }
+
+        public static void DoJail(Player player) => DoJail(player, false);
+
+        public static void DoJail(Player player, bool skipadd)
+        {
+            if (!skipadd)
+            {
+                Main.JailedPlayers.Add(new Jailed
+                {
+                    Health = player.Health,
+                    RelativePosition = player.RelativePosition,
+                    Items = player.Items.ToList(),
+                    Effects = player.ActiveEffects.Select(x => new Effect(x)).ToList(),
+                    Name = player.Nickname,
+                    Role = player.Role,
+                    Userid = player.UserId,
+                    CurrentRound = true,
+                    Ammo = player.Ammo.ToDictionary(x => x.Key.GetAmmoType(), x => x.Value),
+                });
+            }
+
+            if (player.IsOverwatchEnabled)
+                player.IsOverwatchEnabled = false;
+            player.Ammo.Clear();
+            player.Inventory.SendAmmoNextFrame = true;
+
+            player.ClearInventory(false);
+            player.Role.Set(RoleTypeId.Tutorial, RoleSpawnFlags.UseSpawnpoint);
+        }
+
+        public static void DoUnJail(Player player)
+        {
+            Jailed jail = Main.JailedPlayers.Find(j => j.Userid == player.UserId);
+            if (jail.CurrentRound)
+            {
+                player.Role.Set(jail.Role, RoleSpawnFlags.None);
+                try
+                {
+                    player.ResetInventory(jail.Items);
+                    player.Health = jail.Health;
+                    player.Position = jail.RelativePosition.Position;
+                    foreach (KeyValuePair<AmmoType, ushort> kvp in jail.Ammo)
+                        player.Ammo[kvp.Key.GetItemType()] = kvp.Value;
+                    player.SyncEffects(jail.Effects);
+
+                    player.Inventory.SendItemsNextFrame = true;
+                    player.Inventory.SendAmmoNextFrame = true;
+                }
+                catch (Exception e)
+                {
+                    Log.Error($"{nameof(DoUnJail)}: {e}");
+                }
+            }
+            else
+            {
+                player.Role.Set(RoleTypeId.Spectator, RoleSpawnFlags.UseSpawnpoint);
+            }
+            Main.JailedPlayers.Remove(jail);
         }
     }
 }

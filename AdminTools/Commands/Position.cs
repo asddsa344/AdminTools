@@ -25,7 +25,7 @@ namespace AdminTools.Commands
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!((CommandSender)sender).CheckPermission("at.tp"))
+            if (sender.CheckPermission("at.tp"))
             {
                 response = "You do not have permission to use this command";
                 return false;
@@ -67,10 +67,10 @@ namespace AdminTools.Commands
                         response = $"Invalid value for x position: {arguments.At(4)}";
                         return false;
                     }
-                    if (players.Count() == 0)
+                    if (players.IsEmpty())
                     {
                         response = "There are no players found";
-                        return true;
+                        return false;
                     }
                     foreach (Player ply in players)
                     {
@@ -85,10 +85,10 @@ namespace AdminTools.Commands
                         return false;
                     }
                     StringBuilder positionBuilder = StringBuilderPool.Shared.Rent();
-                    if (players.Count() == 0)
+                    if (players.IsEmpty())
                     {
                         response = "There are no players currently found";
-                        return true;
+                        return false;
                     }
                     positionBuilder.Append("\n");
                     foreach (Player ply in players)

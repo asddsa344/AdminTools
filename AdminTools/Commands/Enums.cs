@@ -21,8 +21,7 @@ namespace AdminTools.Commands
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             StringBuilder listBuilder = StringBuilderPool.Shared.Rent();
-            listBuilder.Append("Here are the following enums you can use in commands:");
-            listBuilder.AppendLine();
+            listBuilder.AppendLine("Here are the following enums you can use in commands:");
             listBuilder.Append("ItemType: ");
             foreach (ItemType type in Enum.GetValues(typeof(ItemType)))
             {
@@ -50,9 +49,7 @@ namespace AdminTools.Commands
                 listBuilder.Append(pm.ToString());
                 listBuilder.Append(" ");
             }
-            string message = listBuilder.ToString();
-            StringBuilderPool.Shared.Return(listBuilder);
-            response = message;
+            response = StringBuilderPool.Shared.ToStringReturn(listBuilder);
             return true;
         }
     }

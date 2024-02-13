@@ -44,7 +44,7 @@ namespace AdminTools.Commands
                 ply.Position = randRoom.Position + Vector3.up;
             }
 
-            response = $"Followed player was teleported to a random room in the facility:{Extensions.Fuckyou(players)}";
+            response = $"Followed player was teleported to a random room in the facility:{Extensions.LogPlayers(players)}";
             return true;
         }
     }

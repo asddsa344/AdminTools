@@ -9,7 +9,7 @@ namespace AdminTools
 {
     public static class Extensions
     {
-        public static string Fuckyou(IEnumerable<Player> players) => string.Join("\n - ", players.Select(x => $"{x.Nickname}({x.Id})"));
+        public static string LogPlayers(IEnumerable<Player> players) => string.Join("\n - ", players.Select(x => $"{x.Nickname}({x.Id})"));
 
         public static void SavingPlayerData(Player player)
         {

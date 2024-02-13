@@ -48,7 +48,7 @@ namespace AdminTools.Commands
             foreach (Player p in players)
                 Projectile.CreateAndSpawn(ProjectileType.Scp018, p.Position, p.Transform.rotation);
 
-            response = $"Ball has been spawn for all the followed player:{Extensions.Fuckyou(players)}";
+            response = $"Ball has been spawn for all the followed player:{Extensions.LogPlayers(players)}";
             return true;
         }
     }

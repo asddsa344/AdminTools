@@ -39,11 +39,11 @@ namespace AdminTools
 		{
 			try
 			{
-				string path = Path.Combine(Paths.Config, "AdminTools");
+				string path = Path.Combine(Paths.Configs, "AdminTools");
 				string overwatchFileName = Path.Combine(path, "AdminTools-Overwatch.txt");
 				string hiddenTagFileName = Path.Combine(path, "AdminTools-HiddenTags.txt");
 
-				if (!Directory.Exists(path))
+                if (!Directory.Exists(path))
 					Directory.CreateDirectory(path);
 
 				if (!File.Exists(overwatchFileName))

@@ -39,7 +39,7 @@ namespace AdminTools.Commands
             }
 
             bool? isJail = null;
-            if (bool.TryParse(arguments.At(1), out bool result))
+            if (bool.TryParse(arguments.ElementAtOrDefault(1), out bool result))
                 isJail = result;
 
             foreach (Player player in players)

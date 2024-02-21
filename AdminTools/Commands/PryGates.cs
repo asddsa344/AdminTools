@@ -85,7 +85,7 @@ namespace AdminTools.Commands
 
                     players = Player.GetProcessedData(arguments, 1);
 
-                    if (players.Count() is 0)
+                    if (players.IsEmpty())
                     {
                         response = $"Player not found: {arguments.At(1)}";
                         return false;
@@ -103,11 +103,17 @@ namespace AdminTools.Commands
                     return true;
                 default:
 
-                    players = Player.GetProcessedData(arguments);
 
                     if (arguments.Count != 1)
                     {
                         response = "Usage: prygates (all / *)";
+                        return false;
+                    }
+                    players = Player.GetProcessedData(arguments);
+
+                    if (players.IsEmpty())
+                    {
+                        response = $"Player not found: {arguments.At(0)}";
                         return false;
                     }
 

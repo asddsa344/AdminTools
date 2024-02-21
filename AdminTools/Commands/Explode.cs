@@ -38,6 +38,11 @@ namespace AdminTools.Commands
             }
 
             IEnumerable<Player> players = Player.GetProcessedData(arguments);
+            if (players.IsEmpty())
+            {
+                response = $"Player not found: {arguments.At(0)}";
+                return false;
+            }
 
             foreach (Player ply in players)
             {
@@ -45,8 +50,7 @@ namespace AdminTools.Commands
                     continue;
 
                 ply.Kill("Exploded by admin.");
-                if (Projectile.CreateAndSpawn(ProjectileType.FragGrenade, ply.Position, ply.Rotation).Is(out TimeGrenadeProjectile timeGrenadeProjectile))
-                    timeGrenadeProjectile.Explode();
+                Projectile.CreateAndSpawn(ProjectileType.FragGrenade, ply.Position, ply.Rotation).As<ExplosionGrenadeProjectile>().Explode();
             }
             response = "Everyone exploded, Hubert cannot believe you have done this";
             return true;

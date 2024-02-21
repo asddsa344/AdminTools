@@ -38,6 +38,11 @@ namespace AdminTools.Commands
             }
 
             IEnumerable<Player> players = Player.GetProcessedData(arguments);
+            if (players.IsEmpty())
+            {
+                response = $"Player not found: {arguments.At(0)}";
+                return false;
+            }
             foreach (Player player in players)
                 player.ChangeAppearance(roletype);
 

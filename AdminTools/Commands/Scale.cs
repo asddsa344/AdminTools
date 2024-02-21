@@ -42,6 +42,11 @@ namespace AdminTools.Commands
             }
 
             IEnumerable<Player> players = Player.GetProcessedData(arguments);
+            if (players.IsEmpty())
+            {
+                response = $"Player not found: {arguments.At(0)}";
+                return false;
+            }
 
             if (!float.TryParse(arguments.At(1), out float scale))
             {

@@ -50,8 +50,12 @@ namespace AdminTools.Commands
                 default:
                     {
                         IEnumerable<Player> players = Player.GetProcessedData(arguments);
-
-                        foreach (Player pl in Player.List)
+                        if (players.IsEmpty())
+                        {
+                            response = $"Player not found: {arguments.At(0)}";
+                            return false;
+                        }
+                        foreach (Player pl in players)
                             if (pl.Role is FpcRole fpc)
                                 fpc.IsInvisible = !fpc.IsInvisible;
                         

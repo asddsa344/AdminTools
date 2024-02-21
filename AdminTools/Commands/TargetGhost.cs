@@ -48,6 +48,12 @@ namespace AdminTools.Commands
             }
 
             IEnumerable<Player> players = Player.GetProcessedData(arguments, 1);
+            if (players.IsEmpty())
+            {
+                response = $"Player not found: {arguments.At(1)}";
+                return false;
+            }
+
             foreach (Player sourcePlayer in sourcePlayers)
             {
                 foreach (Player victim in players)

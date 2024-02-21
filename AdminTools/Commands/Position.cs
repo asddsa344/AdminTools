@@ -37,7 +37,11 @@ namespace AdminTools.Commands
                 return false;
             }
             IEnumerable<Player> players = Player.GetProcessedData(arguments);
-
+            if (players.IsEmpty())
+            {
+                response = $"Player not found: {arguments.At(0)}";
+                return false;
+            }
             if (!Enum.TryParse(arguments.At(1), true, out PositionModifier mod))
             {
                 response = $"Invalid position modifier: {arguments.At(0)}";

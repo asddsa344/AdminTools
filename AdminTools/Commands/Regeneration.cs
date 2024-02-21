@@ -48,6 +48,11 @@ namespace AdminTools.Commands
             }
 
             IEnumerable<Player> players = Player.GetProcessedData(arguments);
+            if (players.IsEmpty())
+            {
+                response = $"Player not found: {arguments.At(0)}";
+                return false;
+            }
 
             response = string.Empty;
             AnimationCurve animationCurve = AnimationCurve.Constant(0f, duration, rate);

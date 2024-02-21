@@ -27,7 +27,7 @@ namespace AdminTools.Commands
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (sender.CheckPermission("at.targetghost"))
+            if (!sender.CheckPermission("at.targetghost"))
             {
                 response = "You do not have permission to use this command";
                 return false;
@@ -41,7 +41,7 @@ namespace AdminTools.Commands
 
             IEnumerable<Player> sourcePlayers = Player.GetProcessedData(arguments);
 
-            if (sourcePlayers.Count() is 0)
+            if (sourcePlayers.IsEmpty())
             {
                 response = $"Invalid source player: {arguments.At(0)}";
                 return false;

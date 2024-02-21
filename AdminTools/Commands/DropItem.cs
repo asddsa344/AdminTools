@@ -9,6 +9,7 @@ namespace AdminTools.Commands
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;
     using System.Collections.Generic;
+    using System.Linq;
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
@@ -24,7 +25,7 @@ namespace AdminTools.Commands
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (sender.CheckPermission("at.items"))
+            if (!sender.CheckPermission("at.items"))
             {
                 response = "You do not have permission to use this command";
                 return false;
@@ -44,7 +45,7 @@ namespace AdminTools.Commands
                 return false;
             }
 
-            if (uint.TryParse(arguments.At(2), out uint amount))
+            if (uint.TryParse(arguments.ElementAtOrDefault(2), out uint amount))
                 amount = 1;
 
             foreach (Player ply in players)

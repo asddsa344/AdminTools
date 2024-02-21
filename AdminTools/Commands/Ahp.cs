@@ -43,20 +43,20 @@ namespace AdminTools.Commands
                 return false;
             }
 
-            if (!float.TryParse(arguments.At(2), out float limit))
+            if (!float.TryParse(arguments.ElementAtOrDefault(2), out float limit))
                 limit = 75f;
 
 
-            if (!float.TryParse(arguments.At(3), out float decay))
+            if (!float.TryParse(arguments.ElementAtOrDefault(3), out float decay))
                 decay = 1.2f;
 
 
-            if (!float.TryParse(arguments.At(4), out float efficacy))
+            if (!float.TryParse(arguments.ElementAtOrDefault(4), out float efficacy))
                 efficacy = 0.7f;
 
-            float.TryParse(arguments.At(5), out float sustain);
+            float.TryParse(arguments.ElementAtOrDefault(5), out float sustain);
 
-            bool.TryParse(arguments.At(6), out bool persistant);
+            bool.TryParse(arguments.ElementAtOrDefault(6), out bool persistant);
 
             response = string.Empty;
             foreach (Player p in players)

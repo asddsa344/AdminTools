@@ -25,13 +25,13 @@ namespace AdminTools.Commands
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (sender.CheckPermission("at.jail"))
+            if (!sender.CheckPermission("at.jail"))
             {
                 response = "You do not have permission to use this command";
                 return false;
             }
 
-            if (arguments.Count != 1)
+            if (arguments.Count < 1)
             {
                 response = "Usage: jail (player id / name) [true/false]";
                 return false;
@@ -45,7 +45,7 @@ namespace AdminTools.Commands
             }
             
             bool? isJail = null;
-            if (Enum.TryParse(arguments.At(1), out bool result))
+            if (bool.TryParse(arguments.ElementAtOrDefault(1), out bool result))
                 isJail = result;
 
             response = string.Empty;

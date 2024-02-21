@@ -27,7 +27,7 @@ namespace AdminTools.Commands.Tags
 
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (sender.CheckPermission("at.tags"))
+            if (!sender.CheckPermission("at.tags"))
             {
                 response = "You do not have permission to use this command";
                 return false;

@@ -15,7 +15,7 @@ namespace AdminTools.Commands.Tags
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (sender.CheckPermission("at.tags"))
+            if (!sender.CheckPermission("at.tags"))
             {
                 response = "You do not have permission to use this command";
                 return false;

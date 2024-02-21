@@ -15,7 +15,7 @@ namespace AdminTools.Commands.Mute
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (sender.CheckPermission("at.mute"))
+            if (!sender.CheckPermission("at.mute"))
             {
                 response = "You do not have permission to use this command";
                 return false;

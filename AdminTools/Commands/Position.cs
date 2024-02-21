@@ -25,7 +25,7 @@ namespace AdminTools.Commands
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response) // TODO: Make it ParentCommand
         {
-            if (sender.CheckPermission("at.tp"))
+            if (!sender.CheckPermission("at.tp"))
             {
                 response = "You do not have permission to use this command";
                 return false;

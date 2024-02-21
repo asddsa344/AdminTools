@@ -33,7 +33,7 @@ namespace AdminTools.Commands.InstantKill
 
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (sender.CheckPermission("at.ik"))
+            if (!sender.CheckPermission("at.ik"))
             {
                 response = "You do not have permission to use this command";
                 return false;

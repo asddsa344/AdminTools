@@ -25,7 +25,7 @@ namespace AdminTools.Commands
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (sender.CheckPermission("at.explode"))
+            if (!sender.CheckPermission("at.explode"))
             {
                 response = "You do not have permission to use this command";
                 return false;
@@ -45,7 +45,8 @@ namespace AdminTools.Commands
                     continue;
 
                 ply.Kill("Exploded by admin.");
-                Projectile.CreateAndSpawn(ProjectileType.FragGrenade, ply.Position, ply.Rotation);
+                if (Projectile.CreateAndSpawn(ProjectileType.FragGrenade, ply.Position, ply.Rotation).Is(out TimeGrenadeProjectile timeGrenadeProjectile))
+                    timeGrenadeProjectile.Explode();
             }
             response = "Everyone exploded, Hubert cannot believe you have done this";
             return true;

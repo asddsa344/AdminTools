@@ -26,7 +26,7 @@ namespace AdminTools.Commands
 
         public string Description { get; } = "Spawns a bouncy ball (SCP-018) on a user or all users";
 
-        public string[] Usage { get; } = new string[] { "%player%", "[Speed = 5]","[IsMute]"};
+        public string[] Usage { get; } = new string[] { "%player%", "[Speed = 5]","[IsMute = false]"};
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {

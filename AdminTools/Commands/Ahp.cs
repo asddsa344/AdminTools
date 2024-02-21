@@ -6,6 +6,7 @@ using System;
 namespace AdminTools.Commands
 {
     using Exiled.API.Enums;
+    using PlayerStatsSystem;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -19,7 +20,7 @@ namespace AdminTools.Commands
 
         public string Description { get; } = "Sets a user or users Artificial HP to a specified value";
 
-        public string[] Usage { get; } = new string[] { "%player%", "Value", "[limit = 75]", "[decay = 1.2]", "[efficacy = 0.7]", "[sustain = 0]", "[IsPersistant = false]" };
+        public string[] Usage { get; } = new string[] { "%player%", "Value", "[decay = 1.2]", "[efficacy = 0.7]", "[sustain = 0]", "[IsPersistant = false]" };
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -43,10 +44,6 @@ namespace AdminTools.Commands
                 return false;
             }
 
-            if (!float.TryParse(arguments.ElementAtOrDefault(2), out float limit))
-                limit = 75f;
-
-
             if (!float.TryParse(arguments.ElementAtOrDefault(3), out float decay))
                 decay = 1.2f;
 
@@ -61,7 +58,7 @@ namespace AdminTools.Commands
             response = string.Empty;
             foreach (Player p in players)
             {
-                p.AddAhp(value, limit, decay, efficacy, sustain, persistant);
+                p.AddAhp(value, value, decay, efficacy, sustain, persistant);
             }
             response = $"AHP has been set to {value} for all the followed player:\n{Extensions.LogPlayers(players)}";
             return true;

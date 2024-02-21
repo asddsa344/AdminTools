@@ -7,49 +7,43 @@ namespace AdminTools.Commands
 {
     using Exiled.API.Enums;
     using Exiled.API.Features.Pickups;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+    using UnityEngine;
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
-    public class Enums : ICommand
+    public class Enums : ICommand, IUsageProvider
     {
+        private IEnumerable<Type> types = null;
         public string Command { get; } = "enums";
 
         public string[] Aliases { get; } = new string[] { "enum" };
 
-        public string Description { get; } = "Lists all enums AdminTools uses";
+        public string Description { get; } = "Lists all enums";
+
+        public string[] Usage { get; } = new string[] { "EnumName", };
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            StringBuilder listBuilder = StringBuilderPool.Shared.Rent();
-            listBuilder.AppendLine("Here are the following enums you can use in commands:");
-            listBuilder.Append("ItemType: ");
-            foreach (ItemType type in Enum.GetValues(typeof(ItemType)))
+            if (arguments.Count > 1)
             {
-                listBuilder.Append(type.ToString());
-                listBuilder.Append(" ");
+                response = "Give an Enum name (ProjectileType, RoleTypeId, ItemType, VectorAxis, PositionModifier)";
+                return false;
             }
-            listBuilder.AppendLine();
-            listBuilder.Append("ProjectileType: ");
-            foreach (ProjectileType gt in Enum.GetValues(typeof(ProjectileType)))
+
+            if (types == null)
+                types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(assembly => assembly.GetTypes()).Where(y => y.IsEnum);
+
+            Type enumType = types.FirstOrDefault(t => t.Name.Contains(arguments.At(0)));
+            if (enumType == null)
             {
-                listBuilder.Append(gt.ToString());
-                listBuilder.Append(" ");
+                response = "Invalid Enum name";
+                return false;
             }
-            listBuilder.AppendLine();
-            listBuilder.Append("VectorAxis: ");
-            foreach (VectorAxis va in Enum.GetValues(typeof(VectorAxis)))
-            {
-                listBuilder.Append(va.ToString());
-                listBuilder.Append(" ");
-            }
-            listBuilder.AppendLine();
-            listBuilder.Append("PositionModifier: ");
-            foreach (PositionModifier pm in Enum.GetValues(typeof(PositionModifier)))
-            {
-                listBuilder.Append(pm.ToString());
-                listBuilder.Append(" ");
-            }
-            response = StringBuilderPool.Shared.ToStringReturn(listBuilder);
+            response = $"<b>{enumType.Name}<\b>\n - ";
+            response += string.Join("\n - ", Enum.GetNames(enumType));
             return true;
         }
     }

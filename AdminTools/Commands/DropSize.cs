@@ -94,7 +94,7 @@ namespace AdminTools.Commands
 
                 Pickup.CreateAndSpawn(type, ply.Position, default, ply).Scale = new(x, y, z);
             }
-            message = $"Spawned a {type} that is ({x}, {y}, {z}) at all the followed player:{Extensions.LogPlayers(players)}";
+            message = $"Spawned a {type} that is ({x}, {y}, {z}) at all the followed player:\n{Extensions.LogPlayers(players)}";
         }
     }
 }

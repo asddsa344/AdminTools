@@ -11,7 +11,7 @@ namespace AdminTools.Commands
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
-    public class Size : ICommand
+    public class Size : ICommand, IUsageProvider
     {
         public string Command { get; } = "size";
 
@@ -67,7 +67,7 @@ namespace AdminTools.Commands
                 ply.Scale = new Vector3(x, y, z);
             }
 
-            response = $"Size has been set to ({x}, {y}, {z}) for the followed player:{Extensions.LogPlayers(players)}";
+            response = $"Size has been set to ({x}, {y}, {z}) for the followed player:\n{Extensions.LogPlayers(players)}";
             return true;
 
         }

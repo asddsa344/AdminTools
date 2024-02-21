@@ -41,7 +41,7 @@ namespace AdminTools.Commands
             foreach (Player player in players)
                 player.ChangeAppearance(roletype);
 
-            response = $"The followed player have been change to {roletype}:{Extensions.LogPlayers(players)}";
+            response = $"The followed player have been change to {roletype}:\n{Extensions.LogPlayers(players)}";
             return false;
         }
     }

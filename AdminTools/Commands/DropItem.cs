@@ -52,7 +52,7 @@ namespace AdminTools.Commands
                 for (int i = 0; i < amount; i++)
                     Pickup.CreateAndSpawn(item, ply.Position, ply.Rotation, ply);
 
-            response = $"{amount} of {item} was spawned on all the followed player:{Extensions.LogPlayers(players)}";
+            response = $"{amount} of {item} was spawned on all the followed player:\n{Extensions.LogPlayers(players)}";
             return true;
         }
     }

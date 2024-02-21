@@ -63,7 +63,7 @@ namespace AdminTools.Commands
             {
                 p.AddAhp(value, limit, decay, efficacy, sustain, persistant);
             }
-            response = $"AHP has been set to {value} for all the followed player:{Extensions.LogPlayers(players)}";
+            response = $"AHP has been set to {value} for all the followed player:\n{Extensions.LogPlayers(players)}";
             return true;
         }
     }

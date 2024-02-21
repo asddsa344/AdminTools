@@ -58,7 +58,7 @@ namespace AdminTools.Commands
                         Main.BreakDoors.Add(player);
                 }
 
-            response = $"BreakDoor has been enable for all the followed player:{Extensions.LogPlayers(players)}";
+            response = $"BreakDoor has been enable for all the followed player:\n{Extensions.LogPlayers(players)}";
             return true;
         }
     }

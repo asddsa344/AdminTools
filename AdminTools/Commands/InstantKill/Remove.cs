@@ -47,7 +47,7 @@ namespace AdminTools.Commands.InstantKill
                     players.Remove(ply);
             }
 
-            response = $"All the followed player have been removed from InstantKill:{Extensions.LogPlayers(players)}";
+            response = $"All the followed player have been removed from InstantKill:\n{Extensions.LogPlayers(players)}";
             return true;
         }
     }

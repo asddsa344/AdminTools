@@ -55,7 +55,7 @@ namespace AdminTools.Commands
                             if (pl.Role is FpcRole fpc)
                                 fpc.IsInvisible = !fpc.IsInvisible;
                         
-                        response = $"The followed player has been affect by the command:{Extensions.LogPlayers(players)}";
+                        response = $"The followed player has been affect by the command:\n{Extensions.LogPlayers(players)}";
                         return true;
                     }
             }

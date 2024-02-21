@@ -55,7 +55,6 @@ namespace AdminTools.Commands
 
             bool.TryParse(arguments.ElementAtOrDefault(6), out bool persistant);
 
-            response = string.Empty;
             foreach (Player p in players)
             {
                 p.AddAhp(value, value, decay, efficacy, sustain, persistant);

@@ -12,6 +12,8 @@ namespace AdminTools.Commands
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Pickups.Projectiles;
     using PlayerRoles;
+    using PlayerRoles.FirstPersonControl;
+    using UnityEngine;
     using YamlDotNet.Core.Tokens;
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
@@ -24,7 +26,7 @@ namespace AdminTools.Commands
 
         public string Description { get; } = "Spawns a bouncy ball (SCP-018) on a user or all users";
 
-        public string[] Usage { get; } = new string[] { "%player%", "[IsMute]"};
+        public string[] Usage { get; } = new string[] { "%player%", "[Speed = 5]","[IsMute]"};
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -42,11 +44,17 @@ namespace AdminTools.Commands
 
             IEnumerable<Player> players = Player.GetProcessedData(arguments);
 
-            if (!bool.TryParse(arguments.ElementAtOrDefault(1), out bool IsMute) || !IsMute)
+            if (!float.TryParse(arguments.ElementAtOrDefault(1), out float speed))
+                speed = 5;
+
+            if (!bool.TryParse(arguments.ElementAtOrDefault(2), out bool IsMute) || !IsMute)
                 Cassie.Message("pitch_1.5 xmas_bouncyballs");
 
             foreach (Player p in players)
-                Projectile.CreateAndSpawn(ProjectileType.Scp018, p.Position, p.Transform.rotation);
+            {
+                Scp018Projectile scp018 = Projectile.CreateAndSpawn(ProjectileType.Scp018, p.Position, p.Transform.rotation).As<Scp018Projectile>();
+                scp018.Rigidbody.velocity = p.ReferenceHub.GetVelocity() + Random.onUnitSphere * speed;
+            }
 
             response = $"Ball has been spawn for all the followed player:\n{Extensions.LogPlayers(players)}";
             return true;

@@ -6,8 +6,8 @@ using Handlers = Exiled.Events.Handlers;
 using UnityEngine;
 using HarmonyLib;
 using Utils;
-using FacilityManagement.Patches;
 using System.Linq;
+using AdminTools.Patches;
 
 namespace AdminTools
 {

@@ -16,7 +16,7 @@ using System.Threading;
 using UnityEngine;
 using Utils;
 
-namespace FacilityManagement.Patches
+namespace AdminTools.Patches
 {
     public static class CustomRAUtilsAddon
     {

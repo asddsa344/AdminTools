@@ -38,7 +38,7 @@ namespace AdminTools.Commands
 
             if (arguments.Count < 1)
             {
-                response = "Usage: ball ((player id/ name) or (all / *)) [IsMute]";
+                response = "Usage: ball ((player id/ name) or (all / *)) [Speed] [IsMute]";
                 return false;
             }
 
@@ -49,10 +49,10 @@ namespace AdminTools.Commands
                 return false;
             }
 
-            if (!float.TryParse(arguments.ElementAtOrDefault(1), out float speed))
+            if (!float.TryParse(arguments.ElementAtOrDefault(1), out float speed) || speed > 200)
                 speed = 5;
 
-            if (!bool.TryParse(arguments.ElementAtOrDefault(2), out bool IsMute) || !IsMute)
+            if (!bool.TryParse(arguments.ElementAtOrDefault(2), out bool isMute) || !isMute)
                 Cassie.Message("pitch_1.5 xmas_bouncyballs");
 
             foreach (Player p in players)

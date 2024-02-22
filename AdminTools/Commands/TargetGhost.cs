@@ -66,7 +66,7 @@ namespace AdminTools.Commands
                 }
             }
 
-            response = $"Done modifying who can see";
+            response = $"Done modifying who can see who";
             return true;
         }
     }

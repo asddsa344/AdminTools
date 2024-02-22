@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using AdminTools;
+using Exiled.API.Features.Doors;
 
 namespace AdminTools.Commands
 {
@@ -45,8 +46,7 @@ namespace AdminTools.Commands
 
             foreach (Player ply in players)
             {
-                Room randRoom = Room.List.GetRandomValue();
-                ply.Position = randRoom.Position + Vector3.up;
+                ply.RandomTeleport(typeof(Room));
             }
 
             response = $"Followed player was teleported to a random room in the facility:\n{Extensions.LogPlayers(players)}";

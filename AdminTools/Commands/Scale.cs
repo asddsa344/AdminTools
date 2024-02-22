@@ -28,16 +28,10 @@ namespace AdminTools.Commands
                 return false;
             }
 
-            if (arguments.Count < 1)
+            if (arguments.Count < 2)
             {
                 response = "Usage:\nscale ((player id / name) or (all / *)) (value)" +
                     "\nscale reset";
-                return false;
-            }
-
-            if (arguments.Count != 2)
-            {
-                response = "Usage: scale (all / *) (value)";
                 return false;
             }
 

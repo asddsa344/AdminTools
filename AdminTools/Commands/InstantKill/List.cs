@@ -30,11 +30,8 @@ namespace AdminTools.Commands.InstantKill
 
             playerLister.Append(Main.InstantKill.Any() ? "Players with instant killing on:\n" : "No players currently online have instant killing on");
 
-            foreach (Player ply in Main.InstantKill)
-            {
-                playerLister.Append("\n- ");
-                playerLister.Append(ply.Nickname);
-            }
+            playerLister.Append(Extensions.LogPlayers(Main.InstantKill));
+
 
             response = StringBuilderPool.Pool.ToStringReturn(playerLister);
             return true;

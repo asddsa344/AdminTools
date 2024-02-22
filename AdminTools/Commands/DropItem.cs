@@ -49,7 +49,7 @@ namespace AdminTools.Commands
                 return false;
             }
 
-            if (uint.TryParse(arguments.ElementAtOrDefault(2), out uint amount))
+            if (!uint.TryParse(arguments.ElementAtOrDefault(2), out uint amount))
                 amount = 1;
 
             foreach (Player ply in players)

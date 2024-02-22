@@ -54,7 +54,7 @@ namespace AdminTools.Commands
             foreach (Player ply in players)
                 Timing.RunCoroutine(DoRocket(ply, speed));
 
-            response = $"All the followed player has been rocketed into the sky\n(We're going on a trip, in our favorite rocketship)\n\n{Extensions.LogPlayers(players)}";
+            response = $"All the followed player has been rocketed into the sky\n{Extensions.LogPlayers(players)}";
             return true;
         }
         public static IEnumerator<float> DoRocket(Player player, float speed)
@@ -68,8 +68,7 @@ namespace AdminTools.Commands
                 if (amnt >= maxAmnt)
                 {
                     player.IsGodModeEnabled = false;
-                    if (Projectile.CreateAndSpawn(ProjectileType.FragGrenade, player.Position, player.Rotation).Is(out TimeGrenadeProjectile timeGrenadeProjectile))
-                        timeGrenadeProjectile.Explode();
+                    player.Explode();
                     player.Kill("Went on a trip in their favorite rocket ship.");
                 }
 

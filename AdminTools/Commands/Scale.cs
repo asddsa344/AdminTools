@@ -54,10 +54,11 @@ namespace AdminTools.Commands
                 return false;
             }
 
+            Vector3 size = Vector3.one * scale;
             foreach (Player ply in players)
-                ply.Scale = Vector3.one * scale;
+                ply.Scale = size;
 
-            response = $"Scale has been set to {scale} for the followed player:\n{Extensions.LogPlayers(players)}";
+            response = $"Scale has been set to {size} for the followed player:\n{Extensions.LogPlayers(players)}";
             return true;
         }
     }

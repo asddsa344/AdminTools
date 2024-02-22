@@ -66,13 +66,13 @@ namespace AdminTools.Commands
                 response = $"Invalid value for z size: {arguments.At(3)}";
                 return false;
             }
-
+            Vector3 size = new(x, y, z);
             foreach (Player ply in players)
             {
-                ply.Scale = new Vector3(x, y, z);
+                ply.Scale = size;
             }
 
-            response = $"Size has been set to ({x}, {y}, {z}) for the followed player:\n{Extensions.LogPlayers(players)}";
+            response = $"Size has been set to {size} for the followed player:\n{Extensions.LogPlayers(players)}";
             return true;
 
         }

@@ -24,7 +24,7 @@ namespace AdminTools
 		public static System.Random NumGen { get; } = new();
         public static List<string> Overwatch { get; internal set; }
         public static List<string> HiddenTags { get; internal set; }
-        public static List<Jailed> JailedPlayers { get; } = new();
+        public static Dictionary<string, Jailed> JailedPlayers { get; } = new();
 		public static List<Player> PryGate { get; } = new();
 		public static List<Player> InstantKill { get; } = new();
 		public static List<Player> BreakDoors { get; } = new();

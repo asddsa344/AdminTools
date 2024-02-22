@@ -49,10 +49,10 @@ namespace AdminTools.Commands
                 if (ply.IsDead)
                     continue;
 
+                ply.Explode();
                 ply.Kill("Exploded by admin.");
-                Projectile.CreateAndSpawn(ProjectileType.FragGrenade, ply.Position, ply.Rotation).As<ExplosionGrenadeProjectile>().Explode();
             }
-            response = "Everyone exploded, Hubert cannot believe you have done this";
+            response = $"All the followed player has been exploded:\n{Extensions.LogPlayers(players)}";
             return true;
         }
     }

@@ -48,29 +48,31 @@ namespace AdminTools.Commands
             if (bool.TryParse(arguments.ElementAtOrDefault(1), out bool result))
                 isJail = result;
 
-            response = string.Empty;
             foreach (Player ply in players)
             {
                 
                 if (isJail is true)
                     DoJail(ply);
                 else if (isJail is false)
-                        DoUnJail(ply);
+                    DoUnJail(ply);
                 else
                 {
-                    if (Main.JailedPlayers.Any(j => j.Userid == ply.UserId))
+                    if (Main.JailedPlayers.ContainsKey(ply.UserId))
                         DoUnJail(ply);
                     else
                         DoJail(ply);
                 }
             }
+            response = $"I am lazy to make the response now\n{Extensions.LogPlayers(players)}";
             return true;
         }
         public static void DoJail(Player player, bool skipadd = false)
         {
+            if (Main.JailedPlayers.ContainsKey(player.UserId))
+                return;
             if (!skipadd)
             {
-                Main.JailedPlayers.Add(new Jailed
+                Main.JailedPlayers.Add(player.UserId, new Jailed
                 {
                     Health = player.Health,
                     RelativePosition = player.RelativePosition,
@@ -78,7 +80,6 @@ namespace AdminTools.Commands
                     Effects = player.ActiveEffects.Select(x => new Effect(x)).ToList(),
                     Name = player.Nickname,
                     Role = player.Role.Type,
-                    Userid = player.UserId,
                     CurrentRound = true,
                     Ammo = player.Ammo.ToDictionary(x => x.Key.GetAmmoType(), x => x.Value),
                 });
@@ -95,7 +96,8 @@ namespace AdminTools.Commands
 
         public static void DoUnJail(Player player)
         {
-            Jailed jail = Main.JailedPlayers.Find(j => j.Userid == player.UserId);
+            if (!Main.JailedPlayers.TryGetValue(player.UserId, out Jailed jail))
+                return;
             if (jail.CurrentRound)
             {
                 player.Role.Set(jail.Role, RoleSpawnFlags.None);
@@ -120,7 +122,7 @@ namespace AdminTools.Commands
             {
                 player.Role.Set(RoleTypeId.Spectator);
             }
-            Main.JailedPlayers.Remove(jail);
+            Main.JailedPlayers.Remove(player.UserId);
         }
     }
 }

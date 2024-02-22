@@ -10,7 +10,6 @@ namespace AdminTools
 
     public class Jailed
 	{
-		public string Userid;
 		public string Name;
 		public List<Item> Items;
 		public List<Effect> Effects;

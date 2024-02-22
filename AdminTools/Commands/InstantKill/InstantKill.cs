@@ -16,9 +16,9 @@ namespace AdminTools.Commands.InstantKill
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     public class InstantKill : ParentCommand, IUsageProvider
     {
-        public override string Command { get; } = "instakill";
+        public override string Command { get; } = "InstantKill";
 
-        public override string[] Aliases { get; } = new string[] { "ik" };
+        public override string[] Aliases { get; } = new string[] { "ik", "instakill" };
 
         public override string Description { get; } = "Manage instant kill properties for users";
 
@@ -39,10 +39,10 @@ namespace AdminTools.Commands.InstantKill
                 return false;
             }
 
-            response = "Usage:\ninstakill add ((player id / name) or (all / *))" +
-                "\ninstakill clear" +
-                "\ninstakill list" +
-                "\ninstakill remove (player id / name) or (all / *))";
+            response = "Usage:" +
+                "\nInstantKill add ((player id / name) or (all / *))" +
+                "\nInstantKill list" +
+                "\nInstantKill remove (player id / name) or (all / *))";
             return false;
 
         }

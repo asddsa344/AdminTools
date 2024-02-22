@@ -10,7 +10,10 @@ namespace AdminTools.Commands
     using Exiled.API.Extensions;
     using Exiled.API.Features.Roles;
     using PlayerRoles;
+    using Respawning;
+    using Respawning.NamingRules;
     using System.Collections.Generic;
+    using System.Linq;
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
@@ -18,11 +21,11 @@ namespace AdminTools.Commands
     {
         public string Command { get; } = "fakespawn";
 
-        public string[] Aliases { get; } = new[] { "fakesync" };
+        public string[] Aliases { get; } = new[] { "fakesync", "fakerole" };
 
         public string Description { get; } = "Sets everyone or a user to be invisible";
 
-        public string[] Usage { get; } = new string[] { "%player%", "%role%" };
+        public string[] Usage { get; } = new string[] { "%player%", "%player%", "%role%" ,"[id]"};
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -38,9 +41,9 @@ namespace AdminTools.Commands
                 return false;
             }
 
-            if (!Enum.TryParse(arguments.At(1), true, out RoleTypeId roletype))
+            if (!Enum.TryParse(arguments.At(2), true, out RoleTypeId roletype))
             {
-                response = $"Invalid value for RoleTypeId: {arguments.At(1)}\n{string.Join(", ", Enum.GetNames(typeof(RoleTypeId)))}.";
+                response = $"Invalid value for RoleTypeId: {arguments.At(2)}\n{string.Join(", ", Enum.GetNames(typeof(RoleTypeId)))}.";
                 return false;
             }
 
@@ -50,11 +53,22 @@ namespace AdminTools.Commands
                 response = $"Player not found: {arguments.At(0)}";
                 return false;
             }
+
+            IEnumerable<Player> playersToAffect = Player.GetProcessedData(arguments, 1);
+            if (playersToAffect.IsEmpty())
+            {
+                response = $"Player not found: {arguments.At(1)}";
+                return false;
+            }
+            byte id = (byte)(UnitNameMessageHandler.ReceivedNames.Count - 1);
+            if (roletype.TryGetAssignedSpawnableTeam(out SpawnableTeamType spawnableTeamType) && byte.TryParse(arguments.ElementAtOrDefault(2), out id) && UnitNameMessageHandler.ReceivedNames.Count > id)
+                id = (byte)(UnitNameMessageHandler.ReceivedNames.Count - 1);
+
             foreach (Player player in players)
-                player.ChangeAppearance(roletype);
+                player.ChangeAppearance(roletype, playersToAffect, false, id);
 
             response = $"The followed player have been change to {roletype}:\n{Extensions.LogPlayers(players)}";
-            return false;
+            return true;
         }
     }
 }

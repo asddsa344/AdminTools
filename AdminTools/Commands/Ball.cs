@@ -49,7 +49,7 @@ namespace AdminTools.Commands
                 return false;
             }
 
-            if (!float.TryParse(arguments.ElementAtOrDefault(1), out float speed) || speed > 200)
+            if (!float.TryParse(arguments.ElementAtOrDefault(1), out float speed) || speed >= 200)
                 speed = 5;
 
             if (!bool.TryParse(arguments.ElementAtOrDefault(2), out bool isMute) || !isMute)

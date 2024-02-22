@@ -76,7 +76,7 @@
     <Compile Include="Commands\InstantKill\Remove.cs" />
     <Compile Include="Commands\Jail.cs" />
     <Compile Include="Commands\Position.cs" />
-    <Compile Include="Commands\PryGates.cs" />
+    <Compile Include="Commands\PryGate\PryGates.cs" />
     <Compile Include="Commands\RandomTeleport.cs" />
     <Compile Include="Commands\Regeneration.cs" />
     <Compile Include="Commands\Rocket.cs" />
@@ -122,9 +122,7 @@
       <Link>.editorconfig</Link>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Commands\PryGate\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
          Other similar extension points exist, see Microsoft.Common.targets.

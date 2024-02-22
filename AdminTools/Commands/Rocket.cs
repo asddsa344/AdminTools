@@ -47,7 +47,7 @@ namespace AdminTools.Commands
 
             if (!float.TryParse(arguments.At(1), out float speed) && speed <= 0)
             {
-                response = $"Speed argument invalid: {arguments.At(1)}";
+                response = $"Speed argument should be a positive number : {arguments.At(1)}";
                 return false;
             }
 

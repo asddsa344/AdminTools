@@ -6,6 +6,7 @@ using System;
 namespace AdminTools.Commands
 {
     using CustomPlayerEffects;
+    using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features.Roles;
     using PlayerRoles;
@@ -15,9 +16,9 @@ namespace AdminTools.Commands
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     public class FakeSpawnCommand : ICommand, IUsageProvider
     {
-        public string Command { get; } = "fakesync";
+        public string Command { get; } = "fakespawn";
 
-        public string[] Aliases { get; } = Array.Empty<string>();
+        public string[] Aliases { get; } = new[] { "fakesync" };
 
         public string Description { get; } = "Sets everyone or a user to be invisible";
 
@@ -31,9 +32,15 @@ namespace AdminTools.Commands
                 return false;
             }
 
+            if (arguments.Count < 2)
+            {
+                response = "Usage: fakespawn ((player id / name) or (all / *)) (RoleTypeId)";
+                return false;
+            }
+
             if (!Enum.TryParse(arguments.At(1), true, out RoleTypeId roletype))
             {
-                response = "Usage:\nfakesync ((player id / name) or (all / *))";
+                response = $"Invalid value for RoleTypeId: {arguments.At(1)}\n{string.Join(", ", Enum.GetNames(typeof(RoleTypeId)))}.";
                 return false;
             }
 

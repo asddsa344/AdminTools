@@ -55,7 +55,7 @@ namespace AdminTools
 
 		public void OnPlayerVerified(VerifiedEventArgs ev)
 		{
-            if (Main.JailedPlayers.Any(j => j.Userid == ev.Player.UserId))
+            if (Main.JailedPlayers.ContainsKey(ev.Player.UserId))
                 AdminTools.Commands.Jail.DoJail(ev.Player, true);
 
             if (ev.Player.RemoteAdminPermissions.HasFlag(PlayerPermissions.Overwatch) && Main.Overwatch.Contains(ev.Player.UserId))
@@ -93,7 +93,7 @@ namespace AdminTools
 		public void OnRoundEnded(RoundEndedEventArgs ev)
         {
 			// Update all the jails that it is no longer the current round, so when they are unjailed they don't teleport into the void.
-            foreach (Jailed jail in Main.JailedPlayers)
+            foreach (Jailed jail in Main.JailedPlayers.Values)
             {
                 if (jail.CurrentRound)
                     jail.CurrentRound = false;

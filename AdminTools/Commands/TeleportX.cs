@@ -5,6 +5,7 @@ using System;
 
 namespace AdminTools.Commands
 {
+    using Exiled.API.Extensions;
     using PlayerRoles;
     using System.Collections.Generic;
 
@@ -14,7 +15,7 @@ namespace AdminTools.Commands
     {
         public string Command { get; } = "teleportx";
 
-        public string[] Aliases { get; } = new string[] { "tpx" };
+        public string[] Aliases { get; } = new string[] { "tpx", "tpto" };
 
         public string Description { get; } = "Teleports all users or a user to another user";
 
@@ -34,14 +35,14 @@ namespace AdminTools.Commands
                 return false;
             }
 
-            Player ply = Player.Get(arguments.At(1));
+            Player ply = Player.GetProcessedData(arguments, 1).GetRandomValue();
             if (ply == null)
             {
                 response = $"Player not found: {arguments.At(1)}";
                 return false;
             }
 
-            IEnumerable<Player> players = Player.GetProcessedData(arguments, 0);
+            IEnumerable<Player> players = Player.GetProcessedData(arguments);
             if (players.IsEmpty())
             {
                 response = $"Player not found: {arguments.At(0)}";
@@ -53,7 +54,7 @@ namespace AdminTools.Commands
                 plyr.Position = ply.Position;
             }
 
-            response = $"Everyone has been teleported to Player {ply.Nickname}";
+            response = $"All the followed player has been teleported to {ply.Nickname}({ply.Id}):\n{Extensions.LogPlayers(players)}";
             return true;
         }
     }

@@ -42,6 +42,8 @@ namespace AdminTools
 				string path = Path.Combine(Paths.Configs, "AdminTools");
 				string overwatchFileName = Path.Combine(path, "AdminTools-Overwatch.txt");
 				string hiddenTagFileName = Path.Combine(path, "AdminTools-HiddenTags.txt");
+                OverwatchFilePath = overwatchFileName;
+                HiddenTagsFilePath = hiddenTagFileName;
 
                 if (!Directory.Exists(path))
 					Directory.CreateDirectory(path);
@@ -54,9 +56,6 @@ namespace AdminTools
 					File.Create(hiddenTagFileName).Close();
                 else
                     HiddenTags = File.ReadAllLines(hiddenTagFileName).ToList();
-
-                OverwatchFilePath = overwatchFileName;
-				HiddenTagsFilePath = hiddenTagFileName;
             }
             catch (Exception e)
             {

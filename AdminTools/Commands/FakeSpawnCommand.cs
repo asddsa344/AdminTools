@@ -37,7 +37,7 @@ namespace AdminTools.Commands
 
             if (arguments.Count < 2)
             {
-                response = "Usage: fakespawn ((player id / name) or (all / *)) (RoleTypeId)";
+                response = "Usage: fakespawn ((player id / name) or (all / *)) ((player id / name) or (all / *)) (RoleTypeId) [id]";
                 return false;
             }
 

@@ -8,6 +8,7 @@ using HarmonyLib;
 using Utils;
 using System.Linq;
 using AdminTools.Patches;
+using CommandSystem.Commands.RemoteAdmin.Doors;
 
 namespace AdminTools
 {
@@ -68,6 +69,7 @@ namespace AdminTools
             if (Config.BetterCommand)
 			{
                 harmony.Patch(AccessTools.Method(typeof(RAUtils), nameof(RAUtils.ProcessPlayerIdOrNamesList)), new(AccessTools.Method(typeof(CustomRAUtilsAddon), nameof(CustomRAUtilsAddon.Prefix))));
+                harmony.Patch(AccessTools.Method(typeof(BaseDoorCommand), nameof(BaseDoorCommand.Execute)), transpiler: new(AccessTools.Method(typeof(DoorCommandPatche), nameof(DoorCommandPatche.Transpiler))));
             }
 
             Handlers.Player.Verified += EventHandlers.OnPlayerVerified;

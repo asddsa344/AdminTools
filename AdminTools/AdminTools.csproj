@@ -106,6 +106,7 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="Jailed.cs" />
     <Compile Include="Main.cs" />
+    <Compile Include="Patches\DoorCommandPatche.cs" />
     <Compile Include="Patches\RAUtilsAddon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

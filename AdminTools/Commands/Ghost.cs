@@ -2,13 +2,11 @@
 using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
 using System;
+using Exiled.API.Features.Roles;
+using System.Collections.Generic;
 
 namespace AdminTools.Commands
 {
-    using CustomPlayerEffects;
-    using Exiled.API.Features.Roles;
-    using System.Collections.Generic;
-
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     public class Ghost : ICommand, IUsageProvider

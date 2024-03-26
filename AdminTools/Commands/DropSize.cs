@@ -1,17 +1,12 @@
 ﻿using CommandSystem;
 using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
-using Mirror;
 using System;
-using UnityEngine;
+using Exiled.API.Features.Pickups;
+using System.Collections.Generic;
 
 namespace AdminTools.Commands
 {
-    using Exiled.API.Features.Items;
-    using Exiled.API.Features.Pickups;
-    using PlayerRoles;
-    using System.Collections.Generic;
-
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     public class DropSize : ICommand, IUsageProvider

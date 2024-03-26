@@ -1,5 +1,4 @@
 ﻿using Exiled.API.Interfaces;
-using Exiled.Loader;
 using System.ComponentModel;
 
 namespace AdminTools

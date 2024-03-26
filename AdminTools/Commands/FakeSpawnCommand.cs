@@ -2,19 +2,15 @@
 using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
 using System;
+using Exiled.API.Extensions;
+using PlayerRoles;
+using Respawning;
+using Respawning.NamingRules;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AdminTools.Commands
 {
-    using CustomPlayerEffects;
-    using Exiled.API.Enums;
-    using Exiled.API.Extensions;
-    using Exiled.API.Features.Roles;
-    using PlayerRoles;
-    using Respawning;
-    using Respawning.NamingRules;
-    using System.Collections.Generic;
-    using System.Linq;
-
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     public class FakeSpawnCommand : ICommand, IUsageProvider

@@ -4,7 +4,6 @@ using Exiled.Permissions.Extensions;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 namespace AdminTools.Commands
 {

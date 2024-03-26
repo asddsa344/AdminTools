@@ -1,16 +1,12 @@
 ﻿using CommandSystem;
 using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
-using NorthwoodLib.Pools;
 using System;
-using System.Linq;
-using System.Text;
+using Exiled.API.Features.Roles;
+using System.Collections.Generic;
 
 namespace AdminTools.Commands
 {
-    using Exiled.API.Features.Roles;
-    using System.Collections.Generic;
-
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     public class TargetGhost : ICommand

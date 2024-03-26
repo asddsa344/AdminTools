@@ -3,15 +3,11 @@ using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
 using MEC;
 using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace AdminTools.Commands
 {
-    using Exiled.API.Enums;
-    using Exiled.API.Features.Pickups.Projectiles;
-    using PlayerRoles;
-    using System.Collections.Generic;
-    using UnityEngine;
-
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     public class Rocket : ICommand, IUsageProvider

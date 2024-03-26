@@ -6,11 +6,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using PlayerRoles;
 
 namespace AdminTools.Commands
 {
-    using PlayerRoles;
-
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class SpawnWorkbench : ICommand, IUsageProvider
     {

@@ -1,14 +1,6 @@
-﻿using AdminTools.Commands.Inventory;
-using CommandSystem;
-using Exiled.API.Features;
-using Exiled.Events.EventArgs.Player;
+﻿using CommandSystem;
 using Exiled.Permissions.Extensions;
-using NorthwoodLib.Pools;
-using PlayerStatsSystem;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace AdminTools.Commands.InstantKill
 {

@@ -1,16 +1,9 @@
-﻿using HarmonyLib;
+﻿using static HarmonyLib.AccessTools;
+using HarmonyLib;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection.Emit;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-
-using static HarmonyLib.AccessTools;
-using CommandSystem.Commands.RemoteAdmin.Doors;
 using Exiled.API.Features.Pools;
-using PlayerRoles;
 using Interactables.Interobjects.DoorUtils;
 using Exiled.API.Features.Doors;
 using Exiled.API.Enums;
@@ -40,7 +33,7 @@ namespace AdminTools.Patches
                 new(OpCodes.Ldarga, 9),
 
                 // DoorCommandPatche.GetExiledDoor(doorvariant, array, ref text)
-                new(OpCodes.Call, Method(typeof(DoorCommandPatche), nameof(DoorCommandPatche.GetExiledDoor))),
+                new(OpCodes.Call, Method(typeof(DoorCommandPatche), nameof(GetExiledDoor))),
                 new(OpCodes.Brtrue_S, found),
             });
 

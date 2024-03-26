@@ -2,14 +2,12 @@
 using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
 using System;
+using Exiled.API.Enums;
+using System.Collections.Generic;
+using Exiled.API.Features.Pickups.Projectiles;
 
 namespace AdminTools.Commands
 {
-    using Exiled.API.Enums;
-    using System.Collections.Generic;
-    using System.Linq;
-    using Exiled.API.Features.Pickups.Projectiles;
-
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     public class Grenade : ICommand, IUsageProvider

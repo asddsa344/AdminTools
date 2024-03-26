@@ -2,13 +2,11 @@
 using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
 using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace AdminTools.Commands
 {
-    using PlayerRoles;
-    using System.Collections.Generic;
-    using UnityEngine;
-
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     public class Size : ICommand, IUsageProvider

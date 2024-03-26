@@ -2,14 +2,11 @@
 using Exiled.API.Features;
 using RemoteAdmin;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AdminTools.Commands
 {
-    using Exiled.API.Enums;
-    using PlayerStatsSystem;
-    using System.Collections.Generic;
-    using System.Linq;
-
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     public class Ahp : ICommand, IUsageProvider

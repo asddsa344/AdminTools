@@ -14,28 +14,29 @@ namespace AdminTools
 {
 	public class Main : Plugin<Config>
 	{
+		public static System.Random NumGen { get; } = new();
+		public static List<string> Overwatch { get; internal set; }
+		public static List<string> HiddenTags { get; internal set; }
+		public static Dictionary<string, Jailed> JailedPlayers { get; } = new();
+		public static List<Player> PryGate { get; } = new();
+		public static List<Player> InstantKill { get; } = new();
+		public static List<Player> BreakDoors { get; } = new();
+		public static List<Player> RoundStartMutes { get; } = new();
+		public static Dictionary<Player, List<GameObject>> BchHubs { get; } = new();
+		public static float HealthGain { get; } = 5;
+		public static float HealthInterval { get; } = 1;
+		public string OverwatchFilePath { get; private set; }
+		public string HiddenTagsFilePath { get; private set; }
+		public static Harmony Harmony { get; private set; }
+		
 		public override string Author { get; } = "Exiled-Team";
 		public override string Name { get; } = "Admin Tools";
 		public override string Prefix { get; } = "AT";
         public override Version Version { get; } = new(8, 0, 0);
-
         public override Version RequiredExiledVersion { get; } = new(8, 8, 0);
+
         public EventHandlers EventHandlers { get; private set; }
         public string HarmonyID { get; } = "AdminTools-" + DateTime.Now;
-		public static System.Random NumGen { get; } = new();
-        public static List<string> Overwatch { get; internal set; }
-        public static List<string> HiddenTags { get; internal set; }
-        public static Dictionary<string, Jailed> JailedPlayers { get; } = new();
-		public static List<Player> PryGate { get; } = new();
-		public static List<Player> InstantKill { get; } = new();
-		public static List<Player> BreakDoors { get; } = new();
-        public static List<Player> RoundStartMutes { get; } = new();
-        public static Dictionary<Player, List<GameObject>> BchHubs { get; } = new();
-        public static float HealthGain { get; } = 5;
-		public static float HealthInterval { get; } = 1;
-		public string OverwatchFilePath { get; private set; }
-        public string HiddenTagsFilePath { get; private set; }
-        public static Harmony harmony { get; private set; }
         public override void OnEnabled()
 		{
 			try
@@ -63,13 +64,13 @@ namespace AdminTools
                 Log.Error($"Loading error: {e}");
             }
 
-            EventHandlers = new EventHandlers(this);
-            harmony = new(HarmonyID);
+            EventHandlers = new(this);
+            Harmony = new(HarmonyID);
 
             if (Config.BetterCommand)
 			{
-                harmony.Patch(AccessTools.Method(typeof(RAUtils), nameof(RAUtils.ProcessPlayerIdOrNamesList)), new(AccessTools.Method(typeof(CustomRAUtilsAddon), nameof(CustomRAUtilsAddon.Prefix))));
-                harmony.Patch(AccessTools.Method(typeof(BaseDoorCommand), nameof(BaseDoorCommand.Execute)), transpiler: new(AccessTools.Method(typeof(DoorCommandPatche), nameof(DoorCommandPatche.Transpiler))));
+                Harmony.Patch(AccessTools.Method(typeof(RAUtils), nameof(RAUtils.ProcessPlayerIdOrNamesList)), new(AccessTools.Method(typeof(CustomRAUtilsAddon), nameof(CustomRAUtilsAddon.Prefix))));
+                Harmony.Patch(AccessTools.Method(typeof(BaseDoorCommand), nameof(BaseDoorCommand.Execute)), transpiler: new(AccessTools.Method(typeof(DoorCommandPatche), nameof(DoorCommandPatche.Transpiler))));
             }
 
             Handlers.Player.Verified += EventHandlers.OnPlayerVerified;
@@ -85,7 +86,7 @@ namespace AdminTools
 
 		public override void OnDisabled()
 		{
-			harmony?.UnpatchAll(HarmonyID);
+			Harmony?.UnpatchAll(HarmonyID);
 
             Handlers.Player.InteractingDoor -= EventHandlers.OnInteractingDoor;
 			Handlers.Player.Verified -= EventHandlers.OnPlayerVerified;
@@ -97,7 +98,7 @@ namespace AdminTools
 			Handlers.Player.Destroying -= EventHandlers.OnPlayerDestroying;
             Handlers.Player.InteractingDoor -= EventHandlers.OnPlayerInteractingDoor;
             EventHandlers = null;
-			harmony = null;
+			Harmony = null;
 		}
 	}
 }

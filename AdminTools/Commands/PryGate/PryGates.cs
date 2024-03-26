@@ -4,7 +4,6 @@ using Exiled.Permissions.Extensions;
 using NorthwoodLib.Pools;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace AdminTools.Commands
@@ -102,8 +101,6 @@ namespace AdminTools.Commands
                     }
                     return true;
                 default:
-
-
                     if (arguments.Count != 1)
                     {
                         response = "Usage: prygates (all / *)";

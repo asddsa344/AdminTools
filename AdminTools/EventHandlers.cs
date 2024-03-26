@@ -1,30 +1,15 @@
 namespace AdminTools
 {
-    using System;
-    using System.Collections.Generic;
     using System.IO;
-    using System.Linq;
-    using System.Text;
-    using Exiled.API.Enums;
     using Exiled.API.Features;
     using MEC;
-    using Mirror;
-    using UnityEngine;
-    using Exiled.API.Extensions;
-    using Exiled.API.Features.Items;
     using Exiled.API.Features.Doors;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Server;
-    using InventorySystem.Items.Firearms.Attachments;
     using PlayerRoles;
-    using Utils.NonAllocLINQ;
     using Exiled.API.Interfaces;
     using Log = Exiled.API.Features.Log;
-    using Object = UnityEngine.Object;
-    using Exiled.API.Features.Pickups.Projectiles;
     using PlayerStatsSystem;
-    using HarmonyLib;
-    using Exiled.Events.Commands.Reload;
 
     public class EventHandlers
 	{
@@ -56,7 +41,7 @@ namespace AdminTools
 		public void OnPlayerVerified(VerifiedEventArgs ev)
 		{
             if (Main.JailedPlayers.ContainsKey(ev.Player.UserId))
-                AdminTools.Commands.Jail.DoJail(ev.Player, true);
+                Commands.Jail.DoJail(ev.Player, true);
 
             if (ev.Player.RemoteAdminPermissions.HasFlag(PlayerPermissions.Overwatch) && Main.Overwatch.Contains(ev.Player.UserId))
             {

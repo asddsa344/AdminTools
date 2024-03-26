@@ -2,15 +2,10 @@
 using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
 using System;
+using System.Collections.Generic;
 
 namespace AdminTools.Commands
 {
-    using Exiled.API.Enums;
-    using Exiled.API.Features.Items;
-    using Exiled.API.Features.Pickups.Projectiles;
-    using PlayerRoles;
-    using System.Collections.Generic;
-
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     public class Explode : ICommand, IUsageProvider

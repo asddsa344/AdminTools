@@ -2,15 +2,12 @@
 using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
 using System;
-using UnityEngine;
+using Exiled.API.Features.Pickups;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AdminTools.Commands
 {
-    using Exiled.API.Features.Items;
-    using Exiled.API.Features.Pickups;
-    using System.Collections.Generic;
-    using System.Linq;
-
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     public class DropItem : ICommand, IUsageProvider

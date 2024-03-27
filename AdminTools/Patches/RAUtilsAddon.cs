@@ -44,7 +44,7 @@ namespace AdminTools.Patches
                 {
                     string[] array = args.At(startindex).Split('.');
                     for (int i = 0; i < array.Length; i++)
-                    { 
+                    {
                         if (array[i].ToLower() is "all" or "*")
                         {
                             list.AddRange(Player.List.Select(x => x.ReferenceHub));

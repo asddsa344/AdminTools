@@ -27,7 +27,7 @@ namespace AdminTools
 		public static float HealthInterval { get; } = 1;
 		public string OverwatchFilePath { get; private set; }
 		public string HiddenTagsFilePath { get; private set; }
-		public static Harmony Harmony { get; private set; } = new("ExiledTeam-AdminTools");
+		public static Harmony Harmony { get; private set; }
 
 		public EventHandlers EventHandlers { get; private set; }
 		
@@ -65,6 +65,7 @@ namespace AdminTools
             }
 
             EventHandlers = new(this);
+            Harmony = new("ExiledTeam-AdminTools-" + DateTime.Now);
 
             if (Config.BetterCommand)
             {
@@ -100,6 +101,7 @@ namespace AdminTools
             Handlers.Player.InteractingDoor -= EventHandlers.OnPlayerInteractingDoor;
 
             EventHandlers = null;
+            Harmony = null;
             
             base.OnDisabled();
 		}

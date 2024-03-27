@@ -27,7 +27,9 @@ namespace AdminTools
 		public static float HealthInterval { get; } = 1;
 		public string OverwatchFilePath { get; private set; }
 		public string HiddenTagsFilePath { get; private set; }
-		public static Harmony Harmony { get; private set; }
+		public static Harmony Harmony { get; private set; } = new("ExiledTeam-AdminTools");
+
+		public EventHandlers EventHandlers { get; private set; }
 		
 		public override string Author { get; } = "Exiled-Team";
 		public override string Name { get; } = "Admin Tools";
@@ -35,8 +37,6 @@ namespace AdminTools
         public override Version Version { get; } = new(8, 0, 0);
         public override Version RequiredExiledVersion { get; } = new(8, 8, 0);
 
-        public EventHandlers EventHandlers { get; private set; }
-        public string HarmonyID { get; } = "AdminTools-" + DateTime.Now;
         public override void OnEnabled()
 		{
 			try
@@ -65,12 +65,11 @@ namespace AdminTools
             }
 
             EventHandlers = new(this);
-            Harmony = new(HarmonyID);
 
             if (Config.BetterCommand)
-			{
-                Harmony.Patch(AccessTools.Method(typeof(RAUtils), nameof(RAUtils.ProcessPlayerIdOrNamesList)), new(AccessTools.Method(typeof(CustomRAUtilsAddon), nameof(CustomRAUtilsAddon.Prefix))));
-                Harmony.Patch(AccessTools.Method(typeof(BaseDoorCommand), nameof(BaseDoorCommand.Execute)), transpiler: new(AccessTools.Method(typeof(DoorCommandPatche), nameof(DoorCommandPatche.Transpiler))));
+            {
+	            Harmony.Patch(AccessTools.Method(typeof(RAUtils), nameof(RAUtils.ProcessPlayerIdOrNamesList)), new(AccessTools.Method(typeof(CustomRAUtilsAddon), nameof(CustomRAUtilsAddon.Prefix))));
+                // Harmony.Patch(AccessTools.Method(typeof(BaseDoorCommand), nameof(BaseDoorCommand.Execute)), transpiler: new(AccessTools.Method(typeof(DoorCommandPatche), nameof(DoorCommandPatche.Transpiler))));
             }
 
             Handlers.Player.Verified += EventHandlers.OnPlayerVerified;
@@ -82,11 +81,13 @@ namespace AdminTools
             Handlers.Server.RoundStarted += EventHandlers.OnRoundStarted;
             Handlers.Player.Destroying += EventHandlers.OnPlayerDestroying;
             Handlers.Player.InteractingDoor += EventHandlers.OnPlayerInteractingDoor;
+            
+            base.OnEnabled();
 		}
 
 		public override void OnDisabled()
 		{
-			Harmony?.UnpatchAll(HarmonyID);
+			Harmony?.UnpatchAll(Harmony.Id);
 
             Handlers.Player.InteractingDoor -= EventHandlers.OnInteractingDoor;
 			Handlers.Player.Verified -= EventHandlers.OnPlayerVerified;
@@ -97,8 +98,10 @@ namespace AdminTools
 			Handlers.Server.RoundStarted -= EventHandlers.OnRoundStarted;
 			Handlers.Player.Destroying -= EventHandlers.OnPlayerDestroying;
             Handlers.Player.InteractingDoor -= EventHandlers.OnPlayerInteractingDoor;
+
             EventHandlers = null;
-			Harmony = null;
+            
+            base.OnDisabled();
 		}
 	}
 }

@@ -28,7 +28,7 @@ namespace AdminTools.Commands
                 return false;
             }
 
-            if (arguments.Count != 3)
+            if (arguments.Count < 2)
             {
                 response = "Usage: dropitem (all / *) (ItemType) [amount = 1]";
                 return false;

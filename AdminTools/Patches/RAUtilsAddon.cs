@@ -16,9 +16,9 @@ namespace AdminTools.Patches
         {
             string text = RAUtils.FormatArguments(args, startindex);
             List<ReferenceHub> list = ListPool<ReferenceHub>.Shared.Rent();
+            
             if (text.StartsWith("@", StringComparison.Ordinal))
             {
-
                 foreach (object obj in new Regex("@\"(.*?)\".|@[^\\s.]+\\.").Matches(text))
                 {
                     Match match = (Match)obj;
@@ -73,7 +73,7 @@ namespace AdminTools.Patches
                         }
                     }
                 }
-                newargs = (args.Count > 1) ? RAUtils.FormatArguments(args, startindex + 1).Split(new char[]
+                newargs = args.Count > 1 ? RAUtils.FormatArguments(args, startindex + 1).Split(new char[]
                 {
                         ' '
                 }, keepEmptyEntries ? StringSplitOptions.None : StringSplitOptions.RemoveEmptyEntries) : null;

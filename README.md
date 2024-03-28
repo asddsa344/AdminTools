@@ -54,7 +54,7 @@ ghost - at.ghost
 grenade - at.grenade
 hbc - PlayerPermissions.Broadcasting (config_remoteadmin.txt)
 hp - PlayerPermissions.PlayersManagement (config_remoteadmin.txt)
-instantkill - at.ik
+instantkill - at.instakill
 inventory - at.inv
 jail - at.jail
 kick - at.kick

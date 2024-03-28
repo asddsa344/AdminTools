@@ -110,6 +110,11 @@ namespace AdminTools
             Main.PryGate.Clear();
             if (plugin.Config.ClearJailsOnRestart)
                 Main.JailedPlayers.Clear();
+            if (plugin.Config.DisableLockOnWaiting)
+            {
+	            Round.IsLobbyLocked = false;
+	            Round.IsLocked = false;
+            }
         }
 
         public void OnPlayerInteractingDoor(InteractingDoorEventArgs ev)

@@ -18,5 +18,8 @@ namespace AdminTools
 
         [Description("Unjail all jailed players automatically when the round restarts? Default: false")]
         public bool ClearJailsOnRestart { get; set; } = false;
+
+        [Description("Whether or not to disable RoundLock & LobbyLock when Waiting For Players")]
+        public bool DisableLockOnWaiting { get; set; } = false;
     }
 }

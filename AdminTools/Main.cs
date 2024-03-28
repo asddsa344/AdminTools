@@ -9,6 +9,7 @@ using Utils;
 using System.Linq;
 using AdminTools.Patches;
 using CommandSystem.Commands.RemoteAdmin.Doors;
+using Exiled.API.Enums;
 
 namespace AdminTools
 {
@@ -25,16 +26,18 @@ namespace AdminTools
 		public static Dictionary<Player, List<GameObject>> BchHubs { get; } = new();
 		public static float HealthGain { get; } = 5;
 		public static float HealthInterval { get; } = 1;
+
 		public string OverwatchFilePath { get; private set; }
 		public string HiddenTagsFilePath { get; private set; }
-		public static Harmony Harmony { get; private set; }
 
+		public Harmony Harmony { get; } = new("Exiled-AdminTools");
 		public EventHandlers EventHandlers { get; private set; }
 		
 		public override string Author { get; } = "Exiled-Team";
 		public override string Name { get; } = "Admin Tools";
-		public override string Prefix { get; } = "AT";
-        public override Version Version { get; } = new(8, 0, 0);
+		public override string Prefix { get; } = "AdminTools";
+		public override PluginPriority Priority { get; } = (PluginPriority)1;
+		public override Version Version { get; } = new(8, 0, 0);
         public override Version RequiredExiledVersion { get; } = new(8, 8, 0);
 
         public override void OnEnabled()
@@ -65,12 +68,11 @@ namespace AdminTools
             }
 
             EventHandlers = new(this);
-            Harmony = new("ExiledTeam-AdminTools-" + DateTime.Now);
 
             if (Config.BetterCommand)
             {
 	            Harmony.Patch(AccessTools.Method(typeof(RAUtils), nameof(RAUtils.ProcessPlayerIdOrNamesList)), new(AccessTools.Method(typeof(CustomRAUtilsAddon), nameof(CustomRAUtilsAddon.Prefix))));
-                Harmony.Patch(AccessTools.Method(typeof(BaseDoorCommand), nameof(BaseDoorCommand.Execute)), transpiler: new(AccessTools.Method(typeof(DoorCommandPatche), nameof(DoorCommandPatche.Transpiler))));
+	            // Harmony.Patch(AccessTools.Method(typeof(BaseDoorCommand), nameof(BaseDoorCommand.Execute)), transpiler: new(AccessTools.Method(typeof(DoorCommandPatche), nameof(DoorCommandPatche.Transpiler))));
             }
 
             Handlers.Player.Verified += EventHandlers.OnPlayerVerified;
@@ -101,7 +103,6 @@ namespace AdminTools
             Handlers.Player.InteractingDoor -= EventHandlers.OnPlayerInteractingDoor;
 
             EventHandlers = null;
-            Harmony = null;
             
             base.OnDisabled();
 		}

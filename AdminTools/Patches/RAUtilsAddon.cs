@@ -55,6 +55,16 @@ namespace AdminTools.Patches
                             if (ReferenceHub.TryGetHub(playerId, out ReferenceHub item))
                                 list.Add(item);
                         }
+                        else if (Enum.TryParse(array[i], true, out PlayerStatus playerStatus))
+                        {
+                            switch (playerStatus)
+                            {
+                                case PlayerStatus.Alive:
+                                    list.AddRange(Player.List.Where(p => p.IsAlive).Select(x => x.ReferenceHub));
+                                    break;
+                            }
+                            break;
+                        }
                         else if (Enum.TryParse(array[i], true, out SimplifyTeam simplifyTeam))
                         {
                             list.AddRange(Player.Get((Team)simplifyTeam).Select(x => x.ReferenceHub));
@@ -91,6 +101,11 @@ namespace AdminTools.Patches
             CLD,
             RIP,
             TUT,
+        }
+
+        public enum PlayerStatus
+        {
+            Alive,
         }
     }
 }

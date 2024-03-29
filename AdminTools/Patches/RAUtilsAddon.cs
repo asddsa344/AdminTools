@@ -56,31 +56,38 @@ namespace AdminTools.Patches
                             if (ReferenceHub.TryGetHub(playerId, out ReferenceHub item))
                                 list.Add(item);
                         }
-                        else if (Enum.TryParse(array[i], true, out PlayerStatus playerStatus))
-                        {
-                            switch (playerStatus)
-                            {
-                                case PlayerStatus.Alive:
-                                    list.AddRange(Player.List.Where(p => p.IsAlive).Select(x => x.ReferenceHub));
-                                    break;
-                            }
-                            break;
-                        }
                         else if (Enum.TryParse(array[i], true, out SimplifyTeam simplifyTeam))
                         {
-                            list.AddRange(Player.Get((Team)simplifyTeam).Select(x => x.ReferenceHub));
+                            switch (simplifyTeam)
+                            {
+                                case SimplifyTeam.ALIVE:
+                                    list.AddRange(Player.List.Where(p => p.IsAlive).Select(x => x.ReferenceHub));
+                                    break;
+                                case SimplifyTeam.HUMAN:
+                                    list.AddRange(Player.List.Where(p => p.IsHuman).Select(x => x.ReferenceHub));
+                                    break;
+                                case SimplifyTeam.CIVILIAN:
+                                    list.AddRange(Player.List.Where(p => p.Role.Team is Team.Scientists or Team.ClassD).Select(x => x.ReferenceHub));
+                                    break;
+                                case SimplifyTeam.MILITARY:
+                                    list.AddRange(Player.List.Where(p => p.Role.Team is Team.FoundationForces or Team.ChaosInsurgency).Select(x => x.ReferenceHub));
+                                    break;
+                                default:
+                                    list.AddRange(Player.Get((Team)simplifyTeam).Select(x => x.ReferenceHub));
+                                    break;
+                            }
                         }
-                        else if (Enum.TryParse(array[i], true, out RoleTypeId roletype))
+                        else if (Enum.TryParse(array[i], true, out RoleTypeId roleType))
                         {
-                            list.AddRange(Player.Get(roletype).Select(x => x.ReferenceHub));
+                            list.AddRange(Player.Get(roleType).Select(x => x.ReferenceHub));
                         }
                         else if (Enum.TryParse(array[i], true, out Side side))
                         {
                             list.AddRange(Player.Get(side).Select(x => x.ReferenceHub));
                         }
-                        else if (Enum.TryParse(array[i], true, out Team team1))
+                        else if (Enum.TryParse(array[i], true, out Team team))
                         {
-                            list.AddRange(Player.Get(team1).Select(x => x.ReferenceHub));
+                            list.AddRange(Player.Get(team).Select(x => x.ReferenceHub));
                         }
                     }
                 }
@@ -95,18 +102,19 @@ namespace AdminTools.Patches
 
         public enum SimplifyTeam
         {
+            // Team but simple enum
             SCP,
             MTF,
             CI,
-            RSC,
+            SCI,
             CLD,
             RIP,
             TUT,
-        }
-
-        public enum PlayerStatus
-        {
-            Alive,
+            // Additional (Not Team)
+            ALIVE,
+            HUMAN,
+            CIVILIAN,
+            MILITARY,
         }
     }
 }

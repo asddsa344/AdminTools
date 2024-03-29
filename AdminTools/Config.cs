@@ -14,8 +14,8 @@ namespace AdminTools
         [Description("Should the tutorial class be in God Mode? Default: false")]
         public bool GodTuts { get; set; } = false;
 
-        [Description("Extending Command use for Getting a player (such as candy command and other parts of AdminTools).")]
-        public bool BetterCommands { get; set; } = true;
+        [Description("Extending Command use for Getting a player (such as candy command and other parts of AdminTools). View the README on github for more info.")]
+        public bool ExtendedCommandUsage { get; set; } = true;
 
         [Description("Unjail all jailed players automatically when the round restarts? Default: false")]
         public bool ClearJailsOnRestart { get; set; } = false;

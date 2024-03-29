@@ -3,7 +3,7 @@ An SCP:SL EXILED plugin that gives server owners fun commands and logging functi
 
 ### Features
 ```
-- enabling better_commands will allow you to select multiple players at once with ease. 
+- Command extensions (View ExtendedCommandUsage for details)
 - Log commands in your server files!
 - Quickly send a message to all staff
 - Set AHP of players with ease
@@ -76,4 +76,13 @@ tags - at.tags
 targetghost - at.targetghost
 teleportx - at.tp
 tutorial - at.tut
+```
+### ExtendedCommandUsage
+```
+Enabling this will make it easier to specify multiple people in command usage.
+New options:
+All & * for selecting all players currently on the server.
+RoleTypeId enum for selecting players currently part of that role
+Team enum for selecting players currently part of that team
+Additional: Alive, Human, Civilian, Military
 ```

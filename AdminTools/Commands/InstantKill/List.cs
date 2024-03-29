@@ -17,7 +17,7 @@ namespace AdminTools.Commands.InstantKill
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!sender.CheckPermission("at.inv"))
+            if (!sender.CheckPermission("at.instakill"))
             {
                 response = "You do not have permission to use this command";
                 return false;
@@ -26,9 +26,7 @@ namespace AdminTools.Commands.InstantKill
             StringBuilder playerLister = StringBuilderPool.Pool.Get();
 
             playerLister.Append(Main.InstantKill.Any() ? "Players with instant killing on:\n" : "No players currently online have instant killing on");
-
             playerLister.Append(Extensions.LogPlayers(Main.InstantKill));
-
 
             response = StringBuilderPool.Pool.ToStringReturn(playerLister);
             return true;

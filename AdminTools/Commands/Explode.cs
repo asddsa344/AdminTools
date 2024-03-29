@@ -10,9 +10,9 @@ namespace AdminTools.Commands
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     public class Explode : ICommand, IUsageProvider
     {
-        public string Command { get; } = "expl";
+        public string Command { get; } = "explode";
 
-        public string[] Aliases { get; } = new string[] { "boom" };
+        public string[] Aliases { get; } = new string[] { "expl", "boom" };
 
         public string Description { get; } = "Explodes a specified user or everyone instantly";
 

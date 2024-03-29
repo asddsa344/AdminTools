@@ -35,7 +35,7 @@ namespace AdminTools.Commands.Mute
 
             foreach (Player player in Player.List)
             {
-                if(!player.IsMuted && !player.ReferenceHub.serverRoles.RemoteAdmin)
+                if (!player.IsMuted && !player.ReferenceHub.serverRoles.RemoteAdmin)
                 {
                     player.IsMuted = true;
                     Main.RoundStartMutes.Add(player);

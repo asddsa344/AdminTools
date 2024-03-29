@@ -3,6 +3,7 @@ An SCP:SL EXILED plugin that gives server owners fun commands and logging functi
 
 ### Features
 ```
+- Command extensions (View ExtendedCommandUsage for details)
 - Log commands in your server files!
 - Quickly send a message to all staff
 - Set AHP of players with ease
@@ -54,7 +55,7 @@ ghost - at.ghost
 grenade - at.grenade
 hbc - PlayerPermissions.Broadcasting (config_remoteadmin.txt)
 hp - PlayerPermissions.PlayersManagement (config_remoteadmin.txt)
-instantkill - at.ik
+instantkill - at.instakill
 inventory - at.inv
 jail - at.jail
 kick - at.kick
@@ -75,4 +76,14 @@ tags - at.tags
 targetghost - at.targetghost
 teleportx - at.tp
 tutorial - at.tut
+```
+### ExtendedCommandUsage
+```
+Enabling this will make it easier to specify multiple people in command usage.
+New options:
+All & * for selecting all players currently on the server.
+RoleTypeId enum for selecting players currently part of that role
+Team enum for selecting players currently part of that team
+SimplifiedTeam: Scp, Mtf, Ci (Chaos Insurgency), Sci (Scientists), Cld (Class D), Rip (Dead), Tut (Tutorial)
+Additional: Alive, Human, Civilian, Military
 ```

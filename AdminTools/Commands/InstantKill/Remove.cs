@@ -19,7 +19,7 @@ namespace AdminTools.Commands.InstantKill
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!sender.CheckPermission("at.inv"))
+            if (!sender.CheckPermission("at.instakill"))
             {
                 response = "You do not have permission to use this command";
                 return false;
@@ -27,7 +27,7 @@ namespace AdminTools.Commands.InstantKill
 
             if (arguments.Count != 1)
             {
-                response = "Usage: inventory drop ((player id / name) or (all / *))";
+                response = "Usage: instakill remove ((player id / name) or (all / *))";
                 return false;
             }
 

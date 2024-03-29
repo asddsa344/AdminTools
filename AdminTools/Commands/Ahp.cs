@@ -29,7 +29,7 @@ namespace AdminTools.Commands
 
             if (arguments.Count < 2)
             {
-                response = "Usage: ahp ((player id / name) or (all / *)) (value)";
+                response = "Usage: ahp ((player id / name) or (all / *)) (value) [decay = 1.2] [efficacy = 0.7] [sustain = 0] [persistant = false]";
                 return false;
             }
 
@@ -49,7 +49,6 @@ namespace AdminTools.Commands
             if (!float.TryParse(arguments.ElementAtOrDefault(3), out float decay))
                 decay = 1.2f;
 
-
             if (!float.TryParse(arguments.ElementAtOrDefault(4), out float efficacy))
                 efficacy = 0.7f;
 
@@ -61,7 +60,7 @@ namespace AdminTools.Commands
             {
                 p.AddAhp(value, value, decay, efficacy, sustain, persistant);
             }
-            response = $"AHP has been set to {value} for all the followed player:\n{Extensions.LogPlayers(players)}";
+            response = $"AHP has been set to {value} for all the followed players:\n{Extensions.LogPlayers(players)}";
             return true;
         }
     }

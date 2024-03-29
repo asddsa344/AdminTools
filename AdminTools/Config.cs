@@ -8,7 +8,8 @@ namespace AdminTools
         [Description("Enable/Disable AdminTools.")]
         public bool IsEnabled { get; set; } = true;
 
-        public bool Debug { get; set; }
+        [Description("Whether or not to show logs used for debugging.")]
+        public bool Debug { get; set; } = false;
 
         [Description("Should the tutorial class be in God Mode? Default: false")]
         public bool GodTuts { get; set; } = false;

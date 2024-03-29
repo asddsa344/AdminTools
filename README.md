@@ -3,6 +3,7 @@ An SCP:SL EXILED plugin that gives server owners fun commands and logging functi
 
 ### Features
 ```
+- enabling better_commands will allow you to select multiple players at once with ease. 
 - Log commands in your server files!
 - Quickly send a message to all staff
 - Set AHP of players with ease

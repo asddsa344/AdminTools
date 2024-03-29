@@ -14,6 +14,7 @@ namespace AdminTools.Patches
     {
         public static bool Prefix(ref List<ReferenceHub> __result, ArraySegment<string> args, int startindex, out string[] newargs, bool keepEmptyEntries = false)
         {
+            Log.Debug("BetterCommands::CustomRAUtilsAddon was called.");
             string text = RAUtils.FormatArguments(args, startindex);
             List<ReferenceHub> list = ListPool<ReferenceHub>.Shared.Rent();
             

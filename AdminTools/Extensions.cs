@@ -11,7 +11,7 @@ namespace AdminTools
 {
     public static class Extensions
     {
-        public static string FormatArguments(ArraySegment<string> sentence, int index)
+        public static string FormatArguments(this ArraySegment<string> sentence, int index)
         {
             StringBuilder sb = new();
             foreach (string word in sentence.Segment(index))
@@ -22,9 +22,10 @@ namespace AdminTools
             string msg = sb.ToString();
             return msg;
         }
-        public static string LogPlayers(IEnumerable<Player> players) => string.Join("\n - ", players.Select(x => $"{x.Nickname}({x.Id})"));
 
-        public static void SavingPlayerData(Player player)
+        public static string LogPlayers(this IEnumerable<Player> players) => string.Join("\n - ", players.Select(x => $"{x.Nickname}({x.Id})"));
+
+        public static void SavingPlayerData(this Player player)
         {
             List<string> overwatchRead = Main.Overwatch;
             List<string> tagsRead = Main.HiddenTags;

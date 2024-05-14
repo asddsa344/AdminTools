@@ -31,7 +31,7 @@ namespace AdminTools.Patches
                 new(OpCodes.Ldloc_2),
                 
                 // text2
-                new(OpCodes.Ldarga, 9),
+                new(OpCodes.Ldloca_S, 9),
 
                 // DoorCommandPatche.GetExiledDoor(doorvariant, array, ref text)
                 new(OpCodes.Call, Method(typeof(DoorCommandPatche), nameof(GetExiledDoor))),
@@ -42,8 +42,7 @@ namespace AdminTools.Patches
             index = newInstructions.FindIndex(x => x.operand == (object)PropertyGetter(typeof(DoorNametagExtension), nameof(DoorNametagExtension.GetName))) + offset;
 
             newInstructions[index].labels.Add(found);
-            for (int z = 0; z < newInstructions.Count; z++)
-                Log.Warn($"[{z}] {newInstructions[z].opcode} {newInstructions[z].operand} - {newInstructions[z].labels.Count}");
+
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 

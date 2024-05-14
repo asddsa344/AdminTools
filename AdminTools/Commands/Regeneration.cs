@@ -51,11 +51,11 @@ namespace AdminTools.Commands
                 return false;
             }
 
-            response = string.Empty;
             AnimationCurve animationCurve = AnimationCurve.Constant(0f, duration, rate);
             RegenerationProcess reg = new(animationCurve, 1f, 1f);
             foreach (Player player in players)
                 UsableItemsController.GetHandler(player.ReferenceHub).ActiveRegenerations.Add(reg);
+            response = $"All the followed player has been regenerated:\n{Extensions.LogPlayers(players)}";
             return true;
         }
     }

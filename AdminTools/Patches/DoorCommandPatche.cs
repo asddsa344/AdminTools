@@ -7,6 +7,7 @@ using Exiled.API.Features.Pools;
 using Interactables.Interobjects.DoorUtils;
 using Exiled.API.Features.Doors;
 using Exiled.API.Enums;
+using Exiled.API.Features;
 
 namespace AdminTools.Patches
 {
@@ -15,11 +16,11 @@ namespace AdminTools.Patches
         internal static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
-
+            
             Label found = generator.DefineLabel();
 
             int offset = -1;
-            int index = newInstructions.FindLastIndex(x => x.opcode == OpCodes.Ldloc_S && x.operand == (object)10) + offset;
+            int index = newInstructions.FindLastIndex(x => x.opcode == OpCodes.Ldloc_S && ((System.Reflection.Emit.LocalBuilder)x.operand).LocalIndex is 10) + offset;
 
             newInstructions.InsertRange(index, new CodeInstruction[]
             {
@@ -29,7 +30,7 @@ namespace AdminTools.Patches
                 // array[]
                 new(OpCodes.Ldloc_2),
                 
-                // text
+                // text2
                 new(OpCodes.Ldarga, 9),
 
                 // DoorCommandPatche.GetExiledDoor(doorvariant, array, ref text)
@@ -41,7 +42,8 @@ namespace AdminTools.Patches
             index = newInstructions.FindIndex(x => x.operand == (object)PropertyGetter(typeof(DoorNametagExtension), nameof(DoorNametagExtension.GetName))) + offset;
 
             newInstructions[index].labels.Add(found);
-
+            for (int z = 0; z < newInstructions.Count; z++)
+                Log.Warn($"[{z}] {newInstructions[z].opcode} {newInstructions[z].operand} - {newInstructions[z].labels.Count}");
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 

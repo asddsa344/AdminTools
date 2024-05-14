@@ -118,7 +118,7 @@ namespace AdminTools.Commands
                     }
                     if (!Enum.TryParse(arguments.At(2), true, out VectorAxis axis))
                     {
-                        response = $"Invalid value for vector axis: {arguments.At(2)}";
+                        response = $"Invalid value for vector axis ({string.Join(", ", Enum.GetNames(typeof(PositionModifier)))}): {arguments.At(2)}";
                         return false;
                     }
                     if (!float.TryParse(arguments.At(3), out float val))

@@ -38,6 +38,7 @@ namespace AdminTools.Commands
                 response = $"Duration should be a float number: {arguments.At(1)}";
                 return false;
             }
+
             if (float.TryParse(arguments.At(2), out float rate))
             {
                 response = $"Rate should be a float number: {arguments.At(1)}";

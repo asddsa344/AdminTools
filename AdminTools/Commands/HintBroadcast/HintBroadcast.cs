@@ -7,20 +7,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using PlayerRoles;
+using AdminTools.Commands.InstantKill;
 
-namespace AdminTools.Commands
+namespace AdminTools.Commands.HintBroadcast
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
-    public class Hint : ICommand
+    public class HintBroadcast : ParentCommand, IUsageProvider
     {
-        public string Command { get; } = "hint";
+        public override string Command { get; } = "HintBroadcast";
 
-        public string[] Aliases { get; } = new string[] { "broadcasthint" , "hbc" };
+        public override string[] Aliases { get; } = new string[] { "hint" , "hbc" };
 
-        public string Description { get; } = "Broadcasts a message to either a user, a group, a role, all staff, or everyone";
+        public override string Description { get; } = "Broadcasts a message to either a user, a group, a role, all staff, or everyone";
 
-        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response) // TODO: Make it ParentCommand
+        public string[] Usage { get; } = new string[] { "Uhm" };
+        public override void LoadGeneratedCommands()
+        {
+            RegisterCommand(new Add());
+            RegisterCommand(new Clear());
+            RegisterCommand(new Group());
+            RegisterCommand(new User());
+        }
+
+        protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response) // TODO: Make it ParentCommand
         {
             if (!CommandProcessor.CheckPermissions(((CommandSender)sender), "hints", PlayerPermissions.Broadcasting, "AdminTools", false))
             {
@@ -32,11 +42,8 @@ namespace AdminTools.Commands
             {
                 response = "Usage:\nhint (time) (message)" +
                     "\nhbc user (player id / name) (time) (message)" +
-                    "\nhbc users (player id / name group (i.e.: 1,2,3 or hello,there,hehe)) (time) (message)" +
                     "\nhbc group (group name) (time) (message)" +
                     "\nhbc groups (list of groups (i.e.: owner,admin,moderator)) (time) (message)" +
-                    "\nhbc role (RoleTypeId) (time) (message)" +
-                    "\nhbc roles (RoleTypeId group (i.e.: ClassD,Scientist,NtfCadet)) (time) (message)" +
                     "\nhbc (random / someone) (time) (message)" +
                     "\nhbc (staff / admin) (time) (message)" +
                     "\nhbc clearall";
@@ -174,70 +181,6 @@ namespace AdminTools.Commands
                     string ms = bdr.ToString();
                     StringBuilderPool.Shared.Return(bdr);
                     response = ms;
-                    return true;
-                case "role":
-                    if (arguments.Count < 4)
-                    {
-                        response = "Usage: hbc role (RoleTypeId) (time) (message)";
-                        return false;
-                    }
-
-                    if (!Enum.TryParse(arguments.At(1), true, out RoleTypeId role))
-                    {
-                        response = $"Invalid value for RoleTypeId: {arguments.At(1)}";
-                        return false;
-                    }
-
-                    if (!ushort.TryParse(arguments.At(2), out ushort te) && te <= 0)
-                    {
-                        response = $"Invalid value for duration: {arguments.At(2)}";
-                        return false;
-                    }
-
-                    foreach (Player player in Player.List)
-                    {
-                        if (player.Role == role)
-                            player.ShowHint(Extensions.FormatArguments(arguments, 3), te);
-                    }
-
-                    response = $"Hint sent to all members of \"{arguments.At(1)}\"";
-                    return true;
-                case "roles":
-                    if (arguments.Count < 4)
-                    {
-                        response = "Usage: hbc roles (RoleTypeId group (i.e.: ClassD, Scientist, NtfCadet)) (time) (message)";
-                        return false;
-                    }
-
-                    string[] roles = arguments.At(1).Split(',');
-                    List<RoleTypeId> roleList = new();
-                    foreach (string s in roles)
-                    {
-                        if (Enum.TryParse(s, true, out RoleTypeId r))
-                            roleList.Add(r);
-                    }
-
-                    if (!ushort.TryParse(arguments.At(2), out ushort ti) && ti <= 0)
-                    {
-                        response = $"Invalid value for duration: {arguments.At(2)}";
-                        return false;
-                    }
-
-                    foreach (Player p in Player.List)
-                        if (roleList.Contains(p.Role))
-                            p.ShowHint(Extensions.FormatArguments(arguments, 3), ti);
-
-                    StringBuilder build = StringBuilderPool.Shared.Rent("Hint sent to roles: ");
-                    foreach (RoleTypeId ro in roleList)
-                    {
-                        build.Append("\"");
-                        build.Append(ro.ToString());
-                        build.Append("\"");
-                        build.Append(" ");
-                    }
-                    string msg = build.ToString();
-                    StringBuilderPool.Shared.Return(build);
-                    response = msg;
                     return true;
                 case "random":
                 case "someone":

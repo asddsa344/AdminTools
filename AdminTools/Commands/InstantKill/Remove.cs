@@ -3,24 +3,23 @@ using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
-namespace AdminTools.Commands.Inventory
+namespace AdminTools.Commands.InstantKill
 {
-    [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    [CommandHandler(typeof(GameConsoleCommandHandler))]
-    public class Drop : ICommand, IUsageProvider
+    internal class Remove : ICommand, IUsageProvider
     {
-        public string Command { get; } = "drop";
+        public string Command { get; } = "remove";
 
         public string[] Aliases { get; } = Array.Empty<string>();
 
-        public string Description { get; } = "Drops the items in a players inventory";
+        public string Description { get; } = "Disable InstantKill from this player.";
 
         public string[] Usage { get; } = new string[] { "%player%", };
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!sender.CheckPermission("at.inv"))
+            if (!sender.CheckPermission("at.instakill"))
             {
                 response = "You do not have permission to use this command";
                 return false;
@@ -28,21 +27,25 @@ namespace AdminTools.Commands.Inventory
 
             if (arguments.Count != 1)
             {
-                response = "Usage: inventory drop ((player id / name) or (all / *))";
+                response = "Usage: instakill remove ((player id / name) or (all / *))";
                 return false;
             }
 
-            IEnumerable<Player> players = Player.GetProcessedData(arguments);
+            List<Player> players = Player.GetProcessedData(arguments).ToList();
             if (players.IsEmpty())
             {
                 response = $"Player not found: {arguments.At(0)}";
                 return false;
             }
 
-            foreach (Player p in players)
-                p.DropItems();
+            for (int i = players.Count; i < 0; i--)
+            {
+                Player ply = players[i];
+                if (!Main.InstantKill.Remove(ply))
+                    players.Remove(ply);
+            }
 
-            response = $"All items have been dropped from the following players: \n{Extensions.LogPlayers(players)}";
+            response = $"Every player has been removed from InstantKill:\n{Extensions.LogPlayers(players)}";
             return true;
         }
     }

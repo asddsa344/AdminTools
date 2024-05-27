@@ -4,23 +4,23 @@ using Exiled.Permissions.Extensions;
 using System;
 using System.Collections.Generic;
 
-namespace AdminTools.Commands.Inventory
+namespace AdminTools.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
-    public class Drop : ICommand, IUsageProvider
+    public class Explode : ICommand, IUsageProvider
     {
-        public string Command { get; } = "drop";
+        public string Command { get; } = "explode";
 
-        public string[] Aliases { get; } = Array.Empty<string>();
+        public string[] Aliases { get; } = new string[] { "expl", "boom" };
 
-        public string Description { get; } = "Drops the items in a players inventory";
+        public string Description { get; } = "Explodes a specified user or everyone instantly";
 
         public string[] Usage { get; } = new string[] { "%player%", };
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!sender.CheckPermission("at.inv"))
+            if (!sender.CheckPermission("at.explode"))
             {
                 response = "You do not have permission to use this command";
                 return false;
@@ -28,7 +28,7 @@ namespace AdminTools.Commands.Inventory
 
             if (arguments.Count != 1)
             {
-                response = "Usage: inventory drop ((player id / name) or (all / *))";
+                response = "Usage: expl ((player id / name) or (all / *))";
                 return false;
             }
 
@@ -39,10 +39,15 @@ namespace AdminTools.Commands.Inventory
                 return false;
             }
 
-            foreach (Player p in players)
-                p.DropItems();
+            foreach (Player ply in players)
+            {
+                if (ply.IsDead)
+                    continue;
 
-            response = $"All items have been dropped from the following players: \n{Extensions.LogPlayers(players)}";
+                ply.Explode();
+                ply.Kill("Exploded by admin.");
+            }
+            response = $"The following players have been exploded:\n{Extensions.LogPlayers(players)}";
             return true;
         }
     }

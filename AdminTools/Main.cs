@@ -2,86 +2,87 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Exiled.API.Features;
-using Handlers = Exiled.Events.Handlers;
 using UnityEngine;
+using HarmonyLib;
+using Utils;
+using System.Linq;
+using AdminTools.Patches;
+using CommandSystem.Commands.RemoteAdmin.Doors;
+using Exiled.API.Enums;
 
 namespace AdminTools
 {
 	public class Main : Plugin<Config>
 	{
+		public static System.Random NumGen { get; } = new();
+		public static List<string> Overwatch { get; internal set; }
+		public static List<string> HiddenTags { get; internal set; }
+		public static Dictionary<string, Jailed> JailedPlayers { get; } = new();
+		public static List<Player> PryGate { get; } = new();
+		public static List<Player> InstantKill { get; } = new();
+		public static List<Player> BreakDoors { get; } = new();
+		public static List<Player> RoundStartMutes { get; } = new();
+		public static Dictionary<Player, List<GameObject>> BchHubs { get; } = new();
+		public static float HealthGain { get; } = 5;
+		public static float HealthInterval { get; } = 1;
+
+		public string OverwatchFilePath { get; private set; }
+		public string HiddenTagsFilePath { get; private set; }
+
+		public Harmony Harmony { get; } = new("Exiled-AdminTools");
+		public EventHandlers EventHandlers { get; private set; }
+		
 		public override string Author { get; } = "Exiled-Team";
 		public override string Name { get; } = "Admin Tools";
-		public override string Prefix { get; } = "AT";
-        public override Version Version { get; } = new(7, 1, 0);
+		public override string Prefix { get; } = "AdminTools";
+		public override PluginPriority Priority { get; } = (PluginPriority)1;
+		public override Version Version { get; } = new(8, 0, 0);
+        public override Version RequiredExiledVersion { get; } = new(8, 8, 0);
 
-        public override Version RequiredExiledVersion { get; } = new(8, 5, 0);
-
-        public EventHandlers EventHandlers;
-		public static System.Random NumGen = new();
-		public static List<Jailed> JailedPlayers = new();
-		public static Dictionary<Player, InstantKillComponent> IkHubs = new();
-		public static Dictionary<Player, RegenerationComponent> RgnHubs = new();
-		public static HashSet<Player> PryGateHubs = new();
-		public static Dictionary<Player, List<GameObject>> BchHubs = new();
-		public static Dictionary<Player, List<GameObject>> DumHubs = new();
-		public static float HealthGain = 5;
-		public static float HealthInterval = 1;
-		public string OverwatchFilePath;
-		public string HiddenTagsFilePath;
-		public static bool RestartOnEnd = false;
-		public static HashSet<Player> RoundStartMutes = new();
-
-		public override void OnEnabled()
+        public override void OnEnabled()
 		{
 			try
 			{
-				string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-				string pluginPath = Path.Combine(appData, "Plugins");
-				string path = Path.Combine(Paths.Plugins, "AdminTools");
+				string path = Path.Combine(Paths.Configs, "AdminTools");
 				string overwatchFileName = Path.Combine(path, "AdminTools-Overwatch.txt");
 				string hiddenTagFileName = Path.Combine(path, "AdminTools-HiddenTags.txt");
+                OverwatchFilePath = overwatchFileName;
+                HiddenTagsFilePath = hiddenTagFileName;
 
-				if (!Directory.Exists(path))
+                if (!Directory.Exists(path))
 					Directory.CreateDirectory(path);
 
 				if (!File.Exists(overwatchFileName))
 					File.Create(overwatchFileName).Close();
-
-				if (!File.Exists(hiddenTagFileName))
+				else
+                    Overwatch = File.ReadAllLines(overwatchFileName).ToList();
+                if (!File.Exists(hiddenTagFileName))
 					File.Create(hiddenTagFileName).Close();
-
-				OverwatchFilePath = overwatchFileName;
-				HiddenTagsFilePath = hiddenTagFileName;
+                else
+                    HiddenTags = File.ReadAllLines(hiddenTagFileName).ToList();
             }
             catch (Exception e)
             {
                 Log.Error($"Loading error: {e}");
             }
 
-            EventHandlers = new EventHandlers(this);
-            Handlers.Player.Verified += EventHandlers.OnPlayerVerified;
-            Handlers.Server.RoundEnded += EventHandlers.OnRoundEnd;
-            Handlers.Player.TriggeringTesla += EventHandlers.OnTriggerTesla;
-            Handlers.Player.ChangingRole += EventHandlers.OnSetClass;
-            Handlers.Server.WaitingForPlayers += EventHandlers.OnWaitingForPlayers;
-            Handlers.Player.InteractingDoor += EventHandlers.OnDoorOpen;
-            Handlers.Server.RoundStarted += EventHandlers.OnRoundStart;
-            Handlers.Player.Destroying += EventHandlers.OnPlayerDestroyed;
-            Handlers.Player.InteractingDoor += EventHandlers.OnPlayerInteractingDoor;
+            EventHandlers = new(this);
+
+            if (Config.ExtendedCommandUsage)
+            {
+	            Harmony.Patch(AccessTools.Method(typeof(RAUtils), nameof(RAUtils.ProcessPlayerIdOrNamesList)), new(AccessTools.Method(typeof(CustomRAUtilsAddon), nameof(CustomRAUtilsAddon.Prefix))));
+	            Harmony.Patch(AccessTools.Method(typeof(BaseDoorCommand), nameof(BaseDoorCommand.Execute)), transpiler: new(AccessTools.Method(typeof(DoorCommandPatch), nameof(DoorCommandPatch.Transpiler))));
+            }
+
+            base.OnEnabled();
 		}
 
 		public override void OnDisabled()
 		{
-			Handlers.Player.InteractingDoor -= EventHandlers.OnDoorOpen;
-			Handlers.Player.Verified -= EventHandlers.OnPlayerVerified;
-			Handlers.Server.RoundEnded -= EventHandlers.OnRoundEnd;
-			Handlers.Player.TriggeringTesla -= EventHandlers.OnTriggerTesla;
-			Handlers.Player.ChangingRole -= EventHandlers.OnSetClass;
-			Handlers.Server.WaitingForPlayers -= EventHandlers.OnWaitingForPlayers;
-			Handlers.Server.RoundStarted -= EventHandlers.OnRoundStart;
-			Handlers.Player.Destroying -= EventHandlers.OnPlayerDestroyed;
-			EventHandlers = null;
-			NumGen = null;
+			Harmony?.UnpatchAll(Harmony.Id);
+            EventHandlers = null;
+            
+            base.OnDisabled();
 		}
 	}
 }

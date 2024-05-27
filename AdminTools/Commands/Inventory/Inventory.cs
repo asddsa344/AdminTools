@@ -6,7 +6,7 @@ namespace AdminTools.Commands.Inventory
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
-    public class Inventory : ParentCommand
+    public class Inventory : ParentCommand, IUsageProvider
     {
         public Inventory() => LoadGeneratedCommands();
 
@@ -16,6 +16,8 @@ namespace AdminTools.Commands.Inventory
 
         public override string Description { get; } = "Manages player inventories";
 
+        public string[] Usage { get; } = new string[] { "drop / see", };
+
         public override void LoadGeneratedCommands()
         {
             RegisterCommand(new Drop());
@@ -24,7 +26,7 @@ namespace AdminTools.Commands.Inventory
 
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!((CommandSender)sender).CheckPermission("at.inv"))
+            if (!sender.CheckPermission("at.inv"))
             {
                 response = "You do not have permission to use this command";
                 return false;

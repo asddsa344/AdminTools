@@ -15,7 +15,7 @@ namespace AdminTools.Commands.Mute
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!((CommandSender)sender).CheckPermission("at.mute"))
+            if (!sender.CheckPermission("at.mute"))
             {
                 response = "You do not have permission to use this command";
                 return false;
@@ -35,7 +35,7 @@ namespace AdminTools.Commands.Mute
 
             foreach (Player player in Player.List)
             {
-                if(!player.IsMuted && !player.ReferenceHub.serverRoles.RemoteAdmin)
+                if (!player.IsMuted && !player.ReferenceHub.serverRoles.RemoteAdmin)
                 {
                     player.IsMuted = true;
                     Main.RoundStartMutes.Add(player);

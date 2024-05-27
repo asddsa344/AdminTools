@@ -59,67 +59,73 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\AdminBroadcast\AdminBroadcast.cs" />
-    <Compile Include="Commands\Ahp\Ahp.cs" />
-    <Compile Include="Commands\Ball\Ball.cs" />
-    <Compile Include="Commands\BreakDoors\BreakDoors.cs" />
-    <Compile Include="Commands\Configuration\Configuration.cs" />
-    <Compile Include="Commands\Configuration\Reload.cs" />
-    <Compile Include="Commands\DropItem\DropItem.cs" />
-    <Compile Include="Commands\DropSize\DropSize.cs" />
-    <Compile Include="Commands\Enums\Enums.cs" />
-    <Compile Include="Commands\Explode\Explode.cs" />
-    <Compile Include="Commands\FakeSync\FakeSpawnCommand.cs" />
-    <Compile Include="Commands\Ghost\Ghost.cs" />
-    <Compile Include="Commands\Grenade\Grenade.cs" />
+    <Compile Include="Commands\Ahp.cs" />
+    <Compile Include="Commands\Ball.cs" />
+    <Compile Include="Commands\BreakDoor\BreakDoors.cs" />
+    <Compile Include="Commands\DropItem.cs" />
+    <Compile Include="Commands\DropSize.cs" />
+    <Compile Include="Commands\Enums.cs" />
+    <Compile Include="Commands\Explode.cs" />
+    <Compile Include="Commands\FakeSpawnCommand.cs" />
+    <Compile Include="Commands\Ghost.cs" />
+    <Compile Include="Commands\Grenade.cs" />
+    <Compile Include="Commands\HintBroadcast\Add.cs" />
+    <Compile Include="Commands\HintBroadcast\Clear.cs" />
+    <Compile Include="Commands\HintBroadcast\Group.cs" />
     <Compile Include="Commands\HintBroadcast\HintBroadcast.cs" />
-    <Compile Include="Commands\Hp\Hp.cs" />
-    <Compile Include="Commands\Jail\Jail.cs" />
-    <Compile Include="Commands\Position\Position.cs" />
-    <Compile Include="Commands\PryGates\PryGates.cs" />
-    <Compile Include="Commands\RandomTeleport\RandomTeleport.cs" />
-    <Compile Include="Commands\Regeneration\Regeneration.cs" />
-    <Compile Include="Commands\SpawnRagdoll\SpawnRagdoll.cs" />
-    <Compile Include="Commands\Scale\Scale.cs" />
-    <Compile Include="Commands\Broadcast\Message.cs" />
-    <Compile Include="Commands\Size\Size.cs" />
-    <Compile Include="Commands\SpawnWorkbench\SpawnWorkbench.cs" />
+    <Compile Include="Commands\HintBroadcast\User.cs" />
+    <Compile Include="Commands\InstantKill\Add.cs" />
+    <Compile Include="Commands\InstantKill\InstantKill.cs" />
+    <Compile Include="Commands\InstantKill\List.cs" />
+    <Compile Include="Commands\InstantKill\Remove.cs" />
+    <Compile Include="Commands\Jail.cs" />
+    <Compile Include="Commands\Position.cs" />
+    <Compile Include="Commands\PryGate\PryGates.cs" />
+    <Compile Include="Commands\RandomTeleport.cs" />
+    <Compile Include="Commands\Regeneration.cs" />
+    <Compile Include="Commands\Rocket.cs" />
+    <Compile Include="Commands\Scale.cs" />
+    <Compile Include="Commands\Size.cs" />
+    <Compile Include="Commands\SpawnRagdoll.cs" />
+    <Compile Include="Commands\SpawnWorkbench.cs" />
     <Compile Include="Commands\Tags\Hide.cs" />
     <Compile Include="Commands\Tags\Show.cs" />
     <Compile Include="Commands\Tags\Tags.cs" />
-    <Compile Include="Commands\Id\ID.cs" />
-    <Compile Include="Commands\InstantKill\InstantKill.cs" />
     <Compile Include="Commands\Inventory\Drop.cs" />
     <Compile Include="Commands\Inventory\Inventory.cs" />
     <Compile Include="Commands\Inventory\See.cs" />
-    <Compile Include="Commands\Kill\Kill.cs" />
     <Compile Include="Commands\Mute\All.cs" />
     <Compile Include="Commands\Mute\ICom.cs" />
     <Compile Include="Commands\Mute\Mute.cs" />
     <Compile Include="Commands\Mute\RoundStart.cs" />
-    <Compile Include="Commands\Rocket\Rocket.cs" />
-    <Compile Include="Commands\Strip\Strip.cs" />
-    <Compile Include="Commands\TargetGhost\TargetGhost.cs" />
-    <Compile Include="Commands\TeleportX\TeleportX.cs" />
-    <Compile Include="Commands\Tutorial\Tutorial.cs" />
+    <Compile Include="Commands\TargetGhost.cs" />
+    <Compile Include="Commands\TeleportX.cs" />
     <Compile Include="Commands\Unmute\All.cs" />
     <Compile Include="Commands\Unmute\ICom.cs" />
     <Compile Include="Commands\Unmute\Unmute.cs" />
     <Compile Include="Commands\Unmute\RoundStart.cs" />
-    <Compile Include="Commands\Kick\Kick.cs" />
-    <Compile Include="Components\RegenerationComponent.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="EventHandlers.cs" />
-    <Compile Include="Components\InstantKillComponent.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="Jailed.cs" />
     <Compile Include="Main.cs" />
+    <Compile Include="Patches\DoorCommandPatche.cs" />
+    <Compile Include="Patches\RAUtilsAddon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="EXILED">
-      <Version>8.5.0-beta.1</Version>
+      <Version>8.8.1</Version>
     </PackageReference>
+    <PackageReference Include="Lib.Harmony">
+      <Version>2.2.2</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\.editorconfig">
+      <Link>.editorconfig</Link>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

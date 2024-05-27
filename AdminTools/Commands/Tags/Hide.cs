@@ -9,13 +9,13 @@ namespace AdminTools.Commands.Tags
     {
         public string Command { get; } = "hide";
 
-        public string[] Aliases { get; } = new string[] { };
+        public string[] Aliases { get; } = Array.Empty<string>();
 
         public string Description { get; } = "Hides staff tags on the server";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!((CommandSender)sender).CheckPermission("at.tags"))
+            if (!sender.CheckPermission("at.tags"))
             {
                 response = "You do not have permission to use this command";
                 return false;

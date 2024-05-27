@@ -1,13 +1,10 @@
 ﻿using CommandSystem;
 using Exiled.API.Features;
 using NorthwoodLib.Pools;
-using RemoteAdmin;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using PlayerRoles;
-using AdminTools.Commands.InstantKill;
 
 namespace AdminTools.Commands.HintBroadcast
 {
@@ -24,19 +21,16 @@ namespace AdminTools.Commands.HintBroadcast
         public string[] Usage { get; } = new string[] { "Uhm" };
         public override void LoadGeneratedCommands()
         {
-            RegisterCommand(new Add());
-            RegisterCommand(new Clear());
-            RegisterCommand(new Group());
-            RegisterCommand(new User());
+            // RegisterCommand(new Add());
+            // RegisterCommand(new Clear());
+            // RegisterCommand(new Group());
+            // RegisterCommand(new User());
         }
 
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response) // TODO: Make it ParentCommand
         {
-            if (!CommandProcessor.CheckPermissions(((CommandSender)sender), "hints", PlayerPermissions.Broadcasting, "AdminTools", false))
-            {
-                response = "You do not have permission to use this command";
+            if (!sender.CheckPermission(PlayerPermissions.Broadcasting, out response))
                 return false;
-            }
 
             if (arguments.Count < 1)
             {

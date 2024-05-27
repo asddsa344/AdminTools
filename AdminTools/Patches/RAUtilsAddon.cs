@@ -46,6 +46,9 @@ namespace AdminTools.Patches
                     string[] array = args.At(startindex).Split('.');
                     for (int i = 0; i < array.Length; i++)
                     {
+                        if (array[i].StartsWith("-"))
+                            continue;
+
                         if (array[i].ToLower() is "all" or "*")
                         {
                             list.AddRange(Player.List.Select(x => x.ReferenceHub));
@@ -70,7 +73,13 @@ namespace AdminTools.Patches
                                     list.AddRange(Player.List.Where(p => p.Role.Team is Team.Scientists or Team.ClassD).Select(x => x.ReferenceHub));
                                     break;
                                 case SimplifyTeam.MILITARY:
-                                    list.AddRange(Player.List.Where(p => p.Role.Team is Team.FoundationForces or Team.ChaosInsurgency).Select(x => x.ReferenceHub));
+                                    list.AddRange(Player.List.Where(p => p.Role.Team is Team.FoundationForces or Team.ChaosInsurgency).Select(p => p.ReferenceHub));
+                                    break;
+                                case SimplifyTeam.STAFF:
+                                    list.AddRange(Player.List.Where(p => p.RemoteAdminAccess).Select(p => p.ReferenceHub));
+                                    break;
+                                case SimplifyTeam.NOSTAFF:
+                                    list.AddRange(Player.List.Where(p => !p.RemoteAdminAccess).Select(p => p.ReferenceHub));
                                     break;
                                 default:
                                     list.AddRange(Player.Get((Team)simplifyTeam).Select(x => x.ReferenceHub));
@@ -115,6 +124,8 @@ namespace AdminTools.Patches
             HUMAN,
             CIVILIAN,
             MILITARY,
+            NOSTAFF,
+            STAFF,
         }
     }
 }

@@ -11,7 +11,7 @@ using Exiled.API.Features;
 
 namespace AdminTools.Patches
 {
-    internal static class DoorCommandPatche
+    internal static class DoorCommandPatch
     {
         internal static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
@@ -34,7 +34,7 @@ namespace AdminTools.Patches
                 new(OpCodes.Ldloca_S, 9),
 
                 // DoorCommandPatche.GetExiledDoor(doorvariant, array, ref text)
-                new(OpCodes.Call, Method(typeof(DoorCommandPatche), nameof(GetExiledDoor))),
+                new(OpCodes.Call, Method(typeof(DoorCommandPatch), nameof(GetExiledDoor))),
                 new(OpCodes.Brtrue_S, found),
             });
 

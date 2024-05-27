@@ -85,5 +85,5 @@ All & * for selecting all players currently on the server.
 RoleTypeId enum for selecting players currently part of that role
 Team enum for selecting players currently part of that team
 SimplifiedTeam: Scp, Mtf, Ci (Chaos Insurgency), Sci (Scientists), Cld (Class D), Rip (Dead), Tut (Tutorial)
-Additional: Alive, Human, Civilian, Military
+Additional: Alive, Human, Civilian, Military, Staff, NoStaff
 ```

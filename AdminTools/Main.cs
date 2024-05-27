@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Exiled.API.Features;
-using Handlers = Exiled.Events.Handlers;
 using UnityEngine;
 using HarmonyLib;
 using Utils;
@@ -72,36 +71,15 @@ namespace AdminTools
             if (Config.ExtendedCommandUsage)
             {
 	            Harmony.Patch(AccessTools.Method(typeof(RAUtils), nameof(RAUtils.ProcessPlayerIdOrNamesList)), new(AccessTools.Method(typeof(CustomRAUtilsAddon), nameof(CustomRAUtilsAddon.Prefix))));
-	            Harmony.Patch(AccessTools.Method(typeof(BaseDoorCommand), nameof(BaseDoorCommand.Execute)), transpiler: new(AccessTools.Method(typeof(DoorCommandPatche), nameof(DoorCommandPatche.Transpiler))));
+	            Harmony.Patch(AccessTools.Method(typeof(BaseDoorCommand), nameof(BaseDoorCommand.Execute)), transpiler: new(AccessTools.Method(typeof(DoorCommandPatch), nameof(DoorCommandPatch.Transpiler))));
             }
 
-            Handlers.Player.Verified += EventHandlers.OnPlayerVerified;
-            Handlers.Server.RoundEnded += EventHandlers.OnRoundEnded;
-            Handlers.Player.TriggeringTesla += EventHandlers.OnTriggeringTesla;
-            Handlers.Player.ChangingRole += EventHandlers.OnChangingRole;
-            Handlers.Server.WaitingForPlayers += EventHandlers.OnWaitingForPlayers;
-            Handlers.Player.InteractingDoor += EventHandlers.OnInteractingDoor;
-            Handlers.Server.RoundStarted += EventHandlers.OnRoundStarted;
-            Handlers.Player.Destroying += EventHandlers.OnPlayerDestroying;
-            Handlers.Player.InteractingDoor += EventHandlers.OnPlayerInteractingDoor;
-            
             base.OnEnabled();
 		}
 
 		public override void OnDisabled()
 		{
 			Harmony?.UnpatchAll(Harmony.Id);
-
-            Handlers.Player.InteractingDoor -= EventHandlers.OnInteractingDoor;
-			Handlers.Player.Verified -= EventHandlers.OnPlayerVerified;
-			Handlers.Server.RoundEnded -= EventHandlers.OnRoundEnded;
-			Handlers.Player.TriggeringTesla -= EventHandlers.OnTriggeringTesla;
-			Handlers.Player.ChangingRole -= EventHandlers.OnChangingRole;
-            Handlers.Server.WaitingForPlayers -= EventHandlers.OnWaitingForPlayers;
-			Handlers.Server.RoundStarted -= EventHandlers.OnRoundStarted;
-			Handlers.Player.Destroying -= EventHandlers.OnPlayerDestroying;
-            Handlers.Player.InteractingDoor -= EventHandlers.OnPlayerInteractingDoor;
-
             EventHandlers = null;
             
             base.OnDisabled();

@@ -10,11 +10,41 @@ namespace AdminTools
     using Exiled.API.Interfaces;
     using Log = Exiled.API.Features.Log;
     using PlayerStatsSystem;
+    using Handlers = Exiled.Events.Handlers;
 
     public class EventHandlers
 	{
 		private readonly Main plugin;
-		public EventHandlers(Main main) => plugin = main;
+
+		public EventHandlers(Main main)
+		{
+			plugin = main;
+			
+			Handlers.Player.Verified += OnPlayerVerified;
+			Handlers.Server.RoundEnded += OnRoundEnded;
+			Handlers.Player.TriggeringTesla += OnTriggeringTesla;
+			Handlers.Server.WaitingForPlayers += OnWaitingForPlayers;
+			Handlers.Player.InteractingDoor += OnInteractingDoor;
+			Handlers.Server.RoundStarted += OnRoundStarted;
+			Handlers.Player.Destroying += OnPlayerDestroying;
+			Handlers.Player.InteractingDoor += OnPlayerInteractingDoor;
+			
+			if (plugin.Config.GodTuts)
+				Handlers.Player.ChangingRole += OnChangingRole;
+		}
+
+		~EventHandlers()
+		{
+			Handlers.Player.Verified -= OnPlayerVerified;
+			Handlers.Server.RoundEnded -= OnRoundEnded;
+			Handlers.Player.TriggeringTesla -= OnTriggeringTesla;
+			Handlers.Player.ChangingRole -= OnChangingRole;
+			Handlers.Server.WaitingForPlayers -= OnWaitingForPlayers;
+			Handlers.Player.InteractingDoor -= OnInteractingDoor;
+			Handlers.Server.RoundStarted -= OnRoundStarted;
+			Handlers.Player.Destroying -= OnPlayerDestroying;
+			Handlers.Player.InteractingDoor -= OnPlayerInteractingDoor;
+		}
 
 		public void OnInteractingDoor(InteractingDoorEventArgs ev)
 		{
@@ -97,11 +127,7 @@ namespace AdminTools
 				ev.IsAllowed = false;
 		}
 
-		public void OnChangingRole(ChangingRoleEventArgs ev)
-		{
-			if (plugin.Config.GodTuts)
-				ev.Player.IsGodModeEnabled = ev.NewRole is RoleTypeId.Tutorial;
-		}
+		public void OnChangingRole(ChangingRoleEventArgs ev) => ev.Player.IsGodModeEnabled = ev.NewRole is RoleTypeId.Tutorial;
 
         public void OnWaitingForPlayers()
 		{

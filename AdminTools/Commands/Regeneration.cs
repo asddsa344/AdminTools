@@ -12,7 +12,7 @@ namespace AdminTools.Commands
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     public class Regeneration : ICommand, IUsageProvider
     {
-        public string Command { get; } = "Regeneration";
+        public string Command { get; } = "regeneration";
 
         public string[] Aliases { get; } = new string[] { "reg" };
 

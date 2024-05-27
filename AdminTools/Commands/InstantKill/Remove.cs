@@ -9,7 +9,7 @@ namespace AdminTools.Commands.InstantKill
 {
     internal class Remove : ICommand, IUsageProvider
     {
-        public string Command { get; } = "Remove";
+        public string Command { get; } = "remove";
 
         public string[] Aliases { get; } = Array.Empty<string>();
 

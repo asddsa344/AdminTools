@@ -9,7 +9,7 @@ namespace AdminTools.Commands.InstantKill
 {
     public class List : ICommand
     {
-        public string Command { get; } = "List";
+        public string Command { get; } = "list";
 
         public string[] Aliases { get; } = Array.Empty<string>();
 

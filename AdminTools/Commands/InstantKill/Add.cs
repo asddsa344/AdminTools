@@ -8,7 +8,7 @@ namespace AdminTools.Commands.InstantKill
 {
     public class Add : ICommand, IUsageProvider
     {
-        public string Command { get; } = "Add";
+        public string Command { get; } = "add";
 
         public string[] Aliases { get; } = Array.Empty<string>();
 

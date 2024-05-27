@@ -12,7 +12,7 @@ namespace AdminTools.Commands.HintBroadcast
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     public class HintBroadcast : ParentCommand, IUsageProvider
     {
-        public override string Command { get; } = "HintBroadcast";
+        public override string Command { get; } = "hintbroadcast";
 
         public override string[] Aliases { get; } = new string[] { "hint" , "hbc" };
 

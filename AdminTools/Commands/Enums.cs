@@ -9,7 +9,7 @@ namespace AdminTools.Commands
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     public class Enums : ICommand, IUsageProvider
     {
-        private IEnumerable<Type> types = null;
+        private IEnumerable<Type> types;
         public string Command { get; } = "enums";
 
         public string[] Aliases { get; } = new string[] { "enum" };

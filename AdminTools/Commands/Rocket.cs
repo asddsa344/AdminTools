@@ -16,7 +16,7 @@ namespace AdminTools.Commands
 
         public string[] Aliases { get; } = Array.Empty<string>();
 
-        public string Description { get; } = "Sends players high in the sky and explodes them";
+        public string Description { get; } = "Turns the player into a firework.";
 
         public string[] Usage { get; } = new string[] { "%player%", "speed" };
 
@@ -50,7 +50,7 @@ namespace AdminTools.Commands
             foreach (Player ply in players)
                 Timing.RunCoroutine(DoRocket(ply, speed));
 
-            response = $"All the followed player has been rocketed into the sky\n{Extensions.LogPlayers(players)}";
+            response = $"The specified players have been turned into fireworks\n{Extensions.LogPlayers(players)}";
             return true;
         }
         public static IEnumerator<float> DoRocket(Player player, float speed)

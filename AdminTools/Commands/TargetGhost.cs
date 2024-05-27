@@ -62,7 +62,7 @@ namespace AdminTools.Commands
                 }
             }
 
-            response = $"Done modifying who can see who";
+            response = $"Finshed Ghostbusting.";
             return true;
         }
     }

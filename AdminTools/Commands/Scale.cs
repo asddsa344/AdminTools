@@ -15,7 +15,7 @@ namespace AdminTools.Commands
 
         public string[] Aliases { get; } = Array.Empty<string>();
 
-        public string Description { get; } = "Scales all users or a user by a specified value";
+        public string Description { get; } = "Scales a specific player or all players.";
 
         public string[] Usage { get; } = new string[] { "%player%", "size" };
 
@@ -51,7 +51,7 @@ namespace AdminTools.Commands
             foreach (Player ply in players)
                 ply.Scale = size;
 
-            response = $"Scale has been set to {size} for the followed player:\n{Extensions.LogPlayers(players)}";
+            response = $"The specified player's size has been set to {size}:\n{Extensions.LogPlayers(players)}";
             return true;
         }
     }

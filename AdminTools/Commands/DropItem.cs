@@ -16,7 +16,7 @@ namespace AdminTools.Commands
 
         public string[] Aliases { get; } = new string[] { "drop", "dropi" };
 
-        public string Description { get; } = "Drops a specified amount of a specified item on either all users or a user";
+        public string Description { get; } = "Drops a specified amount of a specified item on either all users or a specific user";
 
         public string[] Usage { get; } = new string[] { "%player%", "%item%", "[amount = 1]" };
 
@@ -53,7 +53,7 @@ namespace AdminTools.Commands
                 for (int i = 0; i < amount; i++)
                     Pickup.CreateAndSpawn(item, ply.Position, ply.Rotation, ply);
 
-            response = $"{amount} of {item} was spawned on all the followed player:\n{Extensions.LogPlayers(players)}";
+            response = $"{amount} of {item} was spawned on all the following player:\n{Extensions.LogPlayers(players)}";
             return true;
         }
     }

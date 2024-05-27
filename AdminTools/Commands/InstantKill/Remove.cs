@@ -13,7 +13,7 @@ namespace AdminTools.Commands.InstantKill
 
         public string[] Aliases { get; } = Array.Empty<string>();
 
-        public string Description { get; } = "remove instantkill to this player";
+        public string Description { get; } = "Disable InstantKill from this player.";
 
         public string[] Usage { get; } = new string[] { "%player%", };
 
@@ -45,7 +45,7 @@ namespace AdminTools.Commands.InstantKill
                     players.Remove(ply);
             }
 
-            response = $"All the followed player have been removed from InstantKill:\n{Extensions.LogPlayers(players)}";
+            response = $"Every player has been removed from InstantKill:\n{Extensions.LogPlayers(players)}";
             return true;
         }
     }

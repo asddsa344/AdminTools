@@ -70,7 +70,7 @@ namespace AdminTools.Commands
                 ply.Scale = size;
             }
 
-            response = $"Size has been set to {size} for the followed player:\n{Extensions.LogPlayers(players)}";
+            response = $"The specified player's size has been set to {size}:\n{Extensions.LogPlayers(players)}";
             return true;
 
         }

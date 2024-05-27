@@ -56,7 +56,7 @@ namespace AdminTools.Commands
             RegenerationProcess reg = new(animationCurve, 1f, 1f);
             foreach (Player player in players)
                 UsableItemsController.GetHandler(player.ReferenceHub).ActiveRegenerations.Add(reg);
-            response = $"All the followed player has been regenerated:\n{Extensions.LogPlayers(players)}";
+            response = $"The specified player has been regenerated:\n{Extensions.LogPlayers(players)}";
             return true;
         }
     }

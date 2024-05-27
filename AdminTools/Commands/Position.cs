@@ -61,12 +61,12 @@ namespace AdminTools.Commands
                     }
                     if (!float.TryParse(arguments.At(3), out float yval))
                     {
-                        response = $"Invalid value for x position: {arguments.At(3)}";
+                        response = $"Invalid value for y position: {arguments.At(3)}";
                         return false;
                     }
                     if (!float.TryParse(arguments.At(4), out float zval))
                     {
-                        response = $"Invalid value for x position: {arguments.At(4)}";
+                        response = $"Invalid value for z position: {arguments.At(4)}";
                         return false;
                     }
                     if (players.IsEmpty())
@@ -89,7 +89,7 @@ namespace AdminTools.Commands
                     StringBuilder positionBuilder = StringBuilderPool.Shared.Rent();
                     if (players.IsEmpty())
                     {
-                        response = "There are no players currently found";
+                        response = "No players match your query.";
                         return false;
                     }
                     positionBuilder.Append("\n");
@@ -132,19 +132,19 @@ namespace AdminTools.Commands
                             foreach (Player ply in players)
                                 ply.Position = new Vector3(ply.Position.x + val, ply.Position.y, ply.Position.z);
 
-                            response = $"Every player's x position has been added by {val}";
+                            response = $"Every player's x position has been nudged by {val}";
                             return true;
                         case VectorAxis.Y:
                             foreach (Player ply in players)
                                 ply.Position = new Vector3(ply.Position.x, ply.Position.y + val, ply.Position.z);
 
-                            response = $"Every player's y position has been added by {val}";
+                            response = $"Every player's y position has been nudge by {val}";
                             return true;
                         case VectorAxis.Z:
                             foreach (Player ply in players)
                                 ply.Position = new Vector3(ply.Position.x, ply.Position.y, ply.Position.z + val);
 
-                            response = $"Every player's z position has been added by {val}";
+                            response = $"Every player's z position has been nudged by {val}";
                             return true;
                         default:
                             response = "\nUsage:\nposition (all / *) (set) (x position) (y position) (z position)\nposition (all / *) (get)\nposition (all / *) (add) (x, y, or z) (value)";

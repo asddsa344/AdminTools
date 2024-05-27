@@ -42,7 +42,7 @@ namespace AdminTools.Commands.Inventory
             foreach (Player p in players)
                 p.DropItems();
 
-            response = $"All item has been dropped for all the followed players: \n{Extensions.LogPlayers(players)}";
+            response = $"All items have been dropped from the following players: \n{Extensions.LogPlayers(players)}";
             return true;
         }
     }

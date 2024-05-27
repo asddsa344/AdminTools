@@ -13,7 +13,7 @@ namespace AdminTools.Commands.InstantKill
 
         public string[] Aliases { get; } = Array.Empty<string>();
 
-        public string Description { get; } = "Get instantkill list player";
+        public string Description { get; } = "Get a list of every player with InstantKill enabled.";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -25,7 +25,7 @@ namespace AdminTools.Commands.InstantKill
 
             StringBuilder playerLister = StringBuilderPool.Pool.Get();
 
-            playerLister.Append(Main.InstantKill.Any() ? "Players with instant killing on:\n" : "No players currently online have instant killing on");
+            playerLister.Append(Main.InstantKill.Any() ? "Players with InstantKill enabled:\n" : "No players currently online have instant killing on");
             playerLister.Append(Extensions.LogPlayers(Main.InstantKill));
 
             response = StringBuilderPool.Pool.ToStringReturn(playerLister);

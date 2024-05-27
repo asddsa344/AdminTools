@@ -15,7 +15,7 @@ namespace AdminTools.Commands
 
         public string[] Aliases { get; } = new string[] { "drops" };
 
-        public string Description { get; } = "Drops a selected amount of a selected item on a user or all users";
+        public string Description { get; } = "Drops a selected amount of a selected item on a specific user or all users";
 
         public string[] Usage { get; } = new string[] { "%player%", "%item%", "size", "[size]", "[size]" };
 
@@ -94,7 +94,7 @@ namespace AdminTools.Commands
 
                 Pickup.CreateAndSpawn(type, ply.Position, default, ply).Scale = new(x, y, z);
             }
-            message = $"Spawned a {type} that is ({x}, {y}, {z}) at all the followed player:\n{players.LogPlayers()}";
+            message = $"Spawned a {type} that is ({x}, {y}, {z}) at all the following player:\n{players.LogPlayers()}";
         }
     }
 }

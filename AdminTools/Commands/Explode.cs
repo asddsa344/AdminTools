@@ -47,7 +47,7 @@ namespace AdminTools.Commands
                 ply.Explode();
                 ply.Kill("Exploded by admin.");
             }
-            response = $"All the followed player has been exploded:\n{Extensions.LogPlayers(players)}";
+            response = $"The following players have been exploded:\n{Extensions.LogPlayers(players)}";
             return true;
         }
     }

@@ -44,7 +44,7 @@ namespace AdminTools.Commands
                 ply.RandomTeleport(typeof(Room));
             }
 
-            response = $"Followed player was teleported to a random room in the facility:\n{Extensions.LogPlayers(players)}";
+            response = $"All specified players have been teleported to a random room in the facility:\n{Extensions.LogPlayers(players)}";
             return true;
         }
     }

@@ -62,7 +62,7 @@ namespace AdminTools.Commands
                         DoJail(ply);
                 }
             }
-            response = $"I am lazy to make the response now\n{Extensions.LogPlayers(players)}";
+            response = $"Jail command has run successfully.\n{Extensions.LogPlayers(players)}";
             return true;
         }
         public static void DoJail(Player player, bool skipadd = false)

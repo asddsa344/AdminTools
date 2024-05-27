@@ -94,10 +94,10 @@ namespace AdminTools.Commands.PryGate
                     {
                         if (Main.PryGate.Remove(ply))
                         {
-                            response += $"Player \"{ply.Nickname}\" cannot pry gates open now";
+                            response += $"Player \"{ply.Nickname}\" can no longer pry gates open";
                             continue;
                         }
-                        response += $"Player {ply.Nickname} does not have the ability to pry gates open";
+                        response += $"Player {ply.Nickname} doesn't have the ability to pry gates open";
                     }
                     return true;
                 default:
@@ -117,7 +117,7 @@ namespace AdminTools.Commands.PryGate
                     foreach (Player ply in players)
                         Main.PryGate.Add(ply);
 
-                    response = "The ability to pry gates open is on for all players now";
+                    response = "Every player can now pry gates open.";
                     return true;
             }
         }

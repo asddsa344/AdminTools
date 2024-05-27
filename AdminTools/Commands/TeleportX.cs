@@ -52,7 +52,7 @@ namespace AdminTools.Commands
                 plyr.Position = ply.Position;
             }
 
-            response = $"All the followed player has been teleported to {ply.Nickname}({ply.Id}):\n{Extensions.LogPlayers(players)}";
+            response = $"The specified players has been teleported to {ply.Nickname}({ply.Id}):\n{Extensions.LogPlayers(players)}";
             return true;
         }
     }

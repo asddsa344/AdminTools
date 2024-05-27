@@ -59,7 +59,7 @@ namespace AdminTools.Commands
                     fusetime = timeGrenadeProjectile.FuseTime = fusetime.Value;
             }
 
-            response = $"{type} has been sent to the followed player{(fusetime.HasValue ? $". Will explode in {fusetime}s" : string.Empty)}: \n{Extensions.LogPlayers(players)}";
+            response = $"A grenade ({type}) has been sent to the following player: {(fusetime.HasValue ? $". The grenade will explode in {fusetime} seconds." : string.Empty)}: \n{Extensions.LogPlayers(players)}";
             return true;
         }
     }

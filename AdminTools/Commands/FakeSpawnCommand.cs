@@ -19,7 +19,7 @@ namespace AdminTools.Commands
 
         public string[] Aliases { get; } = new[] { "fakesync", "fakerole" };
 
-        public string Description { get; } = "Sets everyone or a user to be invisible";
+        public string Description { get; } = "Sets everyone or a specific user to be invisible";
 
         public string[] Usage { get; } = new string[] { "%player%", "%player%", "%role%" ,"[id]"};
 
@@ -63,7 +63,7 @@ namespace AdminTools.Commands
             foreach (Player player in players)
                 player.ChangeAppearance(roletype, playersToAffect, false, id);
 
-            response = $"The followed player have been change to {roletype}:\n{Extensions.LogPlayers(players)}";
+            response = $"The following players have been changed to '{roletype}':\n{Extensions.LogPlayers(players)}";
             return true;
         }
     }

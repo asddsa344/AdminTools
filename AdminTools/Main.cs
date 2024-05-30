@@ -14,7 +14,6 @@ namespace AdminTools
 {
 	public class Main : Plugin<Config>
 	{
-		public static System.Random NumGen { get; } = new();
 		public static List<string> Overwatch { get; internal set; }
 		public static List<string> HiddenTags { get; internal set; }
 		public static Dictionary<string, Jailed> JailedPlayers { get; } = new();
@@ -23,8 +22,6 @@ namespace AdminTools
 		public static List<Player> BreakDoors { get; } = new();
 		public static List<Player> RoundStartMutes { get; } = new();
 		public static Dictionary<Player, List<GameObject>> BchHubs { get; } = new();
-		public static float HealthGain { get; } = 5;
-		public static float HealthInterval { get; } = 1;
 
 		public string OverwatchFilePath { get; private set; }
 		public string HiddenTagsFilePath { get; private set; }

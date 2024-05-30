@@ -43,18 +43,15 @@ An SCP:SL EXILED plugin that gives server owners fun commands and logging functi
 
 ### Permissions
 ```
-abc - PlayerPermissions.Broadcasting (config_remoteadmin.txt)
 ahp - PlayerPermissions.PlayersManagement (config_remoteadmin.txt)
-ball - at.ball
-breakdoors - at.bd
+ball - PlayerPermissions.GivingItems (config_remoteadmin.txt)
 dropitem - PlayerPermissions.GivingItems (config_remoteadmin.txt)
 dropsize - PlayerPermissions.GivingItems (config_remoteadmin.txt)
 dummy - at.dummy
 expl - at.explode
 ghost - at.ghost
 grenade - at.grenade
-hbc - PlayerPermissions.Broadcasting (config_remoteadmin.txt)
-hp - PlayerPermissions.PlayersManagement (config_remoteadmin.txt)
+hintbroadcast - PlayerPermissions.Broadcasting (config_remoteadmin.txt)
 instantkill - at.instakill
 inventory - PlayerPermissions.GivingItems (config_remoteadmin.txt)
 jail - at.jail
@@ -64,18 +61,14 @@ pbc - PlayerPermissions.Broadcasting (config_remoteadmin.txt)
 position - at.tp
 prygate - at.prygate
 randomtp - PlayerPermissions.PlayersManagement (config_remoteadmin.txt) 
-reg - at.reg
+regeneration - at.reg
 rocket - at.rocket
 scale - at.size
-sendmessage - at.sm
 size - at.size
 spawnragdoll - at.dolls
 spawnworkbench - at.benches
-strip - PlayerPermissions.PlayersManagement (config_remoteadmin.txt)
-tags - at.tags
 targetghost - at.targetghost
-teleportx - at.tp
-tutorial - at.tut
+teleportx - PlayerPermissions.PlayersManagement (config_remoteadmin.txt)
 ```
 ### ExtendedCommandUsage
 ```

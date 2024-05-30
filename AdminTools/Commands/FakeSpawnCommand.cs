@@ -57,7 +57,7 @@ namespace AdminTools.Commands
                 return false;
             }
             byte id = (byte)(UnitNameMessageHandler.ReceivedNames.Count - 1);
-            if (roletype.TryGetAssignedSpawnableTeam(out SpawnableTeamType spawnableTeamType) && byte.TryParse(arguments.ElementAtOrDefault(2), out id) && UnitNameMessageHandler.ReceivedNames.Count > id)
+            if (roletype.TryGetAssignedSpawnableTeam(out SpawnableTeamType _) && byte.TryParse(arguments.ElementAtOrDefault(2), out id) && UnitNameMessageHandler.ReceivedNames.Count > id)
                 id = (byte)(UnitNameMessageHandler.ReceivedNames.Count - 1);
 
             foreach (Player player in players)

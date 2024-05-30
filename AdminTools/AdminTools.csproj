@@ -87,9 +87,6 @@
     <Compile Include="Commands\Size.cs" />
     <Compile Include="Commands\SpawnRagdoll.cs" />
     <Compile Include="Commands\SpawnWorkbench.cs" />
-    <Compile Include="Commands\Tags\Hide.cs" />
-    <Compile Include="Commands\Tags\Show.cs" />
-    <Compile Include="Commands\Tags\Tags.cs" />
     <Compile Include="Commands\Inventory\Drop.cs" />
     <Compile Include="Commands\Inventory\Inventory.cs" />
     <Compile Include="Commands\Inventory\See.cs" />

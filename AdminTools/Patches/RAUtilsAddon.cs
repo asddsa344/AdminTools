@@ -46,9 +46,6 @@ namespace AdminTools.Patches
                     string[] array = args.At(startindex).Split('.');
                     for (int i = 0; i < array.Length; i++)
                     {
-                        if (array[i].StartsWith("-"))
-                            continue;
-
                         if (array[i].ToLower() is "all" or "*")
                         {
                             list.AddRange(Player.List.Select(x => x.ReferenceHub));
@@ -56,6 +53,9 @@ namespace AdminTools.Patches
                         }
                         if (int.TryParse(array[i], out int playerId))
                         {
+                            if (playerId < 1)
+                                continue;
+
                             if (ReferenceHub.TryGetHub(playerId, out ReferenceHub item))
                                 list.Add(item);
                         }

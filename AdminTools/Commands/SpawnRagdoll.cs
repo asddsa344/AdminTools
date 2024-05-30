@@ -58,7 +58,6 @@ namespace AdminTools.Commands
                 Timing.RunCoroutine(SpawnDolls(player, type, amount));
             }
 
-
             response = $"{amount} {type} ragdoll(s) have been spawned on {arguments.At(0)}.";
             return true;
         }

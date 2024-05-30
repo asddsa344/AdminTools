@@ -200,7 +200,7 @@ namespace AdminTools.Commands
                         response = $"Player not found: {arguments.At(0)}";
                         return false;
                     }
-                    else if (pl.Role == RoleTypeId.Spectator || pl.Role == RoleTypeId.None)
+                    else if (pl.Role.IsDead)
                     {
                         response = $"This player is not a valid class to spawn a workbench on";
                         return false;

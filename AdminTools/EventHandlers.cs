@@ -11,6 +11,7 @@ namespace AdminTools
     using Log = Exiled.API.Features.Log;
     using PlayerStatsSystem;
     using Handlers = Exiled.Events.Handlers;
+    using Exiled.API.Enums;
 
     public class EventHandlers
 	{
@@ -28,7 +29,6 @@ namespace AdminTools
 			Handlers.Server.RoundStarted += OnRoundStarted;
 			Handlers.Player.Destroying += OnPlayerDestroying;
 			Handlers.Player.InteractingDoor += OnPlayerInteractingDoor;
-			
 			if (plugin.Config.GodTuts)
 				Handlers.Player.ChangingRole += OnChangingRole;
 		}
@@ -44,6 +44,8 @@ namespace AdminTools
 			Handlers.Server.RoundStarted -= OnRoundStarted;
 			Handlers.Player.Destroying -= OnPlayerDestroying;
 			Handlers.Player.InteractingDoor -= OnPlayerInteractingDoor;
+			if (plugin.Config.GodTuts)
+				Handlers.Player.ChangingRole -= OnChangingRole;
 		}
 
 		public void OnInteractingDoor(InteractingDoorEventArgs ev)
@@ -127,7 +129,12 @@ namespace AdminTools
 				ev.IsAllowed = false;
 		}
 
-		public void OnChangingRole(ChangingRoleEventArgs ev) => ev.Player.IsGodModeEnabled = ev.NewRole is RoleTypeId.Tutorial;
+		public void OnChangingRole(ChangingRoleEventArgs ev)
+		{
+			if (plugin.Config.GodTuts && ev.Player.RemoteAdminAccess && ev.Reason == SpawnReason.ForceClass)
+				ev.Player.IsGodModeEnabled = ev.NewRole == RoleTypeId.Tutorial;
+		}
+
 
         public void OnWaitingForPlayers()
 		{

@@ -120,7 +120,6 @@ namespace AdminTools
                 Extensions.SavingPlayerData(player);
 
             File.WriteAllLines(plugin.OverwatchFilePath, Main.Overwatch);
-            File.WriteAllLines(plugin.HiddenTagsFilePath, Main.HiddenTags);
         }
 
         public void OnTriggeringTesla(TriggeringTeslaEventArgs ev)

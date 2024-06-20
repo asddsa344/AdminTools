@@ -24,7 +24,6 @@ namespace AdminTools
 		public static Dictionary<Player, List<GameObject>> BchHubs { get; } = new();
 
 		public string OverwatchFilePath { get; private set; }
-		public string HiddenTagsFilePath { get; private set; }
 
 		public Harmony Harmony { get; } = new("Exiled-AdminTools");
 		public EventHandlers EventHandlers { get; private set; }
@@ -42,9 +41,7 @@ namespace AdminTools
 			{
 				string path = Path.Combine(Paths.Configs, "AdminTools");
 				string overwatchFileName = Path.Combine(path, "AdminTools-Overwatch.txt");
-				string hiddenTagFileName = Path.Combine(path, "AdminTools-HiddenTags.txt");
                 OverwatchFilePath = overwatchFileName;
-                HiddenTagsFilePath = hiddenTagFileName;
 
                 if (!Directory.Exists(path))
 					Directory.CreateDirectory(path);
@@ -53,10 +50,6 @@ namespace AdminTools
 					File.Create(overwatchFileName).Close();
 				else
                     Overwatch = File.ReadAllLines(overwatchFileName).ToList();
-                if (!File.Exists(hiddenTagFileName))
-					File.Create(hiddenTagFileName).Close();
-                else
-                    HiddenTags = File.ReadAllLines(hiddenTagFileName).ToList();
             }
             catch (Exception e)
             {

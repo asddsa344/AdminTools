@@ -9,13 +9,13 @@ namespace AdminTools.Commands.Mute
     {
         public string Command { get; } = "icom";
 
-        public string[] Aliases { get; } = new string[] { };
+        public string[] Aliases { get; } = Array.Empty<string>();
 
         public string Description { get; } = "Intercom mutes everyone in the server";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!((CommandSender)sender).CheckPermission("at.mute"))
+            if (!sender.CheckPermission("at.mute"))
             {
                 response = "You do not have permission to use this command";
                 return false;

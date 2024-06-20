@@ -3,6 +3,7 @@ An SCP:SL EXILED plugin that gives server owners fun commands and logging functi
 
 ### Features
 ```
+- Command extensions (View ExtendedCommandUsage for details)
 - Log commands in your server files!
 - Quickly send a message to all staff
 - Set AHP of players with ease
@@ -42,20 +43,17 @@ An SCP:SL EXILED plugin that gives server owners fun commands and logging functi
 
 ### Permissions
 ```
-abc - PlayerPermissions.Broadcasting (config_remoteadmin.txt)
 ahp - PlayerPermissions.PlayersManagement (config_remoteadmin.txt)
-ball - at.ball
-breakdoors - at.bd
-dropitem - at.items
-dropsize - at.items
+ball - PlayerPermissions.GivingItems (config_remoteadmin.txt)
+dropitem - PlayerPermissions.GivingItems (config_remoteadmin.txt)
+dropsize - PlayerPermissions.GivingItems (config_remoteadmin.txt)
 dummy - at.dummy
 expl - at.explode
 ghost - at.ghost
 grenade - at.grenade
-hbc - PlayerPermissions.Broadcasting (config_remoteadmin.txt)
-hp - PlayerPermissions.PlayersManagement (config_remoteadmin.txt)
-instantkill - at.ik
-inventory - at.inv
+hintbroadcast - PlayerPermissions.Broadcasting (config_remoteadmin.txt)
+instantkill - at.instakill
+inventory - PlayerPermissions.GivingItems (config_remoteadmin.txt)
 jail - at.jail
 kick - at.kick
 kill - at.kill
@@ -63,16 +61,22 @@ pbc - PlayerPermissions.Broadcasting (config_remoteadmin.txt)
 position - at.tp
 prygate - at.prygate
 randomtp - PlayerPermissions.PlayersManagement (config_remoteadmin.txt) 
-reg - at.reg
+regeneration - at.reg
 rocket - at.rocket
 scale - at.size
-sendmessage - at.sm
 size - at.size
 spawnragdoll - at.dolls
 spawnworkbench - at.benches
-strip - PlayerPermissions.PlayersManagement (config_remoteadmin.txt)
-tags - at.tags
 targetghost - at.targetghost
-teleportx - at.tp
-tutorial - at.tut
+teleportx - PlayerPermissions.PlayersManagement (config_remoteadmin.txt)
+```
+### ExtendedCommandUsage
+```
+Enabling this will make it easier to specify multiple people in command usage.
+New options:
+All & * for selecting all players currently on the server.
+RoleTypeId enum for selecting players currently part of that role
+Team enum for selecting players currently part of that team
+SimplifiedTeam: Scp, Mtf, Ci (Chaos Insurgency), Sci (Scientists), Cld (Class D), Rip (Dead), Tut (Tutorial)
+Additional: Alive, Human, Civilian, Military, Staff, NoStaff
 ```

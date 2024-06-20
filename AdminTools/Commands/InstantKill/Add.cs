@@ -4,28 +4,29 @@ using Exiled.Permissions.Extensions;
 using System;
 using System.Collections.Generic;
 
-namespace AdminTools.Commands.Inventory
+namespace AdminTools.Commands.InstantKill
 {
-    [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    [CommandHandler(typeof(GameConsoleCommandHandler))]
-    public class Drop : ICommand, IUsageProvider
+    public class Add : ICommand, IUsageProvider
     {
-        public string Command { get; } = "drop";
+        public string Command { get; } = "add";
 
         public string[] Aliases { get; } = Array.Empty<string>();
 
-        public string Description { get; } = "Drops the items in a players inventory";
+        public string Description { get; } = "add instantkill to this player";
 
         public string[] Usage { get; } = new string[] { "%player%", };
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!sender.CheckPermission(PlayerPermissions.GivingItems, out response))
+            if (!sender.CheckPermission("at.instakill"))
+            {
+                response = "You do not have permission to use this command";
                 return false;
+            }
 
             if (arguments.Count != 1)
             {
-                response = "Usage: inventory drop ((player id / name) or (all / *))";
+                response = "Usage: instakill add ((player id / name) or (all / *))";
                 return false;
             }
 
@@ -36,10 +37,9 @@ namespace AdminTools.Commands.Inventory
                 return false;
             }
 
-            foreach (Player p in players)
-                p.DropItems();
+            Main.InstantKill.AddRange(players);
 
-            response = $"All items have been dropped from the following players: \n{Extensions.LogPlayers(players)}";
+            response = $"All the followed player have been added to InstantKill:\n{Extensions.LogPlayers(players)}";
             return true;
         }
     }

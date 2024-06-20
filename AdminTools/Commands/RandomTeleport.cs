@@ -1,31 +1,34 @@
 ﻿using CommandSystem;
 using Exiled.API.Features;
-using Exiled.Permissions.Extensions;
+using RemoteAdmin;
 using System;
 using System.Collections.Generic;
 
-namespace AdminTools.Commands.Inventory
+namespace AdminTools.Commands
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
-    public class Drop : ICommand, IUsageProvider
+    public class RandomTeleport : ICommand, IUsageProvider
     {
-        public string Command { get; } = "drop";
+        public string Command { get; } = "randomtp";
 
         public string[] Aliases { get; } = Array.Empty<string>();
 
-        public string Description { get; } = "Drops the items in a players inventory";
+        public string Description { get; } = "Randomly teleports a user or all users to a random room in the facility";
 
         public string[] Usage { get; } = new string[] { "%player%", };
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!sender.CheckPermission(PlayerPermissions.GivingItems, out response))
+            if (!CommandProcessor.CheckPermissions(((CommandSender)sender), "randomtp", PlayerPermissions.PlayersManagement, "AdminTools", false))
+            {
+                response = "You do not have permission to use this command";
                 return false;
+            }
 
             if (arguments.Count != 1)
             {
-                response = "Usage: inventory drop ((player id / name) or (all / *))";
+                response = "Usage: randomtp ((player id / name) or (all / *))";
                 return false;
             }
 
@@ -36,10 +39,12 @@ namespace AdminTools.Commands.Inventory
                 return false;
             }
 
-            foreach (Player p in players)
-                p.DropItems();
+            foreach (Player ply in players)
+            {
+                ply.RandomTeleport(typeof(Room));
+            }
 
-            response = $"All items have been dropped from the following players: \n{Extensions.LogPlayers(players)}";
+            response = $"All specified players have been teleported to a random room in the facility:\n{Extensions.LogPlayers(players)}";
             return true;
         }
     }

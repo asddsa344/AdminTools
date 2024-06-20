@@ -79,12 +79,6 @@ namespace AdminTools
                 ev.Player.IsOverwatchEnabled = true;
             }
 
-            if (Main.HiddenTags.Contains(ev.Player.UserId))
-            {
-                Log.Debug($"Hiding {ev.Player.UserId}'s tag.");
-                Timing.CallDelayed(Timing.WaitForOneFrame, () => ev.Player.BadgeHidden = true);
-            }
-
             if (Main.RoundStartMutes.Count != 0 && !ev.Player.RemoteAdminAccess && !Main.RoundStartMutes.Contains(ev.Player))
             {
                 Log.Debug($"Muting {ev.Player.UserId} (no RA).");

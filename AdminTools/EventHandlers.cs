@@ -122,7 +122,7 @@ namespace AdminTools
 
 		public void OnChangingRole(ChangingRoleEventArgs ev)
 		{
-			if (plugin.Config.GodTuts && ev.Player.RemoteAdminAccess && ev.Reason == SpawnReason.ForceClass)
+			if (plugin.Config.GodTuts && (ev.Reason is SpawnReason.ForceClass or SpawnReason.None))
 				ev.Player.IsGodModeEnabled = ev.NewRole == RoleTypeId.Tutorial;
 		}
 

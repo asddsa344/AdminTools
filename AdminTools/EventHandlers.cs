@@ -79,12 +79,6 @@ namespace AdminTools
                 ev.Player.IsOverwatchEnabled = true;
             }
 
-            if (Main.HiddenTags.Contains(ev.Player.UserId))
-            {
-                Log.Debug($"Hiding {ev.Player.UserId}'s tag.");
-                Timing.CallDelayed(Timing.WaitForOneFrame, () => ev.Player.BadgeHidden = true);
-            }
-
             if (Main.RoundStartMutes.Count != 0 && !ev.Player.RemoteAdminAccess && !Main.RoundStartMutes.Contains(ev.Player))
             {
                 Log.Debug($"Muting {ev.Player.UserId} (no RA).");
@@ -128,7 +122,7 @@ namespace AdminTools
 
 		public void OnChangingRole(ChangingRoleEventArgs ev)
 		{
-			if (plugin.Config.GodTuts && ev.Player.RemoteAdminAccess && ev.Reason == SpawnReason.ForceClass)
+			if (plugin.Config.GodTuts && (ev.Reason is SpawnReason.ForceClass or SpawnReason.None))
 				ev.Player.IsGodModeEnabled = ev.NewRole == RoleTypeId.Tutorial;
 		}
 

@@ -28,7 +28,6 @@ namespace AdminTools
         public static void SavingPlayerData(this Player player)
         {
             List<string> overwatchRead = Main.Overwatch;
-            List<string> tagsRead = Main.HiddenTags;
 
             string userId = player.UserId;
 
@@ -39,14 +38,6 @@ namespace AdminTools
             }
             else if (!player.IsOverwatchEnabled && overwatchRead.Remove(userId))
                 Log.Debug($"{player.Nickname}({player.UserId}) has remove their overwatch.");
-
-            if (player.BadgeHidden && !tagsRead.Contains(userId))
-            {
-                tagsRead.Add(userId);
-                Log.Debug($"{player.Nickname}({player.UserId}) has added their tag hidden.");
-            }
-            else if (!player.BadgeHidden && tagsRead.Remove(userId))
-                Log.Debug($"{player.Nickname}({player.UserId}) has remove their tag hidden.");
         }
         public static void SpawnWorkbench(Player ply, Vector3 position, Vector3 rotation, Vector3 size, out int benchIndex)
         {

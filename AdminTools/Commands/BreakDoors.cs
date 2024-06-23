@@ -27,7 +27,7 @@ namespace AdminTools.Commands
                 return false;
             }
 
-            if (arguments.Count > 0)
+            if (arguments.Count == 0)
             {
                 response = "Usage: breakdoors (all / *) [IsEnable]";
                 return false;

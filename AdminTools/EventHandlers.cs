@@ -72,7 +72,7 @@ namespace AdminTools
 
 		public void OnPlayerVerified(VerifiedEventArgs ev)
 		{
-            if (Main.JailedPlayers.ContainsKey(ev.Player.UserId))
+            if (Main.JailedPlayers.ContainsKey(ev.Player?.UserId))
                 Commands.Jail.DoJail(ev.Player, true);
 
             if (ev.Player.RemoteAdminPermissions.HasFlag(PlayerPermissions.Overwatch) && Main.Overwatch.Contains(ev.Player.UserId))

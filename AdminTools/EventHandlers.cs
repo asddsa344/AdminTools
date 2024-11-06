@@ -62,11 +62,13 @@ namespace AdminTools
 
         public void OnPlayerDestroying(DestroyingEventArgs ev)
         {
+			if (ev.Player == null)
+				return;
+
 			if (Main.RoundStartMutes.Remove(ev.Player))
-            {
-				ev.Player.IsMuted = false;
-            }
-			if (!Round.IsEnded)
+                ev.Player.IsMuted = false;
+
+            if (!Round.IsEnded)
 				Extensions.SavingPlayerData(ev.Player);
         }
 
@@ -98,6 +100,7 @@ namespace AdminTools
 					ply.IsMuted = false;
 				}
 			}
+
 			Main.RoundStartMutes.Clear();
 		}
 
@@ -133,8 +136,10 @@ namespace AdminTools
 			Main.InstantKill.Clear();
             Main.BreakDoors.Clear();
             Main.PryGate.Clear();
+
             if (plugin.Config.ClearJailsOnRestart)
                 Main.JailedPlayers.Clear();
+
             if (plugin.Config.DisableLockOnWaiting)
             {
 	            Round.IsLobbyLocked = false;

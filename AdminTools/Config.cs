@@ -22,5 +22,8 @@ namespace AdminTools
 
         [Description("Whether or not to disable RoundLock & LobbyLock when Waiting For Players")]
         public bool DisableLockOnWaiting { get; set; } = false;
+
+        [Description("Name of the jail command, useful if you're also using cedmod (or another plugin) that causes conflicts.")]
+        public string JailCommandName { get; set; } = "jail";
     }
 }

@@ -14,7 +14,7 @@ namespace AdminTools.Commands
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     public class Jail : ICommand, IUsageProvider
     {
-        public string Command { get; } = "jail";
+        public string Command { get; } = Main.Instance.Config.JailCommandName;
 
         public string[] Aliases { get; } = Array.Empty<string>();
 

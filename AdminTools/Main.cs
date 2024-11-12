@@ -34,6 +34,8 @@ namespace AdminTools
 		public override Version Version { get; } = new(7, 1, 4);
         public override Version RequiredExiledVersion { get; } = new(8, 8, 0);
 
+        public static Main Instance;
+        
         public override void OnEnabled()
 		{
 			try
@@ -55,6 +57,7 @@ namespace AdminTools
                 Log.Error($"Loading error: {e}");
             }
 
+			Instance = this;
             EventHandlers = new(this);
 
             if (Config.ExtendedCommandUsage)
@@ -70,6 +73,7 @@ namespace AdminTools
 		{
 			Harmony?.UnpatchAll(Harmony.Id);
             EventHandlers = null;
+            Instance = null;
             
             base.OnDisabled();
 		}

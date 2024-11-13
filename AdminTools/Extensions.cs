@@ -27,7 +27,7 @@ namespace AdminTools
 
         public static void SavingPlayerData(this Player player)
         {
-            List<string> overwatchRead = Main.Overwatch;
+            List<string> overwatchRead = Plugin.Overwatch;
 
             string userId = player.UserId;
 
@@ -58,15 +58,15 @@ namespace AdminTools
                 };
                 bench.gameObject.transform.localScale = size;
                 NetworkServer.Spawn(bench);
-                if (Main.BchHubs.TryGetValue(ply, out List<GameObject> objs))
+                if (Plugin.BchHubs.TryGetValue(ply, out List<GameObject> objs))
                 {
                     objs.Add(bench);
                 }
                 else
                 {
-                    Main.BchHubs.Add(ply, new());
-                    Main.BchHubs[ply].Add(bench);
-                    benchIndex = Main.BchHubs[ply].Count();
+                    Plugin.BchHubs.Add(ply, new());
+                    Plugin.BchHubs[ply].Add(bench);
+                    benchIndex = Plugin.BchHubs[ply].Count();
                 }
 
                 if (benchIndex != 1)

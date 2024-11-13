@@ -14,7 +14,7 @@ namespace AdminTools.Commands
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     public class Jail : ICommand, IUsageProvider
     {
-        public string Command { get; } = Main.Instance.Config.JailCommandName;
+        public string Command { get; } = Plugin.Instance.Config.JailCommandName;
 
         public string[] Aliases { get; } = Array.Empty<string>();
 
@@ -56,7 +56,7 @@ namespace AdminTools.Commands
                     DoUnJail(ply);
                 else
                 {
-                    if (Main.JailedPlayers.ContainsKey(ply.UserId))
+                    if (Plugin.JailedPlayers.ContainsKey(ply.UserId))
                         DoUnJail(ply);
                     else
                         DoJail(ply);
@@ -67,11 +67,11 @@ namespace AdminTools.Commands
         }
         public static void DoJail(Player player, bool skipadd = false)
         {
-            if (Main.JailedPlayers.ContainsKey(player.UserId))
+            if (Plugin.JailedPlayers.ContainsKey(player.UserId))
                 return;
             if (!skipadd)
             {
-                Main.JailedPlayers.Add(player.UserId, new Jailed
+                Plugin.JailedPlayers.Add(player.UserId, new Jailed
                 {
                     Health = player.Health,
                     RelativePosition = player.RelativePosition,
@@ -95,7 +95,7 @@ namespace AdminTools.Commands
 
         public static void DoUnJail(Player player)
         {
-            if (!Main.JailedPlayers.TryGetValue(player.UserId, out Jailed jail))
+            if (!Plugin.JailedPlayers.TryGetValue(player.UserId, out Jailed jail))
                 return;
             if (jail.CurrentRound)
             {
@@ -121,7 +121,7 @@ namespace AdminTools.Commands
             {
                 player.Role.Set(RoleTypeId.Spectator);
             }
-            Main.JailedPlayers.Remove(player.UserId);
+            Plugin.JailedPlayers.Remove(player.UserId);
         }
     }
 }

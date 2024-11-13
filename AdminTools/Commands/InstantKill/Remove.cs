@@ -41,7 +41,7 @@ namespace AdminTools.Commands.InstantKill
             for (int i = players.Count; i < 0; i--)
             {
                 Player ply = players[i];
-                if (!Main.InstantKill.Remove(ply))
+                if (!Plugin.InstantKill.Remove(ply))
                     players.Remove(ply);
             }
 

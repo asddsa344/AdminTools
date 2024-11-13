@@ -48,7 +48,7 @@ namespace AdminTools.Commands.PryGate
                         return false;
                     }
 
-                    Main.PryGate.Clear();
+                    Plugin.PryGate.Clear();
                     response = "The ability to pry gates is cleared from all players now";
                     return true;
                 case "list":
@@ -58,10 +58,10 @@ namespace AdminTools.Commands.PryGate
                         return false;
                     }
 
-                    StringBuilder playerLister = StringBuilderPool.Shared.Rent(Main.PryGate.Count != 0 ? "Players with the ability to pry gates:\n" : "No players currently online have the ability to pry gates");
-                    if (Main.PryGate.Count > 0)
+                    StringBuilder playerLister = StringBuilderPool.Shared.Rent(Plugin.PryGate.Count != 0 ? "Players with the ability to pry gates:\n" : "No players currently online have the ability to pry gates");
+                    if (Plugin.PryGate.Count > 0)
                     {
-                        foreach (Player ply in Main.PryGate)
+                        foreach (Player ply in Plugin.PryGate)
                             playerLister.Append(ply.Nickname + ", ");
 
                         int length = playerLister.ToString().Length;
@@ -92,7 +92,7 @@ namespace AdminTools.Commands.PryGate
                     response = string.Empty;
                     foreach (Player ply in players)
                     {
-                        if (Main.PryGate.Remove(ply))
+                        if (Plugin.PryGate.Remove(ply))
                         {
                             response += $"Player \"{ply.Nickname}\" can no longer pry gates open";
                             continue;
@@ -115,7 +115,7 @@ namespace AdminTools.Commands.PryGate
                     }
 
                     foreach (Player ply in players)
-                        Main.PryGate.Add(ply);
+                        Plugin.PryGate.Add(ply);
 
                     response = "Every player can now pry gates open.";
                     return true;

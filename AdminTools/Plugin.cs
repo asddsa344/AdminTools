@@ -14,16 +14,17 @@ namespace AdminTools
 {
 	public class Plugin : Plugin<Config>
 	{
-		public static string OverwatchFilePath;
-		private Harmony Harmony = new("Exiled-AdminTools");
 		public static List<string> Overwatch = new();
 		public static Dictionary<string, Jailed> JailedPlayers = new();
-		public static List<Player> PryGate = new();
-		public static List<Player> InstantKill = new();
-		public static List<Player> BreakDoors = new();
-		public static List<Player> RoundStartMutes = new();
-		public static Dictionary<Player, List<GameObject>> BchHubs = new();
+		public static List<Player> PryGatePlayerList = new();
+		public static List<Player> InstantKillPlayerList = new();
+		public static List<Player> BreakDoorsPlayerList = new();
+		public static List<Player> RoundStartMutesList = new();
+		public static Dictionary<Player, List<GameObject>> WorkbenchHubs = new();
+		
+		private Harmony Harmony = new("Exiled-AdminTools");
 		public static Plugin Instance;
+		public static string OverwatchFilePath;
 
 		public override string Author => "Exiled-Team";
 		
@@ -38,6 +39,8 @@ namespace AdminTools
         
 		public override void OnEnabled()
 		{
+			Instance = this;
+			
 			string path = Path.Combine(Paths.Configs, "AdminTools");
 			string overwatchFileName = Path.Combine(path, "AdminTools-Overwatch.txt");
 
@@ -51,8 +54,8 @@ namespace AdminTools
 			else
 				Overwatch = File.ReadAllLines(overwatchFileName).ToList();
 
-			Instance = this;
-
+			EventHandlers.RegisterEvents();
+			
 			if (Config.ExtendedCommandUsage)
 			{
 				Harmony.Patch(AccessTools.Method(typeof(RAUtils), nameof(RAUtils.ProcessPlayerIdOrNamesList)), new(AccessTools.Method(typeof(CustomRAUtilsAddon), nameof(CustomRAUtilsAddon.Prefix))));

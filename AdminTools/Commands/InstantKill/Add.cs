@@ -37,7 +37,7 @@ namespace AdminTools.Commands.InstantKill
                 return false;
             }
 
-            Plugin.InstantKill.AddRange(players);
+            Plugin.InstantKillPlayerList.AddRange(players);
 
             response = $"All the followed player have been added to InstantKill:\n{Extensions.LogPlayers(players)}";
             return true;

@@ -25,8 +25,8 @@ namespace AdminTools.Commands.InstantKill
 
             StringBuilder playerLister = StringBuilderPool.Pool.Get();
 
-            playerLister.Append(Plugin.InstantKill.Any() ? "Players with InstantKill enabled:\n" : "No players currently online have instant killing on");
-            playerLister.Append(Extensions.LogPlayers(Plugin.InstantKill));
+            playerLister.Append(Plugin.InstantKillPlayerList.Any() ? "Players with InstantKill enabled:\n" : "No players currently online have instant killing on");
+            playerLister.Append(Extensions.LogPlayers(Plugin.InstantKillPlayerList));
 
             response = StringBuilderPool.Pool.ToStringReturn(playerLister);
             return true;

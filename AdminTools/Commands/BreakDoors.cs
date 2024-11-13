@@ -48,17 +48,17 @@ namespace AdminTools.Commands
             foreach (Player player in players)
                 if (isJail is true)
                 {
-                    if (Plugin.BreakDoors.Contains(player))
-                        Plugin.BreakDoors.Add(player);
+                    if (Plugin.BreakDoorsPlayerList.Contains(player))
+                        Plugin.BreakDoorsPlayerList.Add(player);
                 }
                 else if (isJail is false)
                 {
-                    Plugin.BreakDoors.Remove(player);
+                    Plugin.BreakDoorsPlayerList.Remove(player);
                 }
                 else
                 {
-                    if (!Plugin.BreakDoors.Remove(player))
-                        Plugin.BreakDoors.Add(player);
+                    if (!Plugin.BreakDoorsPlayerList.Remove(player))
+                        Plugin.BreakDoorsPlayerList.Add(player);
                 }
 
             response = $"BreakDoor has been enable for all the followed player:\n{Extensions.LogPlayers(players)}";

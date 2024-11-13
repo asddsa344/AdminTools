@@ -80,7 +80,7 @@ namespace AdminTools.Commands
                         return false;
                     }
 
-                    if (!Plugin.BchHubs.TryGetValue(ply, out List<GameObject> objs))
+                    if (!Plugin.WorkbenchHubs.TryGetValue(ply, out List<GameObject> objs))
                     {
                         response = $"{ply.Nickname} has not spawned in any workbenches";
                         return false;
@@ -117,14 +117,14 @@ namespace AdminTools.Commands
                         return true;
                     }
 
-                    foreach (KeyValuePair<Player, List<GameObject>> bch in Plugin.BchHubs)
+                    foreach (KeyValuePair<Player, List<GameObject>> bch in Plugin.WorkbenchHubs)
                     {
                         foreach (GameObject bench in bch.Value)
                             UnityEngine.Object.Destroy(bench);
                         bch.Value.Clear();
                     }
 
-                    Plugin.BchHubs.Clear();
+                    Plugin.WorkbenchHubs.Clear();
                     response = $"All spawned workbenches have now been removed";
                     return true;
                 case "count":
@@ -141,7 +141,7 @@ namespace AdminTools.Commands
                         return false;
                     }
 
-                    if (!Plugin.BchHubs.TryGetValue(plyr, out List<GameObject> obj) || obj.Count == 0)
+                    if (!Plugin.WorkbenchHubs.TryGetValue(plyr, out List<GameObject> obj) || obj.Count == 0)
                     {
                         response = $"{plyr.Nickname} has not spawned in any workbenches";
                         return false;

@@ -1,3 +1,5 @@
+using YamlDotNet.Serialization.NodeTypeResolvers;
+
 namespace AdminTools;
 
 using System.IO;
@@ -45,31 +47,34 @@ public class EventHandlers
 
 	private static void OnInteractingDoor(InteractingDoorEventArgs ev)
 	{
-		if (Plugin.PryGate.Contains(ev.Player) && ev.Door is Gate gate)
+		if (Plugin.PryGatePlayerList.Contains(ev.Player) && ev.Door is Gate gate)
 			gate.TryPry();
 	}
 
-	public static void OnHurting(HurtingEventArgs ev)
+	private static void OnHurting(HurtingEventArgs ev)
 	{
-		if (ev.Attacker != ev.Player && Plugin.InstantKill.Contains(ev.Attacker))
+		if (ev.Attacker != ev.Player && Plugin.InstantKillPlayerList.Contains(ev.Attacker))
 			ev.Amount = StandardDamageHandler.KillValue;
 	}
 
-	public static void OnPlayerDestroying(DestroyingEventArgs ev)
+	private static void OnPlayerDestroying(DestroyingEventArgs ev)
 	{
 		if (ev.Player == null)
 			return;
 
-		if (Plugin.RoundStartMutes.Remove(ev.Player))
+		if (Plugin.RoundStartMutesList.Remove(ev.Player))
 			ev.Player.IsMuted = false;
 
 		if (!Round.IsEnded)
-			Extensions.SavingPlayerData(ev.Player);
+			ev.Player.SavingPlayerData();
 	}
 
-	public static void OnPlayerVerified(VerifiedEventArgs ev)
+	private static void OnPlayerVerified(VerifiedEventArgs ev)
 	{
-		if (Plugin.JailedPlayers.ContainsKey(ev.Player?.UserId))
+		if (ev.Player is null)
+			return;
+		
+		if (Plugin.JailedPlayers.ContainsKey(ev.Player.UserId))
 			Commands.Jail.DoJail(ev.Player, true);
 
 		if (ev.Player.RemoteAdminPermissions.HasFlag(PlayerPermissions.Overwatch) && Plugin.Overwatch.Contains(ev.Player.UserId))
@@ -78,17 +83,17 @@ public class EventHandlers
 			ev.Player.IsOverwatchEnabled = true;
 		}
 
-		if (Plugin.RoundStartMutes.Count != 0 && !ev.Player.RemoteAdminAccess && !Plugin.RoundStartMutes.Contains(ev.Player))
+		if (Plugin.RoundStartMutesList.Count != 0 && !ev.Player.RemoteAdminAccess && !Plugin.RoundStartMutesList.Contains(ev.Player))
 		{
 			Log.Debug($"Muting {ev.Player.UserId} (no RA).");
 			ev.Player.IsMuted = true;
-			Plugin.RoundStartMutes.Add(ev.Player);
+			Plugin.RoundStartMutesList.Add(ev.Player);
 		}
 	}
 
-	public static void OnRoundStarted()
+	private static void OnRoundStarted()
 	{
-		foreach (Player ply in Plugin.RoundStartMutes)
+		foreach (Player ply in Plugin.RoundStartMutesList)
 		{
 			if (ply != null)
 			{
@@ -96,10 +101,10 @@ public class EventHandlers
 			}
 		}
 
-		Plugin.RoundStartMutes.Clear();
+		Plugin.RoundStartMutesList.Clear();
 	}
 
-	public static void OnRoundEnded(RoundEndedEventArgs ev)
+	private static void OnRoundEnded(RoundEndedEventArgs ev)
 	{
 		// Update all the jails that it is no longer the current round, so when they are unjailed they don't teleport into the void.
 		foreach (Jailed jail in Plugin.JailedPlayers.Values)
@@ -114,23 +119,23 @@ public class EventHandlers
 		File.WriteAllLines(Plugin.OverwatchFilePath, Plugin.Overwatch);
 	}
 
-	public static void OnTriggeringTesla(TriggeringTeslaEventArgs ev)
+	private static void OnTriggeringTesla(TriggeringTeslaEventArgs ev)
 	{
 		if (ev.Player.IsGodModeEnabled)
 			ev.IsAllowed = false;
 	}
 
-	public static void OnChangingRole(ChangingRoleEventArgs ev)
+	private static void OnChangingRole(ChangingRoleEventArgs ev)
 	{
 		if (Plugin.Instance.Config.GodTuts && (ev.Reason is SpawnReason.ForceClass or SpawnReason.None))
 			ev.Player.IsGodModeEnabled = ev.NewRole == RoleTypeId.Tutorial;
 	}
 
-	public static void OnWaitingForPlayers()
+	private static void OnWaitingForPlayers()
 	{
-		Plugin.InstantKill.Clear();
-		Plugin.BreakDoors.Clear();
-		Plugin.PryGate.Clear();
+		Plugin.InstantKillPlayerList.Clear();
+		Plugin.BreakDoorsPlayerList.Clear();
+		Plugin.PryGatePlayerList.Clear();
 
 		if (Plugin.Instance.Config.ClearJailsOnRestart)
 			Plugin.JailedPlayers.Clear();
@@ -142,9 +147,9 @@ public class EventHandlers
 		}
 	}
 
-	public static void OnPlayerInteractingDoor(InteractingDoorEventArgs ev)
+	private static void OnPlayerInteractingDoor(InteractingDoorEventArgs ev)
 	{
-		if (Plugin.BreakDoors.Contains(ev.Player) && ev.Door is IDamageableDoor damageableDoor)
+		if (Plugin.BreakDoorsPlayerList.Contains(ev.Player) && ev.Door is IDamageableDoor damageableDoor)
 			damageableDoor.Break();
 	}
 }

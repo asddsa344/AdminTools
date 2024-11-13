@@ -65,11 +65,11 @@ namespace AdminTools.Commands
             response = $"Jail command has run successfully.\n{Extensions.LogPlayers(players)}";
             return true;
         }
-        public static void DoJail(Player player, bool skipadd = false)
+        public static void DoJail(Player player, bool skipAdd = false)
         {
             if (Plugin.JailedPlayers.ContainsKey(player.UserId))
                 return;
-            if (!skipadd)
+            if (!skipAdd)
             {
                 Plugin.JailedPlayers.Add(player.UserId, new Jailed
                 {

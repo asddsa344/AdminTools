@@ -58,15 +58,15 @@ namespace AdminTools
                 };
                 bench.gameObject.transform.localScale = size;
                 NetworkServer.Spawn(bench);
-                if (Plugin.BchHubs.TryGetValue(ply, out List<GameObject> objs))
+                if (Plugin.WorkbenchHubs.TryGetValue(ply, out List<GameObject> objs))
                 {
                     objs.Add(bench);
                 }
                 else
                 {
-                    Plugin.BchHubs.Add(ply, new());
-                    Plugin.BchHubs[ply].Add(bench);
-                    benchIndex = Plugin.BchHubs[ply].Count();
+                    Plugin.WorkbenchHubs.Add(ply, new());
+                    Plugin.WorkbenchHubs[ply].Add(bench);
+                    benchIndex = Plugin.WorkbenchHubs[ply].Count();
                 }
 
                 if (benchIndex != 1)
